@@ -364,3 +364,6 @@ FodyWeavers.xsd
 
 # Rider
 .idea
+
+# App Settings
+appsettings.json
