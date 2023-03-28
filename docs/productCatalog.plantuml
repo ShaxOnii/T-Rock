@@ -1,0 +1,46 @@
+@startuml pc
+
+interface IProductOffering{
+    int Id
+    String Name()
+    String Caption()
+    Category Category()
+    IEnummerable<ICharacteristic> DescribedBy()
+    int Price()
+    String Description()
+}
+
+enum CharacteristicType{
+    StringType
+}
+
+interface ICharacteristic<T> {
+    CharacteristicType Type
+    int Id
+    String Name()
+    String Caption()
+
+    bool ValueIsValid(T value)
+}
+
+interface ICategory {
+    String Name()
+    String Caption()
+}
+
+
+class SimpleCharacteristic<String> {
+}
+
+class SimpleListCharacteristic<String> {
+    List<String> PossibleValues()
+}
+
+CharacteristicType o-- ICharacteristic
+ICharacteristic o-- IProductOffering
+ICategory o-- IProductOffering
+
+SimpleCharacteristic <|-- ICharacteristic
+SimpleListCharacteristic <|-- ICharacteristic
+
+@enduml
