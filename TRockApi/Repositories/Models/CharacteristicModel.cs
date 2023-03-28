@@ -1,4 +1,4 @@
-namespace TRockApi.Models {
+namespace TRockApi.Repositories.Models {
     public class CharacteristicModel {
 
         public int Id { get; set; }

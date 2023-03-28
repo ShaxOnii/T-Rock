@@ -1,7 +1,7 @@
 using System.Linq;
-using TRockApi.Models;
+using TRockApi.Repositories.Models;
 
-namespace TRockApi.Repositories {
+namespace TRockApi.Repositories.Configuration {
     public static class DbInitializer {
         public static void Initialize(ShopContext context) {
             context.Database.EnsureCreated();

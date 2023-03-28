@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.IdentityModel.Tokens;
-using TRockApi.Models;
+using TRockApi.Repositories.Models;
 using TRockApi.Security.Errors;
 
 namespace TRockApi.Security {

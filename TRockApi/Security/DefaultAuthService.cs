@@ -6,8 +6,8 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
-using TRockApi.Models;
-using TRockApi.Repositories;
+using TRockApi.Repositories.Api;
+using TRockApi.Repositories.Models;
 using TRockApi.Requests;
 using TRockApi.Security.Errors;
 

@@ -1,7 +1,8 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using TRockApi.Models;
+using TRockApi.Repositories.Api;
+using TRockApi.Repositories.Models;
 
 namespace TRockApi.Repositories {
     public class UserRepository : IUserRepository {

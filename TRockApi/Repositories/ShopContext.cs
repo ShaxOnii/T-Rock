@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using TRockApi.Models;
 using TRockApi.Repositories.Configuration;
+using TRockApi.Repositories.Models;
 
 namespace TRockApi.Repositories {
     public class ShopContext : DbContext {

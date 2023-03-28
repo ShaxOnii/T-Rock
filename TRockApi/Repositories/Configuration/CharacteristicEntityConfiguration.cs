@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
-using TRockApi.Models;
+using TRockApi.Repositories.Models;
 
 namespace TRockApi.Repositories.Configuration {
     public class CharacteristicEntityConfiguration : IEntityTypeConfiguration<CharacteristicModel> {

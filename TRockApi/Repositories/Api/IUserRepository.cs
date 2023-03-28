@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using TRockApi.Models;
+using TRockApi.Repositories.Models;
 
-namespace TRockApi.Repositories {
+namespace TRockApi.Repositories.Api {
     public interface IUserRepository {
 
         Task<User?> FindByLogin(string login);

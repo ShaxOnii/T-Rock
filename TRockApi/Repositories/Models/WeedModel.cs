@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace TRockApi.Models {
+namespace TRockApi.Repositories.Models {
     public class WeedModel {
 
         public String Species { get; set; }

@@ -11,6 +11,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TRockApi.Repositories;
+using TRockApi.Repositories.Api;
+using TRockApi.Repositories.Configuration;
 using TRockApi.Security;
 
 var builder = WebApplication.CreateBuilder(args);

@@ -1,5 +1,5 @@
 using Microsoft.IdentityModel.Tokens;
-using TRockApi.Models;
+using TRockApi.Repositories.Models;
 
 namespace TRockApi.Security {
     public class AuthenticationResult {

@@ -1,6 +1,6 @@
 using System;
 
-namespace TRockApi.Models {
+namespace TRockApi.Repositories.Models {
     public class User {
         public int Id { get; set; }
         

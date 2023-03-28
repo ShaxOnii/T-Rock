@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using TRockApi.Models;
+using TRockApi.Repositories.Models;
 using TRockApi.Requests;
 
 namespace TRockApi.Controllers {
