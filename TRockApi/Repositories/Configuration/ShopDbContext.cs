@@ -1,11 +1,10 @@
 using Microsoft.EntityFrameworkCore;
-using TRockApi.Repositories.Configuration;
 using TRockApi.Repositories.Models;
 
-namespace TRockApi.Repositories {
-    public class ShopContext : DbContext {
+namespace TRockApi.Repositories.Configuration {
+    public class ShopDbContext : DbContext {
 
-        public ShopContext(DbContextOptions<ShopContext> options) : base(options) {
+        public ShopDbContext(DbContextOptions<ShopDbContext> options) : base(options) {
 
         }
 

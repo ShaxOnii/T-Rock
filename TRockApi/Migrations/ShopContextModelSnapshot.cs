@@ -4,12 +4,13 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TRockApi.Repositories;
+using TRockApi.Repositories.Configuration;
 
 #nullable disable
 
 namespace TRockApi.Migrations
 {
-    [DbContext(typeof(ShopContext))]
+    [DbContext(typeof(ShopDbContext))]
     partial class ShopContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

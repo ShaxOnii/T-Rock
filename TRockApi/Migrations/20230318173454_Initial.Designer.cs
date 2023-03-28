@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TRockApi.Repositories;
+using TRockApi.Repositories.Configuration;
 
 #nullable disable
 
 namespace TRockApi.Migrations
 {
-    [DbContext(typeof(ShopContext))]
+    [DbContext(typeof(ShopDbContext))]
     [Migration("20230318173454_Initial")]
     partial class Initial
     {

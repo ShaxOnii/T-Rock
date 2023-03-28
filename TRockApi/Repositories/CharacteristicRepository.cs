@@ -1,12 +1,13 @@
 using TRockApi.Repositories.Api;
+using TRockApi.Repositories.Configuration;
 
 namespace TRockApi.Repositories {
     public class CharacteristicRepository : ICharacteristicRepository {
         
-        private readonly ShopContext _context;
+        private readonly ShopDbContext _dbContext;
 
-        public CharacteristicRepository(ShopContext context) {
-            _context = context;
+        public CharacteristicRepository(ShopDbContext dbContext) {
+            _dbContext = dbContext;
         }
 
         
