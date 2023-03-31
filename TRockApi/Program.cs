@@ -10,8 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using TRockApi.Repositories;
-using TRockApi.Repositories.Api;
+using TRockApi.Handlers.Coniguration;
 using TRockApi.Repositories.Configuration;
 using TRockApi.Security;
 
@@ -26,7 +25,8 @@ builder.Services.AddDbContext<ShopDbContext>(options => {
     options.UseSqlServer(connectionString);
 });
 
-builder.Services.AddScoped<IUserRepository, UserRepository>();
+RepositoryConfiguration.Register(builder.Services);
+HandlersConfiguration.Register(builder.Services);
 
 // cors policy
 builder.Services.AddCors(corsOptions => {
