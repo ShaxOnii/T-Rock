@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using TRockApi.Handlers.Api;
 using TRockApi.Repositories;
 using TRockApi.Repositories.Models;
@@ -12,6 +13,10 @@ namespace TRockApi.Handlers {
         public ProductHandling(ProductRepository productRepository, CategoryRepository categoryRepository) {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
+        }
+
+        public async Task CreateProductAsync(string name, string caption, string categoryName) {
+           await Task.Run(() => CreateProduct(name, caption, categoryName));
         }
 
         public void CreateProduct(string name, string caption, string categoryName) {

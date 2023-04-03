@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using TRockApi.Handlers;
 using TRockApi.Handlers.Coniguration;
 using TRockApi.Repositories.Configuration;
 using TRockApi.Security;
@@ -116,5 +117,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.Run();

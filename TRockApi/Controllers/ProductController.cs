@@ -7,7 +7,6 @@ using TRockApi.Handlers.Api;
 using TRockApi.Repositories.Api;
 using TRockApi.Requests;
 using TRockApi.Response;
-using TRockApi.Utils.Errors;
 
 namespace TRockApi.Controllers {
 
@@ -44,15 +43,7 @@ namespace TRockApi.Controllers {
 
         [HttpPost("/create")]
         public async Task<ActionResult<ErrorResponse>> Create(CreateProductRequest request) {
-            try {
-                _productHandling.CreateProduct(request.Name, request.Caption, request.Category);
-            }
-            catch (Error error) {
-                return new ErrorResponse {
-                    Message = error.Message(),
-                    Type = error.Name()
-                };
-            }
+            await _productHandling.CreateProductAsync(request.Name, request.Caption, request.Category);
 
             return new OkResult();
         }
