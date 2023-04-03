@@ -30,7 +30,7 @@ namespace TRockApi.Controllers {
             return all.Select(ProductResponse.FromModel);
         }
 
-        [HttpGet("/{id:int}")]
+        [HttpGet("{id:int}")]
         public async Task<ActionResult<ProductResponse>> Get(int id) {
             var product = await _productRepository.FindById(id);
 
@@ -41,19 +41,19 @@ namespace TRockApi.Controllers {
             return ProductResponse.FromModel(product);
         }
 
-        [HttpPost("/create")]
+        [HttpPost("create")]
         public async Task<ActionResult<ErrorResponse>> Create(CreateProductRequest request) {
             await _productHandling.CreateProductAsync(request.Name, request.Caption, request.Category);
 
             return new OkResult();
         }
 
-        [HttpPost("/change/{id:int}")]
+        [HttpPost("change/{id:int}")]
         public async Task<IEnumerable<ProductResponse>> Change(int id, ChangeProductRequest request) {
             throw new NotImplementedException();
         }
 
-        [HttpDelete("/delete/{id:int}")]
+        [HttpDelete("delete/{id:int}")]
         public async Task<IEnumerable<ProductResponse>> Delete(int id) {
             throw new NotImplementedException();
         }
