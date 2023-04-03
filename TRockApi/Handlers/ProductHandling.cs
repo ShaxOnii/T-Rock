@@ -1,29 +1,29 @@
 using System.Threading.Tasks;
 using TRockApi.Handlers.Api;
-using TRockApi.Repositories;
+using TRockApi.Repositories.Api;
 using TRockApi.Repositories.Models;
 using TRockApi.Utils.Errors;
 
 namespace TRockApi.Handlers {
-    public class ProductHandling : Handler, IProductHandling {
-        private readonly ProductRepository _productRepository;
+    public class ProductHandling : IProductHandling {
+        private readonly IProductRepository _productRepository;
 
-        private readonly CategoryRepository _categoryRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public ProductHandling(ProductRepository productRepository, CategoryRepository categoryRepository) {
+        public ProductHandling(IProductRepository productRepository, ICategoryRepository categoryRepository) {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
         }
 
         public async Task CreateProductAsync(string name, string caption, string categoryName) {
-           await Task.Run(() => CreateProduct(name, caption, categoryName));
+            await Task.Run(() => CreateProduct(name, caption, categoryName));
         }
 
         public void CreateProduct(string name, string caption, string categoryName) {
             var category = _categoryRepository.FindByName(categoryName);
 
-            Validate(category != null, new CreateProductError("Category '" + categoryName + "' not exists."));
-            Validate(ProductNotExists(name), new CreateProductError("Product '" + name + "' exists."));
+            ValidateProductNotExists(name);
+            ValidateCategory(category, categoryName);
 
             _productRepository.AddProduct(
                 new Product {
@@ -34,8 +34,16 @@ namespace TRockApi.Handlers {
             );
         }
 
-        private bool ProductNotExists(string productName) {
-            return _productRepository.FindByName(productName).Result == null;
+        private void ValidateProductNotExists(string productName) {
+            if (_productRepository.FindByName(productName).Result != null) {
+                throw new CreateProductError("Product with name '" + productName + "' exists.");
+            }
+        }
+
+        private void ValidateCategory(Category? category, string categoryName) {
+            if (category == null) {
+                throw new CreateProductError("Category '" + categoryName + "' not exists.");
+            }
         }
     }
 }

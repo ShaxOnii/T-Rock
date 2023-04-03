@@ -11,11 +11,14 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using TRockApi.Handlers;
-using TRockApi.Handlers.Coniguration;
+using TRockApi.Handlers.Configuration;
 using TRockApi.Repositories.Configuration;
 using TRockApi.Security;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
 
 // Add services to the container.
 

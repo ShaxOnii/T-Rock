@@ -9,9 +9,9 @@ using TRockApi.Utils.Errors;
 namespace TRockApi.Handlers {
     public class ExceptionMiddleware {
         private readonly RequestDelegate _next;
-        private readonly ILogger _logger;
+        private readonly ILogger<ExceptionMiddleware> _logger;
 
-        public ExceptionMiddleware(RequestDelegate next, ILogger logger) {
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger) {
             _next = next;
             _logger = logger;
         }
@@ -21,7 +21,7 @@ namespace TRockApi.Handlers {
                 await _next(httpContext);
             }
             catch (Error error) {
-                _logger.LogError($"An error occured: {error}");
+                _logger.LogError($"An error occured '{error.Message()}' \n {error}");
                 await HandleExceptionAsync(httpContext, error);
             }
             catch (Exception exception) {
@@ -43,7 +43,7 @@ namespace TRockApi.Handlers {
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception) {
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+            context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
 
             await context.Response.WriteAsync(new ErrorResponse {
                 Message = exception.Message,

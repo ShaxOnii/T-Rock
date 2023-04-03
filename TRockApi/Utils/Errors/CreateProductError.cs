@@ -9,7 +9,7 @@ namespace TRockApi.Utils.Errors {
         }
 
         public override string Message() {
-            return "Cannot create product: " + _error;
+            return _error;
         }
 
         public override string Name() {
