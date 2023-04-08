@@ -1,8 +1,7 @@
 import './App.css';
-import {Container, styled} from "@mui/material";
-import Menu from "./components/Menu";
+import AppTopBar from "./components/AppTopBar";
 import Footer from "./components/Footer";
-import HomePage from "./pages/HomePage";
+import ProductCatalogPage from "./pages/ProductCatalogPage";
 import UserProvider from "./providers/UserContextProvider";
 import ErrorPage from "./pages/ErrorPage";
 import {
@@ -10,9 +9,11 @@ import {
     Routes,
     Route
 } from "react-router-dom";
+import styled from "styled-components";
+import {Container} from "reactstrap";
 
 const PageContainer = styled(Container)`
-
+  overflow: hidden;
 
 `
 
@@ -20,16 +21,16 @@ const PageContainer = styled(Container)`
 function App() {
     return (
         <UserProvider>
-            <Menu/>
-            <PageContainer>
-                <Router>
+            <Router>
+                <AppTopBar/>
+                <PageContainer>
                     <Routes>
-                        <Route exact path="/" element={<HomePage/>}/>
+                        <Route exact path="/" element={<ProductCatalogPage/>}/>
                         <Route path="*" element={<ErrorPage message={"404 not found"}/>}/>
                     </Routes>
-                </Router>
-            </PageContainer>
-            <Footer/>
+                </PageContainer>
+                <Footer/>
+            </Router>
         </UserProvider>
     );
 }
