@@ -13,8 +13,7 @@ import styled from "styled-components";
 import {Container} from "reactstrap";
 
 const PageContainer = styled(Container)`
-  overflow: hidden;
-
+    
 `
 
 

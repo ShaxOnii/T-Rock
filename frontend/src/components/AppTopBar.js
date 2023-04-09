@@ -3,6 +3,7 @@ import {Col, Nav, Navbar, NavbarBrand, Row} from "reactstrap";
 import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faShoppingCart, faUser} from "@fortawesome/free-solid-svg-icons";
+import {SimpleLink} from "./Utils";
 
 const GenericNav = styled(Navbar)`
   border-bottom: 1px solid #eee;
@@ -14,7 +15,7 @@ const GenericNav = styled(Navbar)`
   margin: 0;
 `
 
-const StyledNavLink = styled(NavLink)`
+const StyledNavLink = styled(SimpleLink)`
   color: #000;
 
   font-size: 1.2em;

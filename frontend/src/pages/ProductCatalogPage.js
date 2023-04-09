@@ -2,6 +2,14 @@ import {useEffect, useState} from "react";
 import ProductListItem from "../components/products/ProductListItem";
 import {Container} from "reactstrap";
 
+const ProductCatalogTopBar = () => {
+
+    return (
+        <>Top bar for admin actions</>
+    )
+}
+
+
 const ProductCatalogPage = () => {
 
     const [products, setProducts] = useState([]);
@@ -13,7 +21,7 @@ const ProductCatalogPage = () => {
             mocked.push({
                 id: i,
                 name: `MockedProduct${i}`,
-                caption: `Mocked product ${i}`,
+                caption: `Lorem ipsum dolor sit amet, consectetur adipiscing elit ${i}`,
                 price: i * 10,
                 description: "An example product"
             })
@@ -29,11 +37,15 @@ const ProductCatalogPage = () => {
 
     useEffect(() => {
         setProducts(fetchProducts());
+
+
     }, []);
 
 
     return (
-        <Container>
+        <Container style={{
+            paddingTop: "2em"
+        }}>
             {
                 products.length > 0 ?
                     products.map(product => <ProductListItem product={product}/>)
