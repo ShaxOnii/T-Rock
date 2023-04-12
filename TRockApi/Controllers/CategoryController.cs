@@ -3,8 +3,10 @@ using TRockApi.Handlers.Api;
 using TRockApi.Repositories.Api;
 using TRockApi.Repositories.Models;
 using TRockApi.Requests;
+using TRockApi.Response;
 
 namespace TRockApi.Controllers {
+    
     [ApiController]
     [Route("/api/[controller]")]
     public class CategoryController : ControllerBase {
@@ -34,10 +36,14 @@ namespace TRockApi.Controllers {
         }
 
         [HttpPost("create")]
-        public async Task<ActionResult> Create(CreateCategoryRequest request) {
+        public async Task<CreateEntityResponse> Create(CreateCategoryRequest request) {
             await _categoryHandling.CreateCategoryAsync(request.Name, request.Caption);
 
-            return new OkResult();
+            var createdCategory = _categoryRepository.FindByName(request.Name);
+
+            return new CreateEntityResponse {
+                Id = createdCategory!.Id
+            };
         }
     }
 }

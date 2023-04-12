@@ -3,7 +3,7 @@ import {createContext, useState} from "react";
 
 export const userContext = createContext();
 
-const API_URL = "http://localhost:9000/api/"
+const API_URL = "https://localhost:7294/api/"
 
 const UserProvider = ({children}) => {
     // TODO: Implement provider Later !!!!

@@ -34,8 +34,12 @@ HandlersConfiguration.Register(builder.Services);
 
 // cors policy
 builder.Services.AddCors(corsOptions => {
-    corsOptions.AddPolicy("Open",
-        policyBuilder => { policyBuilder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
+    corsOptions.AddDefaultPolicy(policyBuilder => {
+            policyBuilder.WithOrigins("http://localhost:3000")
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        }
+    );
 });
 
 // swagger auth
@@ -102,8 +106,7 @@ using (var scope = app.Services.CreateScope()) {
     try {
         var context = services.GetRequiredService<ShopDbContext>();
         DbInitializer.Initialize(context);
-    }
-    catch (Exception ex) {
+    } catch (Exception ex) {
         app.Logger.LogError(ex, "An error occured during creating the Database.");
     }
 }
@@ -115,6 +118,8 @@ if (app.Environment.IsDevelopment()) {
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.UseAuthentication();
 app.UseAuthorization();
