@@ -4,6 +4,8 @@ import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faShoppingCart, faUser} from "@fortawesome/free-solid-svg-icons";
 import {SimpleLink} from "./Utils";
+import LoginUserModal from "./LoginUserModal";
+import {useState} from "react";
 
 const GenericNav = styled(Navbar)`
   border-bottom: 1px solid #eee;
@@ -29,9 +31,9 @@ const StyledNavLink = styled(SimpleLink)`
   }
 `
 
-const MenuButton = ({icon, children}) => {
+const MenuButton = ({icon, onClick, children}) => {
     return (
-        <Row>
+        <Row onClick={onClick}>
             <Col>
                 <FontAwesomeIcon icon={icon} />
             </Col>
@@ -43,6 +45,10 @@ const MenuButton = ({icon, children}) => {
 
 
 const MainAppToolbar = () => {
+    const [loginModalVisible, setLoginModalVisible] = useState(false);
+
+    const toggleLoginModal = () => setLoginModalVisible(!loginModalVisible);
+
     return (
         <GenericNav>
             <Nav>
@@ -55,7 +61,11 @@ const MainAppToolbar = () => {
                     <MenuButton icon={faShoppingCart}>Cart</MenuButton>
                 </StyledNavLink>
                 <StyledNavLink to={"/"}>
-                    <MenuButton icon={faUser}>Login</MenuButton>
+                    <MenuButton onClick={toggleLoginModal} icon={faUser}>Login</MenuButton>
+                    <LoginUserModal options={{
+                        visible: loginModalVisible,
+                        toggle: toggleLoginModal
+                    }} />
                 </StyledNavLink>
             </Nav>
         </GenericNav>

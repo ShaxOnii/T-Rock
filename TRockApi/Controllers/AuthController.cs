@@ -20,7 +20,8 @@ namespace TRockApi.Controllers {
         [HttpPost("login")]
         public async Task<ActionResult<AuthenticationResponse>> LoginAsync(AuthenticationRequest request) {
             var result = await _authService.AuthAsync(request.Login, request.Password);
-
+            
+            //TODO: przerobic to na jakiego normalnego jsona
             if (result.IsFailure()) {
                 return BadRequest("Bad credentials.");
             }
@@ -33,7 +34,7 @@ namespace TRockApi.Controllers {
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<IRegistrationResponse>> LoginAsync(RegistrationRequest request) {
+        public async Task<ActionResult<IRegistrationResponse>> RegisterAsync(RegistrationRequest request) {
             var result = await _authService.RegisterAsync(request);
 
             if (result.IsFailure()) {
