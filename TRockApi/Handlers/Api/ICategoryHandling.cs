@@ -1,4 +1,4 @@
-using TRockApi.Repositories.Models;
+using System.Threading.Tasks;
 
 namespace TRockApi.Handlers.Api {
     public interface ICategoryHandling {
