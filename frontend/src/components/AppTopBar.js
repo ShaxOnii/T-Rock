@@ -5,7 +5,8 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faShoppingCart, faUser} from "@fortawesome/free-solid-svg-icons";
 import {SimpleLink} from "./Utils";
 import LoginUserModal from "./LoginUserModal";
-import {useState} from "react";
+import {useContext, useEffect, useState} from "react";
+import {userContext} from "../providers/UserContextProvider";
 
 const GenericNav = styled(Navbar)`
   border-bottom: 1px solid #eee;
@@ -35,7 +36,7 @@ const MenuButton = ({icon, onClick, children}) => {
     return (
         <Row onClick={onClick}>
             <Col>
-                <FontAwesomeIcon icon={icon} />
+                <FontAwesomeIcon icon={icon}/>
             </Col>
             <Col>{children}</Col>
         </Row>
@@ -65,7 +66,7 @@ const MainAppToolbar = () => {
                     <LoginUserModal options={{
                         visible: loginModalVisible,
                         toggle: toggleLoginModal
-                    }} />
+                    }}/>
                 </StyledNavLink>
             </Nav>
         </GenericNav>
@@ -86,15 +87,31 @@ const CategoryNav = styled(Nav)`
 `
 
 const CategoryToolbar = () => {
+    const {Api} = useContext(userContext);
 
-    const categories = ["Men", "Women", "Regular", "Other"];
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        Api(`Category`).then(([result, ok]) => {
+            if (ok) {
+                setCategories(result);
+                console.log(result)
+            } else {
+                throw Error("An error occured", result);
+            }
+        })
+    }, []);
+
 
     return (
         <CategoryNav>
+            <StyledNavLink to={"products/"}>
+                All
+            </StyledNavLink>
             {
                 categories.map(category =>
-                    <StyledNavLink to={"/"}>
-                        {category}
+                    <StyledNavLink to={`products/${category.name}`}>
+                        {category.caption}
                     </StyledNavLink>
                 )
             }

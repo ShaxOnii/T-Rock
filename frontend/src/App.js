@@ -9,12 +9,8 @@ import {
     Routes,
     Route
 } from "react-router-dom";
-import styled from "styled-components";
 import {Container} from "reactstrap";
-
-const PageContainer = styled(Container)`
-    
-`
+import ProductPage from "./pages/ProductPage";
 
 
 function App() {
@@ -22,12 +18,17 @@ function App() {
         <UserProvider>
             <Router>
                 <AppTopBar/>
-                <PageContainer>
+                <Container>
                     <Routes>
+                        <Route exact path="/products" element={<ProductCatalogPage/>}/>
                         <Route exact path="/" element={<ProductCatalogPage/>}/>
+                        <Route exact path="/products/:productCategory" element={<ProductCatalogPage/>}/>
+                        <Route
+                            exact path="/product/:id"
+                            element={<ProductPage/>}/>
                         <Route path="*" element={<ErrorPage message={"404 not found"}/>}/>
                     </Routes>
-                </PageContainer>
+                </Container>
                 <Footer/>
             </Router>
         </UserProvider>

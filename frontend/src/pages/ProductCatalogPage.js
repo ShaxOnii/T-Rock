@@ -16,9 +16,10 @@ import {
 } from "reactstrap";
 import styled from "styled-components";
 import {userContext} from "../providers/UserContextProvider";
+import {useParams} from "react-router-dom";
 
 const CreateEntityModal = ({options, children}) => {
-    const {toggle, visible, title, onEntityCreate, url} = options;
+    const {toggle, visible, title, onEntityCreate, url, invalidatePage} = options;
 
     const {Api} = useContext(userContext);
 
@@ -46,7 +47,12 @@ const CreateEntityModal = ({options, children}) => {
                 Caption: caption,
                 ...additionalData
             },
-            () => toggleModal()
+            () => {
+                toggleModal()
+                if (invalidatePage) {
+                    invalidatePage()
+                }
+            }
         );
     }
 
@@ -64,6 +70,8 @@ const CreateEntityModal = ({options, children}) => {
             setError("Caption cannot be empty.")
             return;
         }
+
+        console.log(request)
 
         Api(url, {
             method: 'POST',
@@ -145,14 +153,32 @@ const StyledButton = styled(Button)`
 `
 
 
-const ProductCatalogTopBar = () => {
+const ProductCatalogTopBar = ({invalidatePage}) => {
+    const {Api} = useContext(userContext);
 
     const [createProduct, setCreateProduct] = useState(false);
     const [createCategory, setCreateCategory] = useState(false);
 
+    const [categories, setCategories] = useState([]);
+    const [category, setCategory] = useState("");
+
+    const handleCategoryChange = (e) => setCategory(e.target.value)
+
     const toggleCreateProductModal = () => setCreateProduct(!createProduct)
 
     const toggleCreateCategoryModal = () => setCreateCategory(!createCategory)
+
+    useEffect(() => {
+        Api(`Category`).then(([result, ok]) => {
+            if (ok) {
+                setCategories(result);
+                console.log(result)
+                invalidatePage();
+            } else {
+                throw Error("An error occured", result);
+            }
+        })
+    }, []);
 
     return (
         <Row>
@@ -162,8 +188,29 @@ const ProductCatalogTopBar = () => {
                     toggle: toggleCreateProductModal,
                     visible: createProduct,
                     title: "Create new product offer",
-                    url: "Product/create"
-                }}/>
+                    url: "Product/create",
+                    invalidatePage: invalidatePage,
+                    onEntityCreate: () => {
+                        return {category}
+                    }
+                }}>
+                    <FormGroup>
+                        <Label for={"selectCategory"}>Select Category</Label>
+                        <Input
+                            className="mb-3"
+                            type="select"
+                            name={"selectCategory"}
+                            id={"selectCategory"}
+                            onChange={handleCategoryChange}
+                            value={category}
+                        >
+                            <option disabled={true} value="">Select category</option>
+                            {categories.map((category, key) =>
+                                <option key={key} value={category.name}>{category.caption}</option>
+                            )}
+                        </Input>
+                    </FormGroup>
+                </CreateEntityModal>
 
                 <StyledButton onClick={toggleCreateCategoryModal} color={"success"}>Create category</StyledButton>
                 <CreateEntityModal options={{
@@ -187,40 +234,40 @@ const ProductFilteringTopBar = () => {
 }
 
 const ProductCatalogPage = () => {
+    const {Api} = useContext(userContext)
 
     const [products, setProducts] = useState([]);
 
-    const genFakeProducts = () => {
-        let mocked = []
+    const {productCategory} = useParams();
 
-        for (let i = 0; i < 10; i++) {
-            mocked.push({
-                id: i,
-                name: `MockedProduct${i}`,
-                caption: `Lorem ipsum dolor sit amet, consectetur adipiscing elit ${i}`,
-                price: i * 10,
-                description: "An example product"
-            })
-        }
+    const [refreshComponent, refresh] = useState(false);
 
-        return mocked;
-    }
-
-    const fetchProducts = () => {
-        return genFakeProducts();
-
+    const invalidate = () => {
+        refresh(!refreshComponent)
     }
 
     useEffect(() => {
-        setProducts(fetchProducts());
-    }, []);
+        const fetchProducts = () => {
+            Api(`Product`, {
+                queryParams: {
+                    category: productCategory
+                }
+            }).then(([result, ok]) => {
+                if (ok) {
+                    setProducts(result);
+                }
+            })
+        }
+
+        fetchProducts();
+    }, [refreshComponent, productCategory]);
 
 
     return (
         <Container style={{
             paddingTop: "5em"
         }}>
-            <ProductCatalogTopBar/>
+            <ProductCatalogTopBar invalidatePage={invalidate}/>
             <ProductFilteringTopBar/>
             {
                 products.length > 0 ?
