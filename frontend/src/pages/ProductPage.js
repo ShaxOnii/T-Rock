@@ -5,7 +5,7 @@ import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {PageContainer} from "../components/Utils";
 import ExampleImage from "../images/ExampleTShirt.jpg"
-import {faPenToSquare as editIcon} from "@fortawesome/free-solid-svg-icons";
+import {faPenToSquare as EditIcon} from "@fortawesome/free-solid-svg-icons";
 import {
     Accordion,
     AccordionBody,
@@ -44,7 +44,7 @@ const ProductImages = ({items}) => {
 
     const slides = items.map((photo, idx) => {
         return (
-            <CarouselItem key={idx}>
+            <CarouselItem>
                 <img
                     src={photo.src}
                     alt={photo.altText}
@@ -68,32 +68,135 @@ const ProductDetailsContainer = styled(Row)`
   padding: 1em;
 `
 
-const ProductTitle = ({title}) => {
-
-
-    return(
-        <ProductDetailsContainer>
-            <Col style={{
-                borderBottom: "1px solid #000"
-            }}>
-                <h3>{title}</h3>
-            </Col>
-        </ProductDetailsContainer>
-    );
-}
 
 const ColContentToRight = styled(Col)`
   display: flex;
   justify-content: right;
 `
 
-const editButton = ({onClick}) => {
-    return(
-        <Button>
-            <FontAwesomeIcon></FontAwesomeIcon>
+const EditButton = ({onClick}) => {
+    return (
+        <Button color={"primary"} onClick={(e) => {
+            e.preventDefault();
+            onClick()
+        }}>
+            <FontAwesomeIcon icon={EditIcon}/>
         </Button>
     )
 }
+
+const ProductDetails = ({product}) => {
+    const [detailsEditMode, setDetailsEditMode] = useState(false)
+    const toggleDetailsEditMode = () => setDetailsEditMode(!detailsEditMode);
+    const [selectedItemsCount, setSelectedItemsCount] = useState(1);
+
+    const handleItemsCountChange = (e) => {
+        setSelectedItemsCount(e.target.value)
+    }
+
+    const editableItem = ({editable, notEditable}) => (isEditable) => {
+        return isEditable ? editable : notEditable
+    }
+
+    const [productChanges, setProductChanges] = useState({})
+
+    const handleProductChange = (field) => (e) => {
+        const updatedChanges = {
+            ...productChanges,
+            [field]: e.target.value
+        }
+
+        setProductChanges(updatedChanges)
+    }
+
+    const title = editableItem({
+        notEditable: <h3>{product.caption}</h3>,
+        editable: <Input
+            onChange={handleProductChange("caption")}
+            value={productChanges.caption ?? product.caption}
+        />
+    })
+
+    const price = editableItem({
+        notEditable:
+            <h4>{product.price} PLN</h4>,
+        editable:
+            <Row>
+                <Col>
+                    <Input
+                        type={"number"}
+                        value={productChanges.price ?? product.price}
+                        onChange={handleProductChange("price")}
+                    />
+                </Col>
+                <Col sm={"auto"}>
+                    <h4> PLN</h4>
+                </Col>
+            </Row>
+    })
+
+
+    const handleAddToCart = () => {
+
+    }
+
+    return (
+        <Col style={{
+            margin: "1em 1em 1em 5em",
+            padding: "2em",
+            borderRadius: "0.5em",
+            border: "1px solid #ccc"
+        }}>
+            <ProductDetailsContainer style={{
+                display: "flex",
+                flexDirection: "row",
+                borderBottom: "1px solid #000"
+            }}>
+                <Col>
+                    {
+                        title(detailsEditMode)
+                    }
+                </Col>
+                <Col sm={"auto"}><EditButton onClick={toggleDetailsEditMode}/></Col>
+            </ProductDetailsContainer>
+            <ProductDetailsContainer>
+                <ColContentToRight>
+                    {price(detailsEditMode)}
+                </ColContentToRight>
+            </ProductDetailsContainer>
+            <ProductDetailsContainer>
+                <Col>
+                    <Form>
+                        <Row>
+                            <ColContentToRight>
+                                <FormGroup>
+                                    <Input
+                                        type="select"
+                                        name={"selectItemsCount"}
+                                        id={"selectItemsCount"}
+                                        onChange={handleItemsCountChange}
+                                        value={selectedItemsCount}
+                                    >{/*TODO: Zkaodzic to pozniej*/}
+                                        {[1, 2, 3, 4, 5].map((count, key) =>
+                                            <option key={key} value={count}>{count}</option>
+                                        )}
+                                    </Input>
+                                    <FormText>
+                                        Available: {5}
+                                    </FormText>
+                                </FormGroup>
+                            </ColContentToRight>
+                            <Col>
+                                <Button block color={"success"} onClick={handleAddToCart}>Add to cart</Button>
+                            </Col>
+                        </Row>
+                    </Form>
+                </Col>
+            </ProductDetailsContainer>
+        </Col>
+    )
+}
+
 
 const ProductPage = () => {
     const {Api} = useContext(userContext);
@@ -102,18 +205,10 @@ const ProductPage = () => {
 
     const [product, setProduct] = useState({});
     const [productDetailsOpen, setProductDetailsOpen] = useState("0");
-    const [selectedItemsCount, setSelectedItemsCount] = useState(1);
 
-    const [detailsEditMode, setDetailsEditMode] = useState(false)
     const [descriptionEditMode, setDescriptionEditMode] = useState(false)
 
-    const toggleDetailsEditMode = () => setDetailsEditMode(!detailsEditMode);
-
     const toggleDescriptionEditMode = () => setDescriptionEditMode(!descriptionEditMode);
-
-    const handleItemsCountChange = (e) => {
-        setSelectedItemsCount(e.target.value)
-    }
 
     const toggleProductDetails = (id) => {
         if (id === productDetailsOpen) {
@@ -121,10 +216,6 @@ const ProductPage = () => {
         } else {
             setProductDetailsOpen(id)
         }
-    }
-
-    const handleAddToCart = () => {
-
     }
 
     useEffect(() => {
@@ -136,7 +227,6 @@ const ProductPage = () => {
             }
         })
     }, [Api, id]);
-
 
     return (
         <PageContainer>
@@ -154,54 +244,21 @@ const ProductPage = () => {
                         }
                     ]}/>
                 </Col>
-                <Col style={{
-                    margin: "1em 1em 1em 5em",
-                    padding: "2em",
-                    borderRadius: "0.5em"
-                }}>
-                    <ProductTitle title={product.caption}/>
-                    <ProductDetailsContainer>
-                        <ColContentToRight>
-                            <h4>{product.price} PLN</h4>
-                        </ColContentToRight>
-                    </ProductDetailsContainer>
-                    <ProductDetailsContainer >
-                        <Col>
-                            <Form>
-                                <Row>
-                                    <ColContentToRight>
-                                        <FormGroup>
-                                            <Input
-                                                type="select"
-                                                name={"selectItemsCount"}
-                                                id={"selectItemsCount"}
-                                                onChange={handleItemsCountChange}
-                                                value={selectedItemsCount}
-                                            >{/*TODO: Zkaodzic to pozniej*/}
-                                                {[1, 2, 3, 4, 5].map((count, key) =>
-                                                    <option key={key} value={count}>{count}</option>
-                                                )}
-                                            </Input>
-                                            <FormText>
-                                                Available: {5}
-                                            </FormText>
-                                        </FormGroup>
-                                    </ColContentToRight>
-                                    <Col>
-                                        <Button block color={"success"} onClick={handleAddToCart}>Add to cart</Button>
-                                    </Col>
-                                </Row>
-                            </Form>
-                        </Col>
-                    </ProductDetailsContainer>
-                </Col>
+                <ProductDetails product={product}/>
             </Row>
             <Row>
                 <Col>
                     <Accordion open={productDetailsOpen} toggle={toggleProductDetails}>
                         <AccordionItem>
                             <AccordionHeader targetId={"0"}>
-                                <h4>Description</h4>
+                                <Row>
+                                    <Col sm={"auto"}>
+                                        <EditButton onClick={toggleDescriptionEditMode}/>
+                                    </Col>
+                                    <Col>
+                                        <h4>Description</h4>
+                                    </Col>
+                                </Row>
                             </AccordionHeader>
                             <AccordionBody accordionId={"0"}>
                                 {product.description}
