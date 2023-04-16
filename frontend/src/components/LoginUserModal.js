@@ -1,17 +1,19 @@
-import {useContext, useState} from "react";
-import {userContext} from "../providers/UserContextProvider";
-import {Alert, Button, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
+import { useContext, useState } from "react";
+import { userContext } from "../providers/UserContextProvider";
+import { Alert, Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
 
-const LoginUserModal = ({options}) => {
-    const {toggle, visible, onLogin} = options;
+const LoginUserModal = ({ options }) => {
+    const { toggle, visible, onLogin } = options;
 
-    const {Api} = useContext(userContext);
+    const { Api } = useContext(userContext);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(undefined);
+    const [activeTab, setActiveTab] = useState("login");
 
     const onDismissError = () => setError(undefined)
+
 
     const toggleModal = () => {
         if (toggle) {
@@ -79,41 +81,122 @@ const LoginUserModal = ({options}) => {
     }
 
     return (
+
         <Modal isOpen={visible} toggle={toggleModal}>
-            <ModalHeader>Login</ModalHeader>
-            <ModalBody>
-                <Form>
-                    <FormGroup>
-                        <Label for={"username"}>Username</Label>
-                        <Input
-                            id={"username"}
-                            name={"username"}
-                            placeholder={"Username"}
-                            value={username}
-                            onChange={handleNameChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for={"password"}>Password</Label>
-                        <Input
-                            id={"password"}
-                            name={"password"}
-                            type={"password"}
-                            placeholder={"Password"}
-                            value={password}
-                            onChange={handleCaptionChange}
-                        />
-                    </FormGroup>
-                </Form>
-                <Alert isOpen={error !== undefined} toggle={onDismissError} color={"danger"}>
-                    {error}
-                </Alert>
-            </ModalBody>
-            <ModalFooter>
-                <Button color={"primary"} onClick={handleLogin}>Login</Button>
-                <Button color={"secondary"} onClick={toggleModal}>Cancel</Button>
-            </ModalFooter>
+
+            <TabContent activeTab={activeTab}>
+                <TabPane tabId="login">
+                    <ModalHeader>Login</ModalHeader>
+                    <Nav justified tabs>
+                        <NavItem>
+                            <NavLink className="active" onClick={() => setActiveTab("login")}>
+                                Login
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink onClick={() => setActiveTab("register")} >
+                                Register
+                            </NavLink>
+                        </NavItem>
+                    </Nav>
+                    <ModalBody>
+                        <Form>
+                            <FormGroup>
+                                <Label for={"username"}>Username</Label>
+                                <Input
+                                    id={"username"}
+                                    name={"username"}
+                                    placeholder={"Username"}
+                                    value={username}
+                                    onChange={handleNameChange}
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label for={"password"}>Password</Label>
+                                <Input
+                                    id={"password"}
+                                    name={"password"}
+                                    type={"password"}
+                                    placeholder={"Password"}
+                                    value={password}
+                                    onChange={handleCaptionChange}
+                                />
+                            </FormGroup>
+                        </Form>
+                        <Alert isOpen={error !== undefined} toggle={onDismissError} color={"danger"}>
+                            {error}
+                        </Alert>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color={"primary"} onClick={handleLogin}>Login</Button>
+                        <Button color={"secondary"} onClick={toggleModal}>Cancel</Button>
+                    </ModalFooter>
+                </TabPane>
+
+
+                <TabPane tabId="register">
+                    <ModalHeader>Register</ModalHeader>
+                    <Nav justified tabs>
+                        <NavItem>
+                            <NavLink className="" onClick={() => setActiveTab("login")}>
+                                Login
+                            </NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink className="active" onClick={() => setActiveTab("register")} >
+                                Register
+                            </NavLink>
+                        </NavItem>
+                    </Nav>
+                    <ModalBody>
+                        <Form>
+                            <FormGroup>
+                                <Label for={"username"}>Username</Label>
+                                <Input
+                                    id={"username"}
+                                    name={"username"}
+                                    placeholder={"Username"}
+                                    value={username}
+                                    onChange={handleNameChange}
+                                />
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label for={"password"}>Password</Label>
+                                <Input
+                                    id={"password"}
+                                    name={"password"}
+                                    type={"password"}
+                                    placeholder={"Password"}
+                                    value={password}
+                                    onChange={handleCaptionChange}
+                                />
+                            </FormGroup>
+
+                            <FormGroup>
+                                <Label for={"email"}>Email</Label>
+                                <Input
+                                    id={"email"}
+                                    name={"email"}
+                                    placeholder={"Email"}
+                                    value={username}
+                                    onChange={handleCaptionChange}
+                                />
+                            </FormGroup>
+                        </Form>
+                        <Alert isOpen={error !== undefined} toggle={onDismissError} color={"danger"}>
+                            {error}
+                        </Alert>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color={"primary"} onClick={handleLogin}>Register</Button>
+                        <Button color={"secondary"} onClick={toggleModal}>Cancel</Button>
+                    </ModalFooter>
+                </TabPane>
+
+            </TabContent>
         </Modal>
+
     );
 }
 

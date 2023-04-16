@@ -18,5 +18,12 @@ const SimpleLink = styled(NavLink)`
     
   }
 `
+const ItemImage = styled.div`
+  background-image: url(${(p) => p.imageSrc});
+  background-size: cover;
 
-export {SimpleLink}
+  width: 200px;
+  height: 200px;
+`
+
+export {SimpleLink, ItemImage}

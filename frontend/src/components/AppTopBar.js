@@ -2,9 +2,10 @@ import {NavLink} from "react-router-dom";
 import {Col, Nav, Navbar, NavbarBrand, Row} from "reactstrap";
 import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faShoppingCart, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faShoppingCart, faUser, faShirt} from "@fortawesome/free-solid-svg-icons";
 import {SimpleLink} from "./Utils";
 import LoginUserModal from "./LoginUserModal";
+import HomeImage from "../images/TRockIcon.jpg"
 import {useState} from "react";
 
 const GenericNav = styled(Navbar)`
@@ -53,7 +54,7 @@ const MainAppToolbar = () => {
         <GenericNav>
             <Nav>
                 <NavbarBrand>
-                    T-Rock
+                    <MenuButton icon={faShirt} style={{color: "#000000",}}>T-Rock</MenuButton>
                 </NavbarBrand>
             </Nav>
             <Nav>

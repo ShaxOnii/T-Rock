@@ -1,16 +1,8 @@
 import {Button, Col, Container, Row} from "reactstrap";
-import {SimpleLink} from "../Utils";
-
+import {SimpleLink, ItemImage} from "../Utils";
 import ExampleImage from "../../images/ExampleTShirt.jpg"
 import styled from "styled-components";
 
-const ItemImage = styled.div`
-  background-image: url(${(p) => p.imageSrc});
-  background-size: cover;
-
-  width: 200px;
-  height: 200px;
-`
 
 const ProductLink = styled(SimpleLink)`
   font-weight: bold;
