@@ -29,7 +29,8 @@ namespace TRockApi.Handlers {
                 new Product {
                     Name = name,
                     Caption = caption,
-                    Category = category!
+                    Category = category!,
+                    Description = ""
                 }
             );
         }

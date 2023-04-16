@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TRockApi.Repositories.Api;
@@ -17,6 +18,10 @@ namespace TRockApi.Repositories {
 
         public async Task<IEnumerable<Product>> All() {
             return await _dbContext.Products.ToArrayAsync();
+        }
+        
+        public IEnumerable<Product> AllByCategory(string category) {
+            return _dbContext.Products.Where(product => product.Category.Name == category);
         }
 
         public async Task<Product?> FindById(int id) {

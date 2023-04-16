@@ -4,7 +4,6 @@ import {
     Alert,
     Button,
     Col,
-    Container,
     Form,
     FormGroup, Input,
     Label,
@@ -17,6 +16,7 @@ import {
 import styled from "styled-components";
 import {userContext} from "../providers/UserContextProvider";
 import {useParams} from "react-router-dom";
+import {PageContainer} from "../components/Utils";
 
 const CreateEntityModal = ({options, children}) => {
     const {toggle, visible, title, onEntityCreate, url, invalidatePage} = options;
@@ -264,9 +264,7 @@ const ProductCatalogPage = () => {
 
 
     return (
-        <Container style={{
-            paddingTop: "5em"
-        }}>
+        <PageContainer>
             <ProductCatalogTopBar invalidatePage={invalidate}/>
             <ProductFilteringTopBar/>
             {
@@ -275,7 +273,7 @@ const ProductCatalogPage = () => {
                     :
                     <p>There is nothing to show</p>
             }
-        </Container>
+        </PageContainer>
     );
 }
 

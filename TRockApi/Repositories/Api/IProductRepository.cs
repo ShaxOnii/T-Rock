@@ -6,6 +6,8 @@ namespace TRockApi.Repositories.Api {
     public interface IProductRepository {
         
         Task<IEnumerable<Product>> All();
+
+        IEnumerable<Product> AllByCategory(string category);
         
         Task<Product?> FindById(int id);
 

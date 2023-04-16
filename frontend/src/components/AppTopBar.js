@@ -1,4 +1,3 @@
-import {NavLink} from "react-router-dom";
 import {Col, Nav, Navbar, NavbarBrand, Row} from "reactstrap";
 import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -95,7 +94,6 @@ const CategoryToolbar = () => {
         Api(`Category`).then(([result, ok]) => {
             if (ok) {
                 setCategories(result);
-                console.log(result)
             } else {
                 throw Error("An error occured", result);
             }
@@ -103,14 +101,18 @@ const CategoryToolbar = () => {
     }, []);
 
 
+    if (categories.length <= 0) {
+        return (<></>)
+    }
+
     return (
         <CategoryNav>
             <StyledNavLink to={"products/"}>
                 All
             </StyledNavLink>
             {
-                categories.map(category =>
-                    <StyledNavLink to={`products/${category.name}`}>
+                categories.map((category, idx) =>
+                    <StyledNavLink key={idx} to={`products/${category.name}`}>
                         {category.caption}
                     </StyledNavLink>
                 )
