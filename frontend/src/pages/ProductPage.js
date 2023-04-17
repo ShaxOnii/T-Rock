@@ -5,17 +5,18 @@ import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {PageContainer} from "../components/Utils";
 import ExampleImage from "../images/ExampleTShirt.jpg"
-import {faPenToSquare as EditIcon} from "@fortawesome/free-solid-svg-icons";
 import {
-    Accordion,
-    AccordionBody,
-    AccordionHeader,
-    AccordionItem,
-    Button,
+    faPenToSquare as EditIcon,
+    faClose as CloseIcon,
+    faCheck as ApplyIcon
+} from "@fortawesome/free-solid-svg-icons";
+import {
+    Button, ButtonGroup, Card, CardBody, CardText, CardTitle,
     Carousel, CarouselControl, CarouselIndicators, CarouselItem,
-    Col, Form, FormGroup, FormText, Input, InputGroup, Label,
+    Col, Form, FormGroup, FormText, Input,
     Row
 } from "reactstrap";
+import {ProductChangesContext, ProductChangesContextProvider} from "../providers/ProductChangesContext";
 
 
 const ProductImages = ({items}) => {
@@ -24,7 +25,6 @@ const ProductImages = ({items}) => {
     const setActiveSlide = (newActive) => {
         setActive(newActive)
     }
-
 
     const handleNext = () => {
         if (active >= items.length - 1) {
@@ -42,7 +42,7 @@ const ProductImages = ({items}) => {
         }
     }
 
-    const slides = items.map((photo, idx) => {
+    const slides = items.map((photo) => {
         return (
             <CarouselItem>
                 <img
@@ -68,7 +68,6 @@ const ProductDetailsContainer = styled(Row)`
   padding: 1em;
 `
 
-
 const ColContentToRight = styled(Col)`
   display: flex;
   justify-content: right;
@@ -85,10 +84,28 @@ const EditButton = ({onClick}) => {
     )
 }
 
+const ChangeButtonActions = ({onDiscard, onSave}) => {
+    return (
+        <ButtonGroup>
+            <Button color={"success"} onClick={onSave}>
+                <FontAwesomeIcon icon={ApplyIcon}/>
+            </Button>
+            <Button color={"danger"} onClick={onDiscard}>
+                <FontAwesomeIcon icon={CloseIcon}/>
+            </Button>
+        </ButtonGroup>
+    )
+}
+
 const ProductDetails = ({product}) => {
+    const {handleProductChange, getValueFor, discardChangesFor, applyChanges} = useContext(ProductChangesContext);
+
     const [detailsEditMode, setDetailsEditMode] = useState(false)
-    const toggleDetailsEditMode = () => setDetailsEditMode(!detailsEditMode);
     const [selectedItemsCount, setSelectedItemsCount] = useState(1);
+
+    const discardChanges = () => discardChangesFor("price", "caption")
+
+    const toggleDetailsEditMode = () => setDetailsEditMode(!detailsEditMode);
 
     const handleItemsCountChange = (e) => {
         setSelectedItemsCount(e.target.value)
@@ -98,22 +115,11 @@ const ProductDetails = ({product}) => {
         return isEditable ? editable : notEditable
     }
 
-    const [productChanges, setProductChanges] = useState({})
-
-    const handleProductChange = (field) => (e) => {
-        const updatedChanges = {
-            ...productChanges,
-            [field]: e.target.value
-        }
-
-        setProductChanges(updatedChanges)
-    }
-
     const title = editableItem({
         notEditable: <h3>{product.caption}</h3>,
         editable: <Input
             onChange={handleProductChange("caption")}
-            value={productChanges.caption ?? product.caption}
+            value={getValueFor("caption") ?? product.caption}
         />
     })
 
@@ -125,7 +131,7 @@ const ProductDetails = ({product}) => {
                 <Col>
                     <Input
                         type={"number"}
-                        value={productChanges.price ?? product.price}
+                        value={getValueFor("price") ?? product.price}
                         onChange={handleProductChange("price")}
                     />
                 </Col>
@@ -135,9 +141,27 @@ const ProductDetails = ({product}) => {
             </Row>
     })
 
-
     const handleAddToCart = () => {
+        // TODO: implement me !!!
+    }
 
+    const handleSaveChanges = () => {
+        applyChanges(["caption", "price"], {
+                onSuccess: (response) => {
+                    console.log(response)
+                },
+                onFailure: (response) => {
+                    console.log(response)
+                }
+            },
+        );
+
+        toggleDetailsEditMode()
+    }
+
+    const handleDiscardChanges = () => {
+        discardChanges()
+        toggleDetailsEditMode()
     }
 
     return (
@@ -157,7 +181,13 @@ const ProductDetails = ({product}) => {
                         title(detailsEditMode)
                     }
                 </Col>
-                <Col sm={"auto"}><EditButton onClick={toggleDetailsEditMode}/></Col>
+                <Col sm={"auto"}>
+                    {detailsEditMode ?
+                        <ChangeButtonActions onDiscard={handleDiscardChanges} onSave={handleSaveChanges}/>
+                        :
+                        <EditButton onClick={toggleDetailsEditMode}/>
+                    }
+                </Col>
             </ProductDetailsContainer>
             <ProductDetailsContainer>
                 <ColContentToRight>
@@ -197,6 +227,69 @@ const ProductDetails = ({product}) => {
     )
 }
 
+const ProductDescriptionPane = ({options}) => {
+    const {field, caption, content} = options
+    const {handleProductChange, getValueFor, discardChangesFor, applyChanges} = useContext(ProductChangesContext);
+
+    const [editMode, setEditMode] = useState(false)
+
+    const toggleEditMode = () => setEditMode(!editMode);
+
+    const discardChanges = () => discardChangesFor(field)
+
+    const handleSaveChanges = () => {
+        applyChanges([field], {
+                onSuccess: (response) => {
+                    console.log(response)
+                },
+                onFailure: (response) => {
+                    console.log(response)
+                }
+            },
+        );
+
+        toggleEditMode()
+    }
+
+    const handleDiscardChanges = () => {
+        discardChanges()
+        toggleEditMode()
+    }
+
+    return (
+        <Card>
+            <CardBody>
+                <CardTitle>
+                    <Row>
+                        <Col>
+                            <h5>{caption}</h5>
+                        </Col>
+                        <Col sm={"auto"}>
+                            {editMode ?
+                                <ChangeButtonActions onDiscard={handleDiscardChanges} onSave={handleSaveChanges}/>
+                                :
+                                <EditButton onClick={toggleEditMode}/>
+                            }
+                        </Col>
+                    </Row>
+                </CardTitle>
+                {!editMode ?
+                    <CardText>
+                        {getValueFor(field) ?? content}
+                    </CardText>
+                    :
+                    <Input
+                        type={"textarea"}
+                        value={getValueFor(field) ?? content}
+                        onChange={handleProductChange(field)}
+                        rows={16}
+                    />
+                }
+            </CardBody>
+        </Card>
+    );
+}
+
 
 const ProductPage = () => {
     const {Api} = useContext(userContext);
@@ -204,19 +297,6 @@ const ProductPage = () => {
     const {id} = useParams();
 
     const [product, setProduct] = useState({});
-    const [productDetailsOpen, setProductDetailsOpen] = useState("0");
-
-    const [descriptionEditMode, setDescriptionEditMode] = useState(false)
-
-    const toggleDescriptionEditMode = () => setDescriptionEditMode(!descriptionEditMode);
-
-    const toggleProductDetails = (id) => {
-        if (id === productDetailsOpen) {
-            setProductDetailsOpen("")
-        } else {
-            setProductDetailsOpen(id)
-        }
-    }
 
     useEffect(() => {
         Api(`Product/${id}`).then(([result, ok]) => {
@@ -230,43 +310,33 @@ const ProductPage = () => {
 
     return (
         <PageContainer>
-            <Row>
-                <Col style={{
-                    margin: "2em"
-                }}>
-                    <ProductImages items={[
-                        {
-                            src: ExampleImage
-                        }, {
-                            src: ExampleImage
-                        }, {
-                            src: ExampleImage
-                        }
-                    ]}/>
-                </Col>
-                <ProductDetails product={product}/>
-            </Row>
-            <Row>
-                <Col>
-                    <Accordion open={productDetailsOpen} toggle={toggleProductDetails}>
-                        <AccordionItem>
-                            <AccordionHeader targetId={"0"}>
-                                <Row>
-                                    <Col sm={"auto"}>
-                                        <EditButton onClick={toggleDescriptionEditMode}/>
-                                    </Col>
-                                    <Col>
-                                        <h4>Description</h4>
-                                    </Col>
-                                </Row>
-                            </AccordionHeader>
-                            <AccordionBody accordionId={"0"}>
-                                {product.description}
-                            </AccordionBody>
-                        </AccordionItem>
-                    </Accordion>
-                </Col>
-            </Row>
+            <ProductChangesContextProvider productId={product.id} updateProduct={(p) => setProduct(p)}>
+                <Row>
+                    <Col style={{
+                        margin: "2em"
+                    }}>
+                        <ProductImages items={[
+                            {
+                                src: ExampleImage
+                            }, /*{
+                                src: ExampleImage
+                            }, {
+                                src: ExampleImage
+                            }*/
+                        ]}/>
+                    </Col>
+                    <ProductDetails product={product}/>
+                </Row>
+                <Row style={{paddingTop: "2em"}}>
+                    <Col>
+                        <ProductDescriptionPane options={{
+                            field: "description",
+                            caption: "Description",
+                            content: product.description
+                        }}/>
+                    </Col>
+                </Row>
+            </ProductChangesContextProvider>
         </PageContainer>
     );
 }

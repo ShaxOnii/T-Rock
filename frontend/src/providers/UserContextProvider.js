@@ -43,7 +43,7 @@ const UserProvider = ({children}) => {
     }
 
     const Api = async (address, init = {}) => {
-
+        console.log(init)
         const response = await fetch(API_URL + address + createUriForQueryParams(init.queryParams), {
             headers: {
                 'Content-Type': 'application/json',

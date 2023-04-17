@@ -269,7 +269,7 @@ const ProductCatalogPage = () => {
             <ProductFilteringTopBar/>
             {
                 products.length > 0 ?
-                    products.map(product => <ProductListItem product={product}/>)
+                    products.map((product, key) => <ProductListItem key={key} product={product}/>)
                     :
                     <p>There is nothing to show</p>
             }
