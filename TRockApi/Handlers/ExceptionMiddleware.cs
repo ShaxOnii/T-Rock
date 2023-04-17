@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -22,7 +23,11 @@ namespace TRockApi.Handlers {
             }
             catch (Error error) {
                 _logger.LogError($"An error occured '{error.Message()}' \n {error}");
-                await HandleExceptionAsync(httpContext, error);
+                await HandleErrorAsync(httpContext, error);
+            }
+            catch (MultipleErrors error) {
+                _logger.LogError($"An errors occured '{error.Errors.Select(e => e.Message())}' \n {error}");
+                await HandleErrorsAsync(httpContext, error);
             }
             catch (Exception exception) {
                 _logger.LogError($"Something went wrong: {exception}");
@@ -30,15 +35,31 @@ namespace TRockApi.Handlers {
             }
         }
 
-        private async Task HandleExceptionAsync(HttpContext context, Error error) {
+        private async Task HandleErrorAsync(HttpContext context, Error error) {
+            context.Response.ContentType = "application/json";
+            context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
+
+            var response = ToErrorResponse(error, context.Response.StatusCode);
+
+            await context.Response.WriteAsync(response.ToString());
+        }
+
+        private async Task HandleErrorsAsync(HttpContext context, MultipleErrors errors) {
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int) HttpStatusCode.BadRequest;
 
             await context.Response.WriteAsync(new ErrorResponse {
+                StatusCode = context.Response.StatusCode,
+                Errors = errors.Errors.Select(e => ToErrorResponse(e, null))
+            }.ToString());
+        }
+
+        private ErrorResponse ToErrorResponse(Error error, int? statusCode) {
+            return new ErrorResponse {
                 Message = error.Message(),
                 Type = error.Name(),
-                StatusCode = context.Response.StatusCode
-            }.ToString());
+                StatusCode = statusCode
+            };
         }
 
         private async Task HandleExceptionAsync(HttpContext context, Exception exception) {

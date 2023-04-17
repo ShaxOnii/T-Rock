@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
 using TRockApi.Handlers.Api;
 using TRockApi.Repositories.Api;
 using TRockApi.Repositories.Models;
@@ -15,11 +17,61 @@ namespace TRockApi.Handlers {
             _categoryRepository = categoryRepository;
         }
 
-        public async Task CreateProductAsync(string name, string caption, string categoryName) {
-            await Task.Run(() => CreateProduct(name, caption, categoryName));
+        public Task CreateProductAsync(string name, string caption, string categoryName) {
+            return Task.Run(() => CreateProduct(name, caption, categoryName));
         }
 
-        public void CreateProduct(string name, string caption, string categoryName) {
+        public Task<Product> ChangeProductAsync(int productId, ProductChanges changes) {
+            return Task.Run(() => ChangeProduct(productId, changes));
+        }
+
+        private Product ChangeProduct(int id, ProductChanges changes) {
+            var product = GetProduct(id);
+
+            if (changes.Caption != null) {
+                product.Caption = changes.Caption;
+            }
+            
+            if (changes.Price.HasValue) {
+                product.Price = changes.Price.Value;
+            }
+            
+            if (changes.Description != null) {
+                product.Description = changes.Description;
+            }
+
+            ValidateProduct(product);
+
+            _productRepository.SaveProduct(product);
+
+            return product;
+        }
+
+        private void ValidateProduct(Product product) {
+            HashSet<Error> errors = new();
+
+            if (product.Price < 0) {
+                errors.Add(
+                    new EntityValidationError(product.Id, "price", "Price should be greater than 0")
+                );
+            }
+
+            if (!errors.IsNullOrEmpty()) {
+                throw new MultipleErrors(errors);
+            }
+        }
+
+        private Product GetProduct(int productId) {
+            var product = _productRepository.FindById(productId).Result;
+
+            if (product == null) {
+                throw new EntityNotFoundError(productId, "Product");
+            }
+
+            return product;
+        }
+
+        private void CreateProduct(string name, string caption, string categoryName) {
             var category = _categoryRepository.FindByName(categoryName);
 
             ValidateProductNotExists(name);

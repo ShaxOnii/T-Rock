@@ -60,9 +60,15 @@ namespace TRockApi.Controllers {
             };
         }
 
-        [HttpPost("change/{id:int}")]
-        public async Task<IEnumerable<ProductResponse>> Change(int id, ChangeProductRequest request) {
-            throw new NotImplementedException();
+        [HttpPost("{id:int}")]
+        public async Task<ProductResponse> Change(int id, ChangeProductRequest request) {
+            var changedProduct = await _productHandling.ChangeProductAsync(id, new ProductChanges {
+                Caption = request.Caption,
+                Price = request.Price,
+                Description = request.Description
+            });
+
+            return ProductResponse.FromModel(changedProduct);
         }
 
         [HttpDelete("delete/{id:int}")]

@@ -14,6 +14,8 @@ namespace TRockApi.Repositories.Api {
         public Task<Product?> FindByName(string name);
         
         void AddProduct(Product product);
+        
+        void SaveProduct(Product product);
 
     }
 }

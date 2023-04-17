@@ -36,6 +36,11 @@ namespace TRockApi.Repositories {
             _dbContext.Products.Add(product);
             _dbContext.SaveChanges();
         }
+        
+        public void SaveProduct(Product product) {
+            _dbContext.Products.Update(product);
+            _dbContext.SaveChanges();
+        }
 
     }
 }
