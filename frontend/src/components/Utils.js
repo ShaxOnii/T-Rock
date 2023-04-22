@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import {NavLink} from "react-router-dom";
+import {Container} from "reactstrap";
 
 const SimpleLink = styled(NavLink)`
   color: #000;
@@ -26,4 +27,8 @@ const ItemImage = styled.div`
   height: 200px;
 `
 
-export {SimpleLink, ItemImage}
+const PageContainer = styled(Container)`
+  padding-top: 5em;
+`
+
+export {SimpleLink, PageContainer, ItemImage}

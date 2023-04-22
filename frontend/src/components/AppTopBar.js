@@ -1,12 +1,12 @@
-import {NavLink} from "react-router-dom";
 import {Col, Nav, Navbar, NavbarBrand, Row} from "reactstrap";
 import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faShoppingCart, faUser, faShirt} from "@fortawesome/free-solid-svg-icons";
 import {SimpleLink} from "./Utils";
 import LoginUserModal from "./LoginUserModal";
-import HomeImage from "../images/TRockIcon.jpg"
-import {useState} from "react";
+import {useContext, useEffect, useState} from "react";
+import {userContext} from "../providers/UserContextProvider";
+
 
 const GenericNav = styled(Navbar)`
   border-bottom: 1px solid #eee;
@@ -36,12 +36,11 @@ const MenuButton = ({icon, onClick, children}) => {
     return (
         <Row onClick={onClick}>
             <Col>
-                <FontAwesomeIcon icon={icon} />
+                <FontAwesomeIcon icon={icon}/>
             </Col>
             <Col>{children}</Col>
         </Row>
     )
-
 }
 
 
@@ -66,12 +65,11 @@ const MainAppToolbar = () => {
                     <LoginUserModal options={{
                         visible: loginModalVisible,
                         toggle: toggleLoginModal
-                    }} />
+                    }}/>
                 </StyledNavLink>
             </Nav>
         </GenericNav>
     );
-
 }
 
 const CategoryNav = styled(Nav)`
@@ -87,15 +85,34 @@ const CategoryNav = styled(Nav)`
 `
 
 const CategoryToolbar = () => {
+    const {Api} = useContext(userContext);
 
-    const categories = ["Men", "Women", "Regular", "Other"];
+    const [categories, setCategories] = useState([]);
+
+    useEffect(() => {
+        Api(`Category`).then(([result, ok]) => {
+            if (ok) {
+                setCategories(result);
+            } else {
+                throw Error("An error occured", result);
+            }
+        })
+    }, []);
+
+
+    if (categories.length <= 0) {
+        return (<></>)
+    }
 
     return (
         <CategoryNav>
+            <StyledNavLink to={"products/"}>
+                All
+            </StyledNavLink>
             {
-                categories.map(category =>
-                    <StyledNavLink to={"/"}>
-                        {category}
+                categories.map((category, idx) =>
+                    <StyledNavLink key={idx} to={`products/${category.name}`}>
+                        {category.caption}
                     </StyledNavLink>
                 )
             }

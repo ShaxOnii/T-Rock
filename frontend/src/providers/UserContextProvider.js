@@ -1,4 +1,3 @@
-
 import {createContext, useState} from "react";
 
 export const userContext = createContext();
@@ -25,8 +24,27 @@ const UserProvider = ({children}) => {
         setToken("");
     }
 
-    const Api = async (address, init) => {
-        const response = await fetch(API_URL + address, {
+    const createUriForQueryParams = (queryParams) => {
+        let params = [];
+
+        if (queryParams) {
+            for (const param in queryParams) {
+                if (queryParams[param] != null && queryParams[param] !== undefined) {
+                    params.push(`${param}=${queryParams[param]}`)
+                }
+            }
+        }
+
+        if (params.length > 0) {
+            return '?' + params.toString();
+        }
+
+        return ""
+    }
+
+    const Api = async (address, init = {}) => {
+        console.log(init)
+        const response = await fetch(API_URL + address + createUriForQueryParams(init.queryParams), {
             headers: {
                 'Content-Type': 'application/json',
                 ...init?.headers

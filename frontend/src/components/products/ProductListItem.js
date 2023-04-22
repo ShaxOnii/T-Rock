@@ -1,5 +1,6 @@
 import {Button, Col, Container, Row} from "reactstrap";
 import {SimpleLink, ItemImage} from "../Utils";
+
 import ExampleImage from "../../images/ExampleTShirt.jpg"
 import styled from "styled-components";
 
@@ -39,7 +40,7 @@ const ProductListItem = ({product}) => {
                 <ItemImage imageSrc={ExampleImage}/>
             </Col>
             <Col>
-                <ProductLink to={"/"}>
+                <ProductLink to={`/product/${product.id}`}>
                     {product.caption}
                 </ProductLink>
             </Col>
