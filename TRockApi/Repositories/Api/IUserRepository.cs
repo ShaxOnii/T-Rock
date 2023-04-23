@@ -11,5 +11,7 @@ namespace TRockApi.Repositories.Api {
         public bool EmailExists(string email);
 
         public bool LoginExists(string login);
+
+        public Role GetRoleByName(string name);
     }
 }

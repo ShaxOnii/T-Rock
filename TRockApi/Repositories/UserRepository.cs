@@ -15,7 +15,9 @@ namespace TRockApi.Repositories {
         }
 
         public async Task<User?> FindByLogin(string login) {
-            return await _dbContext.Users.FirstOrDefaultAsync(u => u.Login == login);
+            return await _dbContext.Users
+                .Include(u => u.Roles)
+                .FirstOrDefaultAsync(u => u.Login == login);
         }
 
         public async Task AddUser(User user) {
@@ -29,6 +31,10 @@ namespace TRockApi.Repositories {
 
         public bool LoginExists(string login) {
             return _dbContext.Users.Any(user => user.Login == login);
+        }
+
+        public Role GetRoleByName(string name) {
+            return _dbContext.Roles.First(r => r.Name == name);
         }
     }
 }

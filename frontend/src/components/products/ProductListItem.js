@@ -1,4 +1,4 @@
-import {Button, Col, Container, Row} from "reactstrap";
+import {Button, Col, Row} from "reactstrap";
 import {SimpleLink, ItemImage} from "../Utils";
 
 import ExampleImage from "../../images/ExampleTShirt.jpg"

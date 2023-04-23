@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TRockApi.Repositories.Configuration;
 
@@ -11,9 +12,11 @@ using TRockApi.Repositories.Configuration;
 namespace TRockApi.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    partial class ShopContextModelSnapshot : ModelSnapshot
+    [Migration("20230423011102_Add users tp roles")]
+    partial class Adduserstproles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

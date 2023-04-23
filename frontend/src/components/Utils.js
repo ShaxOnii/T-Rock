@@ -2,6 +2,9 @@ import styled from "styled-components";
 import {NavLink} from "react-router-dom";
 import {Container} from "reactstrap";
 
+export const isDevelopment = true;
+
+
 const SimpleLink = styled(NavLink)`
   color: #000;
 

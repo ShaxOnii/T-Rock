@@ -43,11 +43,20 @@ const MenuButton = ({icon, onClick, children}) => {
     )
 }
 
+const UsernameContainer = styled.div`
+
+`
 
 const MainAppToolbar = () => {
+    const {username, isLogged, logout} = useContext(userContext);
+
     const [loginModalVisible, setLoginModalVisible] = useState(false);
 
     const toggleLoginModal = () => setLoginModalVisible(!loginModalVisible);
+
+    const handleUserLogout = () => {
+        logout();
+    }
 
     return (
         <GenericNav>
@@ -57,16 +66,23 @@ const MainAppToolbar = () => {
                 </NavbarBrand>
             </Nav>
             <Nav>
+                <UsernameContainer>{username}</UsernameContainer>
                 <StyledNavLink to={"/"}>
                     <MenuButton icon={faShoppingCart}>Cart</MenuButton>
                 </StyledNavLink>
-                <StyledNavLink to={"/"}>
-                    <MenuButton onClick={toggleLoginModal} icon={faUser}>Login</MenuButton>
-                    <LoginUserModal options={{
-                        visible: loginModalVisible,
-                        toggle: toggleLoginModal
-                    }}/>
-                </StyledNavLink>
+                {isLogged() ?
+                    <StyledNavLink to={"/"}>
+                        <MenuButton onClick={handleUserLogout} icon={faUser}>Logout</MenuButton>
+                    </StyledNavLink>
+                    :
+                    <StyledNavLink to={"/"}>
+                        <MenuButton onClick={toggleLoginModal} icon={faUser}>Login</MenuButton>
+                        <LoginUserModal options={{
+                            visible: loginModalVisible,
+                            toggle: toggleLoginModal
+                        }}/>
+                    </StyledNavLink>
+                }
             </Nav>
         </GenericNav>
     );
@@ -123,7 +139,6 @@ const CategoryToolbar = () => {
 const MainNav = styled(Nav)`
   display: flex;
   flex-direction: column;
-
 `
 
 const AppTopBar = () => {

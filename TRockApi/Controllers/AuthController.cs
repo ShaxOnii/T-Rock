@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TRockApi.Requests;
 using TRockApi.Response;
 using TRockApi.Security;
+using TRockApi.Utils.Errors;
 
 namespace TRockApi.Controllers {
 
@@ -21,15 +23,15 @@ namespace TRockApi.Controllers {
         public async Task<ActionResult<AuthenticationResponse>> LoginAsync(AuthenticationRequest request) {
             var result = await _authService.AuthAsync(request.Login, request.Password);
             
-            //TODO: przerobic to na jakiego normalnego jsona
             if (result.IsFailure()) {
-                return BadRequest("Bad credentials.");
+                throw new BadCredentialsError();
             }
-
+            
             return new AuthenticationResponse {
                 Id = result.User.Id,
                 Username = result.User.Login,
-                Token = result.Token
+                Token = result.Token,
+                Roles = result.User.Roles.Select(r => r.Name)
             };
         }
 

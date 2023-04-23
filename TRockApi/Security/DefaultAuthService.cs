@@ -28,11 +28,13 @@ namespace TRockApi.Security {
         }
 
         private RegistrationResult Register(RegistrationRequest request) {
+            var clientRole = _userRepository.GetRoleByName("Client");
+            
             var user = new User {
                 Login = request.Login,
                 Email = request.Email,
                 Password = request.Password,
-                Role = Role.Client
+                Roles = new List<Role>{clientRole}
             };
 
             var result = new RegistrationResult();
