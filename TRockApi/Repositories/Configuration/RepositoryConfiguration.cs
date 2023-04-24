@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using TRockApi.Repositories.Api;
+using TRockApi.Repositories.Models;
 
 namespace TRockApi.Repositories.Configuration {
     public static class RepositoryConfiguration {
@@ -7,6 +8,7 @@ namespace TRockApi.Repositories.Configuration {
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<ICartRepository, CartRepository>();
         }
     }
 }
