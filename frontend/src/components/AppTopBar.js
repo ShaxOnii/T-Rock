@@ -67,7 +67,7 @@ const MainAppToolbar = () => {
             </Nav>
             <Nav>
                 <UsernameContainer>{username}</UsernameContainer>
-                <StyledNavLink to={"/"}>
+                <StyledNavLink to={"/cart"}>
                     <MenuButton icon={faShoppingCart}>Cart</MenuButton>
                 </StyledNavLink>
                 {isLogged() ?

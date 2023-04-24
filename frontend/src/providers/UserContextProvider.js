@@ -49,7 +49,7 @@ const UserProvider = ({children}) => {
     }
 
     const register = async ({login, password, email}) => {
-        const [response, isSuccess] = await Api("Auth/login", {
+        const [response, isSuccess] = await Api("Auth/register", {
             method: "POST",
             body: {login, password, email}
         });
