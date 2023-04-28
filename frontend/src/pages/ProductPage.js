@@ -73,7 +73,7 @@ const ColContentToRight = styled(Col)`
   justify-content: right;
 `
 
-const EditButton = ({onClick}) => {
+export const EditButton = ({onClick}) => {
     return (
         <Button color={"primary"} onClick={(e) => {
             e.preventDefault();

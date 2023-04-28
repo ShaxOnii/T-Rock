@@ -1,10 +1,6 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse } from "@fortawesome/free-solid-svg-icons";
-import { faEarthEurope } from "@fortawesome/free-solid-svg-icons";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { faPhone } from "@fortawesome/free-solid-svg-icons";
-import { faPrint } from "@fortawesome/free-solid-svg-icons";
+import { faHouse, faEarthEurope, faEnvelope, faPhone, faPrint } from "@fortawesome/free-solid-svg-icons";
 import { Col } from "reactstrap";
 import styled from 'styled-components';
 

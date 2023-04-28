@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import {Container} from "reactstrap";
 import ProductPage from "./pages/ProductPage";
+import CategoryEditPage from './pages/CategoryEditPage';
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
                 <Container>
                     <Routes>
                         <Route exact path="/products" element={<ProductCatalogPage/>}/>
+                        <Route exact path="/category" element={<CategoryEditPage/>}/>
                         <Route exact path="/" element={<ProductCatalogPage/>}/>
                         <Route exact path="/products/:productCategory" element={<ProductCatalogPage/>}/>
                         <Route
