@@ -32,11 +32,11 @@ const StyledNavLink = styled(SimpleLink)`
   }
 `
 
-const MenuButton = ({icon, onClick, children}) => {
+const MenuButton = ({ icon, onClick, children }) => {
     return (
         <Row onClick={onClick}>
             <Col>
-                <FontAwesomeIcon icon={icon}/>
+                <FontAwesomeIcon icon={icon} />
             </Col>
             <Col>{children}</Col>
         </Row>
@@ -62,7 +62,7 @@ const UsernameContainer = styled.div`
 `
 
 const MainAppToolbar = () => {
-    const {username, isLogged, logout} = useContext(userContext);
+    const { username, isLogged, logout } = useContext(userContext);
 
     const [loginModalVisible, setLoginModalVisible] = useState(false);
 
@@ -82,11 +82,10 @@ const MainAppToolbar = () => {
                 </NavbarBrand>
             </Nav>
             <Nav>
-            <StyledNavLink to={"/category"}>
+                <UsernameContainer>{username}</UsernameContainer>
+                <StyledNavLink to={"/category"}>
                     <MenuButton icon={faShoppingCart}>Category</MenuButton>
                 </StyledNavLink>
-                <StyledNavLink to={"/"}>
-                <UsernameContainer>{username}</UsernameContainer>
                 <StyledNavLink to={"/cart"}>
                     <MenuButton icon={faShoppingCart}>Cart</MenuButton>
                 </StyledNavLink>
@@ -100,7 +99,7 @@ const MainAppToolbar = () => {
                         <LoginUserModal options={{
                             visible: loginModalVisible,
                             toggle: toggleLoginModal
-                        }}/>
+                        }} />
                     </StyledNavLink>
                 }
             </Nav>
@@ -121,7 +120,7 @@ const CategoryNav = styled(Nav)`
 `
 
 const CategoryToolbar = () => {
-    const {Api} = useContext(userContext);
+    const { Api } = useContext(userContext);
 
     const [categories, setCategories] = useState([]);
 
@@ -165,8 +164,8 @@ const AppTopBar = () => {
 
     return (
         <MainNav position="sticky">
-            <MainAppToolbar/>
-            <CategoryToolbar/>
+            <MainAppToolbar />
+            <CategoryToolbar />
         </MainNav>
     );
 }
