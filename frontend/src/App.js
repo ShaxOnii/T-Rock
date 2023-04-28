@@ -12,6 +12,7 @@ import {
 import {Container} from "reactstrap";
 import ProductPage from "./pages/ProductPage";
 import CategoryEditPage from './pages/CategoryEditPage';
+import CartPage from "./pages/CartPage";
 
 
 function App() {
@@ -21,13 +22,12 @@ function App() {
                 <AppTopBar/>
                 <Container>
                     <Routes>
-                        <Route exact path="/products" element={<ProductCatalogPage/>}/>
                         <Route exact path="/category" element={<CategoryEditPage/>}/>
                         <Route exact path="/" element={<ProductCatalogPage/>}/>
+                        <Route exact path="/products" element={<ProductCatalogPage/>}/>
                         <Route exact path="/products/:productCategory" element={<ProductCatalogPage/>}/>
-                        <Route
-                            exact path="/product/:id"
-                            element={<ProductPage/>}/>
+                        <Route exact path="/product/:id" element={<ProductPage/>}/>
+                        <Route exact path="/cart" element={<CartPage/>}/>
                         <Route path="*" element={<ErrorPage message={"404 not found"}/>}/>
                     </Routes>
                 </Container>

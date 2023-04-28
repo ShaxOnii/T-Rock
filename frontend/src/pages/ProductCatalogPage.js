@@ -81,7 +81,7 @@ const CreateEntityModal = ({options, children}) => {
                 console.log("Request failed", result);
 
                 if (result.StatusCode === 400) {
-                    setError(result.Message);
+                    setError(result.message);
                     return
                 } else {
                     throw Error("Cannot create entity");

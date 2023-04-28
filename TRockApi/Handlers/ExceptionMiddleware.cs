@@ -22,11 +22,9 @@ namespace TRockApi.Handlers {
                 await _next(httpContext);
             }
             catch (Error error) {
-                _logger.LogError($"An error occured '{error.Message()}' \n {error}");
                 await HandleErrorAsync(httpContext, error);
             }
             catch (MultipleErrors error) {
-                _logger.LogError($"An errors occured '{error.Errors.Select(e => e.Message())}' \n {error}");
                 await HandleErrorsAsync(httpContext, error);
             }
             catch (Exception exception) {

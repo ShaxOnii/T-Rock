@@ -1,11 +1,28 @@
-import { useContext, useState } from "react";
-import { userContext } from "../providers/UserContextProvider";
-import { Alert, Button, Col, Form, FormGroup, Input, Label, Modal, ModalBody, ModalFooter, ModalHeader, Nav, NavItem, NavLink, TabContent, TabPane } from "reactstrap";
+import {useContext, useState} from "react";
+import {userContext} from "../providers/UserContextProvider";
+import {
+    Alert,
+    Button,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+    Modal,
+    ModalBody,
+    ModalFooter,
+    ModalHeader,
+    Nav,
+    NavItem,
+    NavLink,
+    TabContent,
+    TabPane
+} from "reactstrap";
+import {isDevelopment} from "./Utils";
 
-const LoginUserModal = ({ options }) => {
-    const { toggle, visible, onLogin } = options;
+const LoginUserModal = ({options}) => {
+    const {toggle, visible} = options;
 
-    const { Api } = useContext(userContext);
+    const {login} = useContext(userContext);
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -14,7 +31,6 @@ const LoginUserModal = ({ options }) => {
 
     const onDismissError = () => setError(undefined)
 
-
     const toggleModal = () => {
         if (toggle) {
             toggle();
@@ -22,49 +38,40 @@ const LoginUserModal = ({ options }) => {
     }
 
     const handleLogin = () => {
-        loginUser(
-            () => toggleModal()
-        );
+        if (validateLoginInputs()) {
+            loginUser(username, password);
+        }
     }
 
-    const loginUser = (onSuccess) => {
+    const handleQuickLogin = () => {
+        loginUser("administrator", "admin")
+    }
+
+    const loginUser = (username, password) => {
+        login(username, password)
+            .then((isSuccess) => {
+                if (isSuccess) {
+                    toggleModal();
+                    clearInputs();
+                }
+            })
+            .catch((error) => {
+                setError(error.message)
+            })
+    }
+
+    const validateLoginInputs = () => {
         if (username === "") {
             setError("Username cannot be empty.")
-            return;
+            return false;
         }
 
         if (password === "") {
             setError("Password cannot be empty.")
-            return;
+            return false;
         }
 
-        const request = {
-            Login: username,
-            Password: password,
-        }
-
-        Api("Auth/login", {
-            method: 'POST',
-            body: request
-        }).then(([result, ok]) => {
-            if (!ok) {
-                console.log("Request failed", result);
-
-                if (result.status >= 400) {
-                    console.log(result)
-                    setError(result.Errors[0]);
-                    return
-                } else {
-                    throw Error("Cannot create entity");
-                }
-            }
-
-            console.log(result);
-            if (onSuccess) {
-                onSuccess();
-                clearInputs();
-            }
-        });
+        return true
     }
 
     const clearInputs = () => {
@@ -94,7 +101,7 @@ const LoginUserModal = ({ options }) => {
                             </NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink onClick={() => setActiveTab("register")} >
+                            <NavLink onClick={() => setActiveTab("register")}>
                                 Register
                             </NavLink>
                         </NavItem>
@@ -128,6 +135,7 @@ const LoginUserModal = ({ options }) => {
                         </Alert>
                     </ModalBody>
                     <ModalFooter>
+                        {isDevelopment && <Button color={"success"} onClick={handleQuickLogin}>Quick Login</Button>}
                         <Button color={"primary"} onClick={handleLogin}>Login</Button>
                         <Button color={"secondary"} onClick={toggleModal}>Cancel</Button>
                     </ModalFooter>
@@ -143,7 +151,7 @@ const LoginUserModal = ({ options }) => {
                             </NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink className="active" onClick={() => setActiveTab("register")} >
+                            <NavLink className="active" onClick={() => setActiveTab("register")}>
                                 Register
                             </NavLink>
                         </NavItem>

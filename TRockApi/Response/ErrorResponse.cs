@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace TRockApi.Response {
     public class ErrorResponse {
@@ -11,7 +12,8 @@ namespace TRockApi.Response {
 
         public override string ToString() {
             return JsonConvert.SerializeObject(this, new JsonSerializerSettings {
-                NullValueHandling = NullValueHandling.Ignore
+                NullValueHandling = NullValueHandling.Ignore,
+                ContractResolver = new CamelCasePropertyNamesContractResolver()
             });
         }
     }

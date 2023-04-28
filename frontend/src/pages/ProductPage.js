@@ -4,7 +4,7 @@ import {useParams} from "react-router-dom";
 import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {PageContainer} from "../components/Utils";
-import ExampleImage from "../images/ExampleTShirt.jpg"
+import ExampleImage from "../images/ExampleTShirt.jpg" 
 import {
     faPenToSquare as EditIcon,
     faClose as CloseIcon,

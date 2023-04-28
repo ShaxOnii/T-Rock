@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace TRockApi.Repositories.Models {
     public class User {
@@ -10,6 +11,6 @@ namespace TRockApi.Repositories.Models {
 
         public String Password { get; set; }
         
-        public Role Role { get; set; }
+        public IEnumerable<Role> Roles { get; set; }
     }
 }
