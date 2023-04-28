@@ -1,11 +1,11 @@
-import {Col, Nav, Navbar, NavbarBrand, Row} from "reactstrap";
+import { Col, Nav, Navbar, NavbarBrand, Row } from "reactstrap";
 import styled from "styled-components";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faShoppingCart, faUser, faShirt} from "@fortawesome/free-solid-svg-icons";
-import {SimpleLink} from "./Utils";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faShoppingCart, faUser, faShirt } from "@fortawesome/free-solid-svg-icons";
+import { SimpleLink } from "./Utils";
 import LoginUserModal from "./LoginUserModal";
-import {useContext, useEffect, useState} from "react";
-import {userContext} from "../providers/UserContextProvider";
+import { useContext, useEffect, useState } from "react";
+import { userContext } from "../providers/UserContextProvider";
 
 
 const GenericNav = styled(Navbar)`
@@ -43,6 +43,19 @@ const MenuButton = ({icon, onClick, children}) => {
     )
 }
 
+const StyledLogoButton = styled(SimpleLink)`
+color: #00f;
+
+font-size: 1.2em;
+letter-spacing: 0.5px;
+text-decoration: none;
+
+padding-left: 2em;
+
+&:first-child {
+  padding-left: 0
+}
+`
 
 const MainAppToolbar = () => {
     const [loginModalVisible, setLoginModalVisible] = useState(false);
@@ -53,10 +66,15 @@ const MainAppToolbar = () => {
         <GenericNav>
             <Nav>
                 <NavbarBrand>
-                    <MenuButton icon={faShirt} style={{color: "#000000",}}>T-Rock</MenuButton>
+                    <StyledLogoButton to={"/"}>
+                        <MenuButton icon={faShirt} style={{ color: "#000000", }}>T-Rock</MenuButton>
+                    </StyledLogoButton>
                 </NavbarBrand>
             </Nav>
             <Nav>
+            <StyledNavLink to={"/category"}>
+                    <MenuButton icon={faShoppingCart}>Category</MenuButton>
+                </StyledNavLink>
                 <StyledNavLink to={"/"}>
                     <MenuButton icon={faShoppingCart}>Cart</MenuButton>
                 </StyledNavLink>
