@@ -7,7 +7,7 @@ namespace TRockApi.Repositories.Models {
         
         public User User { get; set; }
 
-        public IEnumerable<CartItem> Items { get; set; }
+        public List<CartItem> Items { get; set; }
         
     }
 }

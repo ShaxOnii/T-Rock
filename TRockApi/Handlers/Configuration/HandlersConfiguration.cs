@@ -6,6 +6,7 @@ namespace TRockApi.Handlers.Configuration {
         public static void Register(IServiceCollection services) {
             services.AddScoped<IProductHandling, ProductHandling>();
             services.AddScoped<ICategoryHandling, CategoryHandling>();
+            services.AddSingleton<CategoryHandling>();
         }
     }
 }

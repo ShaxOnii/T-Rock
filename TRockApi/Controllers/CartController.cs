@@ -1,5 +1,4 @@
 using System;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +22,7 @@ namespace TRockApi.Controllers {
         }
 
         
-        [HttpGet, Authorize]
+        [HttpGet]
         public async Task<CartResponse> GetCart() {
             var user = GetAuthorizedUser();
 
@@ -37,12 +36,21 @@ namespace TRockApi.Controllers {
         }
 
         
-        [HttpPost("change")]
-        public async Task<CartResponse> ChangeCart() {
+        [HttpPost("add")]
+        public async Task<CartResponse> AddCartItem() {
             
             
             return new CartResponse();
         }
+
+        
+        [HttpPost("remove")]
+        public async Task<CartResponse> RemoveCartItem() {
+            
+            
+            return new CartResponse();
+        }
+        
 
         private User GetAuthorizedUser() {
           var username =  User.Identity!.Name;
