@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TRockApi.Handlers.Api;
 using TRockApi.Repositories.Api;
 using TRockApi.Repositories.Models;
@@ -9,13 +6,10 @@ namespace TRockApi.Handlers {
     public class CartHandling : ICartHandling {
 
         private readonly ICartRepository _cartRepository;
-        private readonly IUserRepository _userRepository;
         private readonly IProductRepository _productRepository;
 
-        public CartHandling(ICartRepository cartRepository, IUserRepository userRepository,
-            IProductRepository productRepository) {
+        public CartHandling(ICartRepository cartRepository, IProductRepository productRepository) {
             _cartRepository = cartRepository;
-            _userRepository = userRepository;
             _productRepository = productRepository;
         }
 
@@ -42,18 +36,9 @@ namespace TRockApi.Handlers {
             foreach (var cartChange in cartChanges) {
                 await AddCartItem(userCart, cartChange);
             }
-            
+
             _cartRepository.SaveChanges();
         }
-
-
-        /*      Dodawanie itemka:
-        *          1. Znajdz koszyk lub stwórz
-        *          2. Sprawdz czy w koszyki jest juz produkt
-        *              - TAK -> Dodaj quantity
-        *              - NIE -> Dodaj Item z quantity i wstaw do koszyka
-        *          3. Zapisz koszyk
-        */
 
         private async Task AddCartItem(Cart cart, CartChanges cartChange) {
             var product = await _productRepository.FindById(cartChange.ProductId);
@@ -70,22 +55,21 @@ namespace TRockApi.Handlers {
             var item = cart.Items.FirstOrDefault(item => item.Product.Id == product.Id);
 
             if (item == null) {
-                item = CreateCartItemForProduct(cart, product);
+                CreateCartItemForProduct(cart, product, quantity);
+            } else {
+                item.Quantity += quantity;
+                _cartRepository.Update(cart);
             }
-            
-            item.Quantity += quantity;
 
-            _cartRepository.Update(cart);
         }
 
-        private CartItem CreateCartItemForProduct(Cart cart, Product product) {
+        private void CreateCartItemForProduct(Cart cart, Product product, int quantity) {
             var item = new CartItem {
-                Product = product
+                Product = product,
+                Quantity = quantity
             };
 
             cart.Items.Add(item);
-
-            return item;
         }
 
         private Cart CreateCartForUser(User user) {
