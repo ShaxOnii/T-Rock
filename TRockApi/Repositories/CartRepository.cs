@@ -14,6 +14,18 @@ namespace TRockApi.Repositories {
         public Cart? FindCartByUser(int userId) {
             return _dbContext.Carts.FirstOrDefault(cart => cart.User.Id == userId);
         }
-        
+
+        public void Update(Cart cart) {
+            _dbContext.Carts.Update(cart);
+        }
+
+        public void Store(Cart cart) {
+            _dbContext.Carts.Add(cart);
+        }
+
+        public void SaveChanges() {
+            _dbContext.SaveChanges();
+        }
+
     }
 }

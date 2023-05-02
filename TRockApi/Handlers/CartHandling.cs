@@ -6,7 +6,7 @@ using TRockApi.Repositories.Api;
 using TRockApi.Repositories.Models;
 
 namespace TRockApi.Handlers {
-    public class CartHandling {
+    public class CartHandling : ICartHandling {
 
         private readonly ICartRepository _cartRepository;
         private readonly IUserRepository _userRepository;
@@ -42,6 +42,8 @@ namespace TRockApi.Handlers {
             foreach (var cartChange in cartChanges) {
                 await AddCartItem(userCart, cartChange);
             }
+            
+            _cartRepository.SaveChanges();
         }
 
 
@@ -54,15 +56,14 @@ namespace TRockApi.Handlers {
         */
 
         private async Task AddCartItem(Cart cart, CartChanges cartChange) {
-            var product = await _productRepository.FindById(cartChange.productId);
+            var product = await _productRepository.FindById(cartChange.ProductId);
 
             if (product == null) {
                 // TODO: error
                 return;
             }
 
-            UpdateOrCreateCartItemForProduct(cart, product, cartChange.count);
-
+            UpdateOrCreateCartItemForProduct(cart, product, cartChange.Quantity);
         }
 
         private void UpdateOrCreateCartItemForProduct(Cart cart, Product product, int quantity) {
@@ -71,8 +72,10 @@ namespace TRockApi.Handlers {
             if (item == null) {
                 item = CreateCartItemForProduct(cart, product);
             }
-
+            
             item.Quantity += quantity;
+
+            _cartRepository.Update(cart);
         }
 
         private CartItem CreateCartItemForProduct(Cart cart, Product product) {
@@ -86,9 +89,13 @@ namespace TRockApi.Handlers {
         }
 
         private Cart CreateCartForUser(User user) {
-            return new Cart {
+            var cart = new Cart {
                 User = user
             };
+
+            _cartRepository.Store(cart);
+
+            return cart;
         }
     }
 }

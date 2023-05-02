@@ -1,9 +1,6 @@
-namespace TRockApi.Handlers.Api {
-    public class CartChanges {
-
+namespace TRockApi.Requests {
+    public class AddCartItemsRequest {
         public int ProductId { get; set; }
-
         public int Quantity { get; set; }
-
     }
 }
