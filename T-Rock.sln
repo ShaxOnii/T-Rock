@@ -5,6 +5,8 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRockApi", "TRockApi\TRockApi.csproj", "{D72CFF15-99AB-40B0-9E93-EBEFAC1220D3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TRockTest", "TRockTest\TRockTest.csproj", "{035A7FBB-5E23-44C0-8230-17778F449837}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D72CFF15-99AB-40B0-9E93-EBEFAC1220D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D72CFF15-99AB-40B0-9E93-EBEFAC1220D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D72CFF15-99AB-40B0-9E93-EBEFAC1220D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{035A7FBB-5E23-44C0-8230-17778F449837}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{035A7FBB-5E23-44C0-8230-17778F449837}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{035A7FBB-5E23-44C0-8230-17778F449837}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{035A7FBB-5E23-44C0-8230-17778F449837}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
