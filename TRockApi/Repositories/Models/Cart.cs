@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 
 namespace TRockApi.Repositories.Models {
     public class Cart {
@@ -7,7 +6,7 @@ namespace TRockApi.Repositories.Models {
         
         public User User { get; set; }
 
-        public List<CartItem> Items { get; set; } = new List<CartItem>();
+        public List<CartItem> Items { get; set; } = new();
 
     }
 }

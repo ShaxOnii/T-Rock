@@ -17,7 +17,6 @@ namespace TRockApi.Handlers {
         /*
          *  Koszyki:
          *
-
          *
          *      Ususwanie Itemka:
          *          1. Znajdz koszyk
@@ -38,6 +37,10 @@ namespace TRockApi.Handlers {
             }
 
             _cartRepository.SaveChanges();
+        }
+
+        public Task RemoveCartItems(User user, IEnumerable<CartChanges> cartChanges) {
+            throw new NotImplementedException();
         }
 
         private async Task AddCartItem(Cart cart, CartChanges cartChange) {

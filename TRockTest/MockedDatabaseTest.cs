@@ -58,13 +58,7 @@ namespace TRockTest {
             return product;
         }
 
-        protected void MockCart(List<Product> products) {
-            var items = products.Select(product => new CartItem {
-                    Product = product,
-                    Quantity = 1
-                })
-                .ToList();
-
+        protected void MockCart(List<CartItem> items) {
             var userCart = new Cart {
                 Id = 1,
                 User = _user,

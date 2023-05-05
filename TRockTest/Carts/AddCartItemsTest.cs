@@ -50,7 +50,12 @@ public class AddCartItemsTest : MockedDatabaseTest {
     public async Task AddSingleItemToExistingCart() {
         var testProduct = CreateMockedProduct(1);
 
-        MockCart(new List<Product>() {testProduct});
+        MockCart(new List<CartItem>() {
+            new() {
+                Product = testProduct,
+                Quantity = 1
+            }
+        });
 
         var addOneItem = new List<CartChanges>() {
             new() {
