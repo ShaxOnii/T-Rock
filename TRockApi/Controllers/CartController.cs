@@ -27,35 +27,42 @@ namespace TRockApi.Controllers {
 
 
         [HttpGet]
-        public async Task<CartResponse> GetCart() {
+        public Task<CartResponse> GetCart() {
             var user = GetAuthorizedUser();
 
             var cartForUser = _cartRepository.FindCartByUser(user.Id);
 
             if (cartForUser == null) {
-                return new CartResponse();
+                return Task.FromResult(new CartResponse());
             }
 
-            return CartResponse.FromModel(cartForUser);
+            return Task.FromResult(CartResponse.FromModel(cartForUser));
         }
 
 
         [HttpPost("add")]
-        public async Task<ActionResult> AddCartItem(List<AddCartItemsRequest> cartItemsToAdd) {
+        public async Task<ActionResult> AddCartItem(List<AddCartItemsRequest> request) {
             var user = GetAuthorizedUser();
 
-            await _cartHandling.AddCartItems(user, cartItemsToAdd.Select(r => new CartChanges {
+            await _cartHandling.AddCartItems(user, request.Select(r => new CartChanges {
                 ProductId = r.ProductId,
-                QuantityChange = r.Quantity
+                QuantityChange = r.Count
             }));
-            
+
             return new OkResult();
         }
 
 
         [HttpPost("remove")]
-        public async Task<CartResponse> RemoveCartItem() {
-            return new CartResponse();
+        public Task<ActionResult> RemoveCartItem(List<RemoveCartItemsRequest> request) {
+            var user = GetAuthorizedUser();
+
+            _cartHandling.RemoveCartItems(user, request.Select(r => new CartChanges {
+                ProductId = r.ProductId,
+                QuantityChange = -r.Count
+            }));
+
+            return Task.FromResult<ActionResult>(new OkResult());
         }
 
 
