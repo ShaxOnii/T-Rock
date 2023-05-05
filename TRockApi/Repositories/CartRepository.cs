@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TRockApi.Repositories.Api;
 using TRockApi.Repositories.Configuration;
 using TRockApi.Repositories.Models;
@@ -11,7 +12,10 @@ namespace TRockApi.Repositories {
         }
 
         public Cart? FindCartByUser(int userId) {
-            return _dbContext.Carts.FirstOrDefault(cart => cart.User.Id == userId);
+            return _dbContext.Carts
+                .Include(cart => cart.Items)
+                .ThenInclude(item => item.Product)
+                .FirstOrDefault(cart => cart.User.Id == userId);
         }
 
         public void Update(Cart cart) {
