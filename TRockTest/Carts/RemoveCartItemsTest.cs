@@ -130,6 +130,33 @@ namespace TRockTest.Carts {
             Assert.That(itemForProductThree!.Quantity, Is.EqualTo(1));
             
         }
+        
+        [Test]
+        public void DoNotAddItemsWhenQuantityIsGReaterThanZero() {
+            var testProduct = CreateMockedProduct(1);
+
+            MockCart(new List<CartItem>() {
+                new() {
+                    Product = testProduct,
+                    Quantity = 1
+                }
+            });
+
+            var removeOneItem = new List<CartChanges>() {
+                new() {
+                    ProductId = 1,
+                    QuantityChange = 1
+                }
+            };
+
+
+            _cartHandling.RemoveCartItems(GetUser(), removeOneItem);
+
+            var userCartAfterChange = GetCart();
+            var itemForProduct = userCartAfterChange.GetCartItemForProduct(testProduct);
+            
+            Assert.That(itemForProduct!.Quantity, Is.EqualTo(1));
+        }
 
         private void SetupHandler() {
             _cartRepository = new CartRepository(DbContext);

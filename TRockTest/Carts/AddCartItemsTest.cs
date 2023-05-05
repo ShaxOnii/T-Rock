@@ -113,6 +113,23 @@ public class AddCartItemsTest : MockedDatabaseTest {
         Assert.That(cartItem2.Product, Is.EqualTo(testProduct2));
     }
 
+    [Test]
+    public async Task DoNotAddItemWithZeroQuantity() {
+        var testProduct1 = CreateMockedProduct(1);
+
+        var addOneItem = new List<CartChanges> {
+            new() {
+                ProductId = testProduct1.Id,
+                QuantityChange = 0
+            }
+        };
+
+        await _cartHandling.AddCartItems(GetUser(), addOneItem);
+
+        var userCartAfterChange = GetCart();
+        Assert.That(userCartAfterChange.Items, Is.Empty);
+    }
+
     private void SetupHandler() {
         _cartRepository = new CartRepository(DbContext);
         _cartHandling = new CartHandling(

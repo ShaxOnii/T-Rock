@@ -17,7 +17,9 @@ namespace TRockApi.Handlers {
             Cart userCart = _cartRepository.FindCartByUser(user.Id) ?? CreateCartForUser(user);
 
             foreach (var cartChange in cartChanges) {
-                await AddCartItem(userCart, cartChange);
+                if (cartChange.QuantityChange > 0) {
+                    await AddCartItem(userCart, cartChange);
+                }
             }
 
             _cartRepository.SaveChanges();
@@ -67,13 +69,17 @@ namespace TRockApi.Handlers {
         public void RemoveCartItems(User user, IEnumerable<CartChanges> cartChanges) {
             var userCart = _cartRepository.FindCartByUser(user.Id);
 
-            if (userCart != null) {
-                foreach (var cartChange in cartChanges) { 
+            if (userCart == null) {
+                return;
+            }
+
+            foreach (var cartChange in cartChanges) {
+                if (cartChange.QuantityChange < 0) {
                     RemoveCartItem(userCart, cartChange);
                 }
-                
-                _cartRepository.SaveChanges();
             }
+
+            _cartRepository.SaveChanges();
         }
 
         private void RemoveCartItem(Cart cart, CartChanges cartChange) {
