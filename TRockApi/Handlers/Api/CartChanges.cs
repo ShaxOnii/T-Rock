@@ -3,7 +3,7 @@ namespace TRockApi.Handlers.Api {
 
         public int ProductId { get; set; }
 
-        public int Quantity { get; set; }
+        public int QuantityChange { get; set; }
 
     }
 }

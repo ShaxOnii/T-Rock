@@ -23,9 +23,9 @@ public class AddCartItemsTest : MockedDatabaseTest {
         var testProduct = CreateMockedProduct(1);
 
         var addOneItem = new List<CartChanges>() {
-            new CartChanges {
+            new() {
                 ProductId = 1,
-                Quantity = 1
+                QuantityChange = 1
             }
         };
 
@@ -40,9 +40,9 @@ public class AddCartItemsTest : MockedDatabaseTest {
         Assert.NotNull(userCartAfterChange);
         Assert.That(userCartAfterChange.Items.Count, Is.EqualTo(1));
 
-        var cartItem = userCartAfterChange.Items.First();
+        var cartItem = userCartAfterChange.GetCartItemForProduct(testProduct);
 
-        Assert.That(cartItem.Quantity, Is.EqualTo(1));
+        Assert.That(cartItem!.Quantity, Is.EqualTo(1));
         Assert.That(cartItem.Product, Is.EqualTo(testProduct));
     }
 
@@ -60,7 +60,7 @@ public class AddCartItemsTest : MockedDatabaseTest {
         var addOneItem = new List<CartChanges>() {
             new() {
                 ProductId = 1,
-                Quantity = 1
+                QuantityChange = 1
             }
         };
 
@@ -75,9 +75,9 @@ public class AddCartItemsTest : MockedDatabaseTest {
         Assert.NotNull(userCartAfterChange);
         Assert.That(userCartAfterChange.Items.Count, Is.EqualTo(1));
 
-        var cartItem = userCartAfterChange.Items.First();
+        var cartItem = userCartAfterChange.GetCartItemForProduct(testProduct);
 
-        Assert.That(cartItem.Quantity, Is.EqualTo(2));
+        Assert.That(cartItem!.Quantity, Is.EqualTo(2));
         Assert.That(cartItem.Product, Is.EqualTo(testProduct));
     }
 
@@ -90,11 +90,11 @@ public class AddCartItemsTest : MockedDatabaseTest {
         var addOneItem = new List<CartChanges>() {
             new() {
                 ProductId = testProduct1.Id,
-                Quantity = 1
+                QuantityChange = 1
             },
             new() {
                 ProductId = testProduct2.Id,
-                Quantity = 2
+                QuantityChange = 2
             }
         };
 
@@ -102,12 +102,12 @@ public class AddCartItemsTest : MockedDatabaseTest {
 
         var userCartAfterChange = GetCart();
 
-        var cartItem1 = userCartAfterChange.Items.Find(i => i.Product.Id == testProduct1.Id);
+        var cartItem1 = userCartAfterChange.GetCartItemForProduct(testProduct1);
         Assert.NotNull(cartItem1);
         Assert.That(cartItem1!.Quantity, Is.EqualTo(1));
         Assert.That(cartItem1.Product, Is.EqualTo(testProduct1));
 
-        var cartItem2 = userCartAfterChange.Items.Find(i => i.Product.Id == testProduct2.Id);
+        var cartItem2 = userCartAfterChange.GetCartItemForProduct(testProduct2);
         Assert.NotNull(cartItem2);
         Assert.That(cartItem2!.Quantity, Is.EqualTo(2));
         Assert.That(cartItem2.Product, Is.EqualTo(testProduct2));

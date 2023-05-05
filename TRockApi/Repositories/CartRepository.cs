@@ -1,4 +1,3 @@
-using System.Linq;
 using TRockApi.Repositories.Api;
 using TRockApi.Repositories.Configuration;
 using TRockApi.Repositories.Models;
@@ -21,6 +20,11 @@ namespace TRockApi.Repositories {
 
         public void Store(Cart cart) {
             _dbContext.Carts.Add(cart);
+        }
+
+        public void DeleteCartItem(CartItem cartItem) {
+            _dbContext.CartItems.Remove(cartItem);
+
         }
 
         public void SaveChanges() {

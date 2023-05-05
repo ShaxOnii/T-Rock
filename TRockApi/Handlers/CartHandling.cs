@@ -13,22 +13,6 @@ namespace TRockApi.Handlers {
             _productRepository = productRepository;
         }
 
-
-        /*
-         *  Koszyki:
-         *
-         *
-         *      Ususwanie Itemka:
-         *          1. Znajdz koszyk
-         *          2. Sprawdz czy w koszyki jest juz produkt 
-         *           - TAK -> Usun o quantity i jesli jest mniej niz zero wywal CartItem
-         *           - NIE -> nic sie nie dzieje
-         *          3. zapisz koszyk
-         *
-         * 
-         */
-
-
         public async Task AddCartItems(User user, IEnumerable<CartChanges> cartChanges) {
             Cart userCart = _cartRepository.FindCartByUser(user.Id) ?? CreateCartForUser(user);
 
@@ -39,22 +23,18 @@ namespace TRockApi.Handlers {
             _cartRepository.SaveChanges();
         }
 
-        public Task RemoveCartItems(User user, IEnumerable<CartChanges> cartChanges) {
-            throw new NotImplementedException();
-        }
-
         private async Task AddCartItem(Cart cart, CartChanges cartChange) {
             var product = await _productRepository.FindById(cartChange.ProductId);
 
             if (product == null) {
-                // TODO: error
                 return;
             }
 
-            UpdateOrCreateCartItemForProduct(cart, product, cartChange.Quantity);
+            AddCartItemForProduct(cart, product, cartChange.QuantityChange);
         }
 
-        private void UpdateOrCreateCartItemForProduct(Cart cart, Product product, int quantity) {
+
+        private void AddCartItemForProduct(Cart cart, Product product, int quantity) {
             var item = cart.Items.FirstOrDefault(item => item.Product.Id == product.Id);
 
             if (item == null) {
@@ -63,7 +43,6 @@ namespace TRockApi.Handlers {
                 item.Quantity += quantity;
                 _cartRepository.Update(cart);
             }
-
         }
 
         private void CreateCartItemForProduct(Cart cart, Product product, int quantity) {
@@ -84,5 +63,35 @@ namespace TRockApi.Handlers {
 
             return cart;
         }
+
+        public void RemoveCartItems(User user, IEnumerable<CartChanges> cartChanges) {
+            var userCart = _cartRepository.FindCartByUser(user.Id);
+
+            if (userCart != null) {
+                foreach (var cartChange in cartChanges) { 
+                    RemoveCartItem(userCart, cartChange);
+                }
+                
+                _cartRepository.SaveChanges();
+            }
+        }
+
+        private void RemoveCartItem(Cart cart, CartChanges cartChange) {
+            var changedCartItem = cart.Items.FirstOrDefault(item => item.Product.Id == cartChange.ProductId);
+
+            if (changedCartItem == null) {
+                return;
+            }
+
+            changedCartItem.Quantity += cartChange.QuantityChange;
+
+            if (changedCartItem.Quantity <= 0) {
+                cart.Items = cart.Items.FindAll(item => item.Id != changedCartItem.Id);
+                _cartRepository.DeleteCartItem(changedCartItem);
+            }
+
+            _cartRepository.Update(cart);
+        }
+
     }
 }

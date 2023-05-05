@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRockApi.Handlers.Api;
@@ -48,7 +46,7 @@ namespace TRockApi.Controllers {
 
             await _cartHandling.AddCartItems(user, cartItemsToAdd.Select(r => new CartChanges {
                 ProductId = r.ProductId,
-                Quantity = r.Quantity
+                QuantityChange = r.Quantity
             }));
             
             return new OkResult();
