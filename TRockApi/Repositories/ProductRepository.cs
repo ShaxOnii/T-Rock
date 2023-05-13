@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TRockApi.Repositories.Api;
 using TRockApi.Repositories.Configuration;
@@ -10,7 +7,6 @@ namespace TRockApi.Repositories {
     public class ProductRepository : IProductRepository{
         
         private readonly ShopDbContext _dbContext;
-
 
         public ProductRepository(ShopDbContext dbContext) {
             _dbContext = dbContext;
