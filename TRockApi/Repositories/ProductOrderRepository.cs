@@ -25,6 +25,14 @@ namespace TRockApi.Repositories {
                 .Include(order => order.User)
                 .Include(order => order.Items)
                 .ThenInclude(item => item.Product)
-                .FirstOrDefault(order => order.Id == id);        }
+                .FirstOrDefault(order => order.Id == id);
+        }
+        
+        public int Store(ProductOrder productOrder) {
+            var id = _dbContext.ProductOrders.Add(productOrder).Entity.Id;
+            _dbContext.SaveChanges();
+
+            return id;
+        }
     }
 }

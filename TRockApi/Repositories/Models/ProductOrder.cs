@@ -9,5 +9,11 @@ namespace TRockApi.Repositories.Models {
         public DateTime CreationDate { get; set; }
 
         public IEnumerable<ProductOrderItem> Items { get; set; }
+
+
+        public ProductOrderItem? FindItemByProductId(int id) {
+            return Items.FirstOrDefault(item => item.Product.Id == id);
+        }
+        
     }
 }

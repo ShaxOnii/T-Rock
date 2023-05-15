@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using TRockApi.Repositories.Configuration;
 using TRockApi.Repositories.Models;
+using DbContext = System.Data.Entity.DbContext;
 
 namespace TRockTest {
     public abstract class MockedDatabaseTest {
@@ -41,8 +42,8 @@ namespace TRockTest {
         protected User GetUser() {
             return _user;
         }
-
         protected Product CreateMockedProduct(int id) {
+
             Product product = new Product {
                 Id = id,
                 Name = "Product_" + id,
@@ -71,6 +72,10 @@ namespace TRockTest {
 
         protected Cart GetCart() {
            return DbContext.Carts.FirstOrDefault( cart => cart.User.Id ==  _user.Id)!;
+        }
+
+        protected ProductOrder GetProductOrder(int id) {
+            return DbContext.ProductOrders.FirstOrDefault(order => order.Id == id)!;
         }
     }
 }

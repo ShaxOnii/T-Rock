@@ -6,5 +6,7 @@ namespace TRockApi.Repositories.Api {
         public IEnumerable<ProductOrder> All();
 
         public ProductOrder? FindById(int id);
+
+        int Store(ProductOrder productOrder);
     }
 }
