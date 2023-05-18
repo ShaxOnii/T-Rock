@@ -1,3 +1,4 @@
+using System.Linq;
 using TRockApi.Handlers;
 using TRockApi.Handlers.Api;
 using TRockApi.Repositories;

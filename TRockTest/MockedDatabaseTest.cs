@@ -1,3 +1,5 @@
+using System;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using TRockApi.Repositories.Configuration;
 using TRockApi.Repositories.Models;

@@ -1,3 +1,5 @@
+using System;
+
 namespace TRockApi.Repositories.Models {
     public class ProductOrderItem {
         public int Id { get; set; }
