@@ -9,6 +9,7 @@ namespace TRockApi.Repositories.Configuration {
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICartRepository, CartRepository>();
+            services.AddScoped<IProductOrderRepository, ProductOrderRepository>();
         }
     }
 }
