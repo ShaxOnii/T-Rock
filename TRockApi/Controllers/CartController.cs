@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRockApi.Handlers.Api;
 using TRockApi.Repositories.Api;
-using TRockApi.Repositories.Models;
 using TRockApi.Requests;
 using TRockApi.Response;
 
@@ -11,17 +10,16 @@ namespace TRockApi.Controllers {
     [Authorize]
     [ApiController]
     [Route("/api/[controller]")]
-    public class CartController : ControllerBase {
+    public class CartController : ControllerHelper {
 
         private readonly ICartRepository _cartRepository;
-        private readonly IUserRepository _userRepository;
 
         private readonly ICartHandling _cartHandling;
 
         public CartController(ICartRepository cartRepository, IUserRepository userRepository,
-            ICartHandling cartHandling) {
+            ICartHandling cartHandling) : base(userRepository) {
+            
             _cartRepository = cartRepository;
-            _userRepository = userRepository;
             _cartHandling = cartHandling;
         }
 
@@ -64,22 +62,6 @@ namespace TRockApi.Controllers {
 
             return Task.FromResult<ActionResult>(new OkResult());
         }
-
-
-        private User GetAuthorizedUser() {
-            var username = User.Identity!.Name;
-
-            if (username == null) {
-                throw new Exception("User identity not exits.");
-            }
-
-            var authorizedUser = _userRepository.FindByLogin(username).Result;
-
-            if (authorizedUser == null) {
-                throw new Exception($"User with name '{username}' not found.");
-            }
-
-            return authorizedUser;
-        }
+        
     }
 }
