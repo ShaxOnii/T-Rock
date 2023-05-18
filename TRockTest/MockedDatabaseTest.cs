@@ -1,16 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using TRockApi.Repositories.Configuration;
 using TRockApi.Repositories.Models;
-using DbContext = System.Data.Entity.DbContext;
 
 namespace TRockTest {
     public abstract class MockedDatabaseTest {
         
         protected ShopDbContext DbContext = null!;
 
-        private readonly User _user = new User {
+        private readonly User _user = new() {
             Id = 1,
             Login = "Andrew",
             Email = "andre@aa.aa",

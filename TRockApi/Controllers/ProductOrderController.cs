@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,7 @@ namespace TRockApi.Controllers {
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductOrderController {
+    public class ProductOrderController : AbstractController {
 
         private readonly IProductOrderRepository _productOrderRepository;
 
@@ -19,8 +20,12 @@ namespace TRockApi.Controllers {
 
         private readonly IProductOrderHandling _productOrderHandling;
 
-        public ProductOrderController(IProductOrderRepository productOrderRepository,
-            IProductOrderHandling productOrderHandling, ICartRepository cartRepository) {
+        public ProductOrderController(
+            IProductOrderRepository productOrderRepository,
+            IProductOrderHandling productOrderHandling,
+            ICartRepository cartRepository,
+            IUserRepository userRepository
+        ) : base(userRepository) {
             _productOrderRepository = productOrderRepository;
             _productOrderHandling = productOrderHandling;
             _cartRepository = cartRepository;
@@ -46,10 +51,16 @@ namespace TRockApi.Controllers {
 
         [HttpPost("CreateFromCart")]
         public async Task<ActionResult> CreateOrderFromCart() {
-            var cart = _cartRepository.FindCartByUser()
-            var productOrderId = await _productOrderHandling.CreateProductOrderFromCart();
+            var user = GetAuthorizedUser();
+            var cart = _cartRepository.FindCartByUser(user.Id);
 
-            return new OkResult();
+            if (cart == null) {
+                return new BadRequestResult();
+            }
+            
+            var productOrderId = await _productOrderHandling.CreateProductOrderFromCart(cart);
+            
+            return new JsonResult(new CreateEntityResponse(productOrderId));
         }
     }
 }

@@ -55,9 +55,7 @@ namespace TRockApi.Controllers {
 
             var createdProduct = await _productRepository.FindByName(request.Name);
 
-            return new CreateEntityResponse {
-                Id = createdProduct!.Id
-            };
+            return new CreateEntityResponse(createdProduct!.Id);
         }
 
         [HttpPost("{id:int}")]

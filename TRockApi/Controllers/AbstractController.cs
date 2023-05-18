@@ -1,20 +1,18 @@
 using System;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TRockApi.Repositories.Api;
 using TRockApi.Repositories.Models;
 
 namespace TRockApi.Controllers {
 
-    [Authorize]
-    public abstract class ControllerHelper {
+    public abstract class AbstractController : ControllerBase {
         private readonly IUserRepository _userRepository;
 
-
-        protected ControllerHelper(IUserRepository userRepository) {
+        protected AbstractController(IUserRepository userRepository) {
             _userRepository = userRepository;
         }
 
-        private User GetAuthorizedUser() {
+        protected User GetAuthorizedUser() {
             var username = User.Identity!.Name;
 
             if (username == null) {

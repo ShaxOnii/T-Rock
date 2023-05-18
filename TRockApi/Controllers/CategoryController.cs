@@ -43,9 +43,7 @@ namespace TRockApi.Controllers {
 
             var createdCategory = _categoryRepository.FindByName(request.Name);
 
-            return new CreateEntityResponse {
-                Id = createdCategory!.Id
-            };
+            return new CreateEntityResponse(createdCategory!.Id);
         }
     }
 }
