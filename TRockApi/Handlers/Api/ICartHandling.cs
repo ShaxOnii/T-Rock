@@ -8,5 +8,6 @@ namespace TRockApi.Handlers.Api {
 
         void RemoveCartItems(User user, IEnumerable<CartChanges> cartChanges);
 
+        void CleanCart(User user);
     }
 }

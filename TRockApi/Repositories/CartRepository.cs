@@ -27,6 +27,10 @@ namespace TRockApi.Repositories {
             _dbContext.Carts.Add(cart);
         }
 
+        public void DeleteCart(Cart cart) {
+            _dbContext.Carts.Remove(cart);
+        }
+
         public void DeleteCartItem(CartItem cartItem) {
             _dbContext.CartItems.Remove(cartItem);
 

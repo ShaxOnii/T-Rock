@@ -7,6 +7,8 @@ namespace TRockApi.Repositories.Api {
         public void Update(Cart cart);
         
         public void Store(Cart cart);
+
+        public void DeleteCart(Cart cart);
         
         public void DeleteCartItem(CartItem cartItem);
 

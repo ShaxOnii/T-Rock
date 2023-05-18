@@ -12,9 +12,11 @@ namespace TRockApi.Handlers {
     public class ProductOrderHandling : IProductOrderHandling {
 
         private readonly IProductOrderRepository _productOrderRepository;
-
-        public ProductOrderHandling(IProductOrderRepository productOrderRepository) {
+        private readonly ICartHandling _cartHandling;
+        
+        public ProductOrderHandling(IProductOrderRepository productOrderRepository, ICartHandling cartHandling) {
             _productOrderRepository = productOrderRepository;
+            _cartHandling = cartHandling;
         }
 
         public Task<int> CreateProductOrderFromCart(Cart cart) {
@@ -32,6 +34,7 @@ namespace TRockApi.Handlers {
             };
 
             var orderId = _productOrderRepository.Store(productOrder);
+            _cartHandling.CleanCart(cart.User);
             
             return Task.FromResult(orderId);
         }

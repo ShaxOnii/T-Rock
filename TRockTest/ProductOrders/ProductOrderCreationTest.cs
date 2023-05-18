@@ -25,7 +25,7 @@ namespace TRockTest.ProductOrders {
             Assert.ThrowsAsync<CannotCreateProductOrderFromEmptyCartError>(async () => {
                 await _productOrderHandling.CreateProductOrderFromCart(GetCart());
             });
-            
+
             Assert.That(AllProductOrders(), Is.Empty);
         }
 
@@ -65,9 +65,36 @@ namespace TRockTest.ProductOrders {
             Assert.That(itemTwo.Price, Is.EqualTo(200));
         }
 
+        [Test]
+        public async Task CleanCartAfterSuccessfulProductOrderCreation() {
+            var testProductOne = CreateMockedProduct(1);
+
+            MockCart(new List<CartItem> {
+                new() {
+                    Product = testProductOne,
+                    Quantity = 1
+                }
+            });
+
+            await _productOrderHandling.CreateProductOrderFromCart(GetCart());
+
+            var cart = GetCart();
+
+            Assert.That(cart, Is.Null);
+            Assert.That(AllExistingCartItems(), Is.Empty);
+        }
+
+        private IEnumerable<CartItem> AllExistingCartItems() {
+            return DbContext.CartItems.ToList();
+        }
+
         private void SetupHandler() {
             _productOrderHandling = new ProductOrderHandling(
-                new ProductOrderRepository(DbContext)
+                new ProductOrderRepository(DbContext),
+                new CartHandling(
+                    new CartRepository(DbContext),
+                    new ProductRepository(DbContext)
+                )
             );
         }
 

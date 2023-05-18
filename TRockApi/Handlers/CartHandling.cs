@@ -102,5 +102,20 @@ namespace TRockApi.Handlers {
             _cartRepository.Update(cart);
         }
 
+        public void CleanCart(User user) {
+            var userCart = _cartRepository.FindCartByUser(user.Id);
+
+            if (userCart == null) {
+                return;
+            }
+            
+            foreach (var item in userCart.Items) {
+                _cartRepository.DeleteCartItem(item);
+            }
+            
+            _cartRepository.DeleteCart(userCart);
+            _cartRepository.SaveChanges();
+        }
+
     }
 }
