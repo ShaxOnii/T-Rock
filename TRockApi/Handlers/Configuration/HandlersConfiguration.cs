@@ -7,6 +7,7 @@ namespace TRockApi.Handlers.Configuration {
             services.AddScoped<IProductHandling, ProductHandling>();
             services.AddScoped<ICategoryHandling, CategoryHandling>();
             services.AddScoped<ICartHandling, CartHandling>();
+            services.AddScoped<IProductOrderHandling, ProductOrderHandling>();
         }
     }
 }
