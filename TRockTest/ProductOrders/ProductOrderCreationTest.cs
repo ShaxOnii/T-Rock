@@ -43,12 +43,12 @@ namespace TRockTest.ProductOrders {
 
             var itemOne = createdOrder.FindItemByProductId(1);
             Assert.That(itemOne, Is.Not.Null);
-            Assert.That(itemOne!.Qunatity, Is.EqualTo(1));
+            Assert.That(itemOne!.Quantity, Is.EqualTo(1));
             Assert.That(itemOne.Price, Is.EqualTo(100));
 
             var itemTwo = createdOrder.FindItemByProductId(2);
             Assert.That(itemTwo, Is.Not.Null);
-            Assert.That(itemTwo!.Qunatity, Is.EqualTo(2));
+            Assert.That(itemTwo!.Quantity, Is.EqualTo(2));
             Assert.That(itemTwo.Price, Is.EqualTo(200));
         }
         

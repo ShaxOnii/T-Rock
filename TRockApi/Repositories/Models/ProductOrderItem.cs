@@ -6,7 +6,7 @@ namespace TRockApi.Repositories.Models {
 
         public float Price { get; set; }
 
-        public int Qunatity { get; set; }
+        public int Quantity { get; set; }
 
         public DateTime CreationDate { get; set; }
 

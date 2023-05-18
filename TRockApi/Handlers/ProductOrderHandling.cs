@@ -39,7 +39,7 @@ namespace TRockApi.Handlers {
 
             return new ProductOrderItem {
                 Price = calculatedPrice,
-                Qunatity = cartItem.Quantity,
+                Quantity = cartItem.Quantity,
                 CreationDate = DateTime.Now,
                 Product = cartItem.Product
             };
