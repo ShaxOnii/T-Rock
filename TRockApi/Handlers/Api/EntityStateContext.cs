@@ -27,7 +27,7 @@ namespace TRockApi.Handlers.Api {
         }
 
         private string createTransitionKey(IState from, IState to) {
-            return $"{from.Name()}->{to.Name()}";
+            return $"{from.Name()}_{to.Name()}";
         }
     }
 }

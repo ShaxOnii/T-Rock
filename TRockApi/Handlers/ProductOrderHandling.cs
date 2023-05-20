@@ -7,13 +7,14 @@ using TRockApi.Handlers.Api;
 using TRockApi.Repositories.Api;
 using TRockApi.Repositories.Models;
 using TRockApi.Utils.Errors;
+using ProductOrderModel = TRockApi.Repositories.Models.ProductOrder;
 
 namespace TRockApi.Handlers {
     public class ProductOrderHandling : IProductOrderHandling {
 
         private readonly IProductOrderRepository _productOrderRepository;
         private readonly ICartHandling _cartHandling;
-        
+
         public ProductOrderHandling(IProductOrderRepository productOrderRepository, ICartHandling cartHandling) {
             _productOrderRepository = productOrderRepository;
             _cartHandling = cartHandling;
@@ -23,11 +24,11 @@ namespace TRockApi.Handlers {
             if (cart.Items.IsNullOrEmpty()) {
                 throw new CannotCreateProductOrderFromEmptyCartError();
             }
-            
+
             var items = CreateItemsForCartItems(cart.Items);
-            
-            var productOrder = new ProductOrder {
-                State = "WaitingForPayment",
+
+            var productOrder = new ProductOrderModel {
+                State = new WaitingForPayment().Name(),
                 User = cart.User,
                 CreationDate = DateTime.Now,
                 Items = items
@@ -35,7 +36,7 @@ namespace TRockApi.Handlers {
 
             var orderId = _productOrderRepository.Store(productOrder);
             _cartHandling.CleanCart(cart.User);
-            
+
             return Task.FromResult(orderId);
         }
 
@@ -56,6 +57,17 @@ namespace TRockApi.Handlers {
 
         private float CalculatePriceForCartItem(CartItem cartItem) {
             return cartItem.Quantity * cartItem.Product.Price;
+        }
+
+        public void ChangeProductOrderState(int productOrderId, string stateName) {
+            var productOrderModel = _productOrderRepository.FindById(productOrderId) ??
+                                    throw new InvalidOperationException();
+            var productOrder = new ProductOrder(productOrderModel);
+            var state = ProductOrderStates.FromString(stateName);
+
+            productOrder.ChangeState(state);
+
+            _productOrderRepository.Update(productOrder.Model());
         }
     }
 }

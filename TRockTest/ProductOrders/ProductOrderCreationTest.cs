@@ -6,6 +6,7 @@ using TRockApi.Handlers.Api;
 using TRockApi.Repositories;
 using TRockApi.Repositories.Models;
 using TRockApi.Utils.Errors;
+using ProductOrder = TRockApi.Repositories.Models.ProductOrder;
 
 namespace TRockTest.ProductOrders {
     public class ProductOrderCreationTest : MockedDatabaseTest {

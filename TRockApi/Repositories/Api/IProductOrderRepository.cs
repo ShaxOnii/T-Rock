@@ -4,10 +4,12 @@ using TRockApi.Repositories.Models;
 namespace TRockApi.Repositories.Api {
     public interface IProductOrderRepository {
 
-        public IEnumerable<ProductOrder> All();
+        IEnumerable<ProductOrder> All();
 
-        public ProductOrder? FindById(int id);
+        ProductOrder? FindById(int id);
 
         int Store(ProductOrder productOrder);
+        
+        void Update(ProductOrder productOrder);
     }
 }
