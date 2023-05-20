@@ -61,7 +61,7 @@ namespace TRockApi.Handlers {
 
         public void ChangeProductOrderState(int productOrderId, string stateName) {
             var productOrderModel = _productOrderRepository.FindById(productOrderId) ??
-                                    throw new InvalidOperationException();
+                                    throw new EntityNotFoundError(productOrderId, "ProductOrder");
             var productOrder = new ProductOrder(productOrderModel);
             var state = ProductOrderStates.FromString(stateName);
 

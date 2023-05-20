@@ -13,13 +13,13 @@ namespace TRockApi.Controllers {
     [Authorize]
     [ApiController]
     [Route("/api/[controller]")]
-    public class CartAbstractController : AbstractController {
+    public class CartController : AbstractController {
 
         private readonly ICartRepository _cartRepository;
 
         private readonly ICartHandling _cartHandling;
 
-        public CartAbstractController(ICartRepository cartRepository, IUserRepository userRepository,
+        public CartController(ICartRepository cartRepository, IUserRepository userRepository,
             ICartHandling cartHandling) : base(userRepository) {
             _cartRepository = cartRepository;
             _cartHandling = cartHandling;

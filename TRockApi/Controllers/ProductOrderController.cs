@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRockApi.Handlers.Api;
 using TRockApi.Repositories.Api;
+using TRockApi.Requests;
 using TRockApi.Response;
 
 namespace TRockApi.Controllers {
@@ -38,7 +39,7 @@ namespace TRockApi.Controllers {
             return productOrders.Select(ProductOrderResponse.FromModel);
         }
 
-        [HttpGet(":id")]
+        [HttpGet("{id}")]
         public ActionResult<ProductOrderResponse> Get(int id) {
             var productOrder = _productOrderRepository.FindById(id);
 
@@ -61,6 +62,14 @@ namespace TRockApi.Controllers {
             var productOrderId = await _productOrderHandling.CreateProductOrderFromCart(cart);
             
             return new JsonResult(new CreateEntityResponse(productOrderId));
+        }
+        
+        
+        [HttpPost("{id}/changeState")]
+        public ActionResult ChangeState(int id, ChangeProductOrderStateRequest request) {
+            _productOrderHandling.ChangeProductOrderState(id, request.state);
+
+            return new OkResult();
         }
     }
 }
