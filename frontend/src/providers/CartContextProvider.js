@@ -24,9 +24,7 @@ const CartContextProvider = ({children}) => {
     }, [isLogged, fetchCart]);
 
     const isCartEmpty = () => {
-        console.log("isEmpty", !!cart.items)
-
-        return !cart.items;
+        return !cart.items || cart.items.length <= 0;
     }
 
     const getCartItems = () => {

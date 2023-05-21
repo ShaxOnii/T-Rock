@@ -7,7 +7,7 @@ import {useContext} from "react";
 import {CartContext} from "../../providers/CartContextProvider";
 
 
-const ProductLink = styled(SimpleLink)`
+export const ProductLink = styled(SimpleLink)`
   font-weight: bold;
   letter-spacing: 1px;
 `
