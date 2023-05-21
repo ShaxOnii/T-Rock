@@ -5,6 +5,10 @@ namespace TRockApi.Repositories.Models {
         public Product Product { get; set; }
 
         public int Quantity { get; set; }
+
+        public float TotalPrice() {
+            return Product.Price * Quantity;
+        }
     }
 
 }

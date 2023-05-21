@@ -17,6 +17,7 @@ import styled from "styled-components";
 import {userContext} from "../providers/UserContextProvider";
 import {useParams} from "react-router-dom";
 import {PageContainer} from "../components/Utils";
+import {CartContext} from "../providers/CartContextProvider";
 
 const CreateEntityModal = ({options, children}) => {
     const {toggle, visible, title, onEntityCreate, url, invalidatePage} = options;

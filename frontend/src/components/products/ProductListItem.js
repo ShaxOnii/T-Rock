@@ -3,6 +3,8 @@ import {SimpleLink, ItemImage} from "../Utils";
 
 import ExampleImage from "../../images/ExampleTShirt.jpg"
 import styled from "styled-components";
+import {useContext} from "react";
+import {CartContext} from "../../providers/CartContextProvider";
 
 
 const ProductLink = styled(SimpleLink)`
@@ -28,6 +30,11 @@ const ProductPrice = ({price}) => {
 }
 
 const ProductListItem = ({product}) => {
+    const {addItemToCart} = useContext(CartContext);
+
+    const handleAddItemToCart = (productId) => {
+        addItemToCart(productId, 1);
+    }
 
     return (
         <Row style={{
@@ -52,7 +59,7 @@ const ProductListItem = ({product}) => {
                 <Row style={{
                     marginTop: "0.5em"
                 }}>
-                    <Button color={"success"}>Add to cart</Button>
+                    <Button onClick={() => handleAddItemToCart(product.id)} color={"success"}>Add to cart</Button>
                 </Row>
             </Col>
         </Row>

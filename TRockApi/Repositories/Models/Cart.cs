@@ -11,7 +11,10 @@ namespace TRockApi.Repositories.Models {
 
         public List<CartItem> Items { get; set; } = new();
 
-
+        public float TotalPrice() {
+            return Items.Select(item => item.TotalPrice()).Sum();
+        }
+        
         public CartItem? GetCartItemForProduct(Product product) {
             return Items.FirstOrDefault(item => item.Product.Id == product.Id);
         }

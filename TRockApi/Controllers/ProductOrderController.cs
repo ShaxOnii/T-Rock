@@ -69,7 +69,7 @@ namespace TRockApi.Controllers {
         public ActionResult ChangeState(int id, ChangeProductOrderStateRequest request) {
             _productOrderHandling.ChangeProductOrderState(id, request.state);
 
-            return new OkResult();
+            return new OkObjectResult(new {message = "ok"});
         }
     }
 }

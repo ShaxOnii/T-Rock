@@ -77,13 +77,19 @@ const UserProvider = ({children}) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': getBearerToken(),
+                'Accept': 'application/json',
                 ...init?.headers
             },
             ...init,
             body: JSON.stringify(init?.body),
         });
 
-        return [await response.json(), response.ok]
+
+        const res = await response.text()
+
+        console.log(res)
+
+        return [JSON.parse(res), response.ok]
     }
 
     const getBearerToken = () => {

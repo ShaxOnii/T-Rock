@@ -17,6 +17,7 @@ import {
     Row
 } from "reactstrap";
 import {ProductChangesContext, ProductChangesContextProvider} from "../providers/ProductChangesContext";
+import {CartContext} from "../providers/CartContextProvider";
 
 
 const ProductImages = ({items}) => {
@@ -99,6 +100,7 @@ const ChangeButtonActions = ({onDiscard, onSave}) => {
 
 const ProductDetails = ({product}) => {
     const {handleProductChange, getValueFor, discardChangesFor, applyChanges} = useContext(ProductChangesContext);
+    const {addItemToCart} = useContext(CartContext)
 
     const [detailsEditMode, setDetailsEditMode] = useState(false)
     const [selectedItemsCount, setSelectedItemsCount] = useState(1);
@@ -142,7 +144,7 @@ const ProductDetails = ({product}) => {
     })
 
     const handleAddToCart = () => {
-        // TODO: implement me !!!
+        addItemToCart(product.id, selectedItemsCount)
     }
 
     const handleSaveChanges = () => {

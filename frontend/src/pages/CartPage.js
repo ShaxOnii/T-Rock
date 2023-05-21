@@ -2,19 +2,30 @@ import {PageContainer} from "../components/Utils";
 import {useContext, useEffect, useState} from "react";
 import {userContext} from "../providers/UserContextProvider";
 import {CartContext} from "../providers/CartContextProvider";
-import {Col, Row} from "reactstrap";
+import {Button, Col, Row} from "reactstrap";
 
 
 const CartPage = () => {
     const {Api} = useContext(userContext);
-    const {isCartEmpty, getCartItems} = useContext(CartContext);
+    const {isCartEmpty, getCart, fetchCart} = useContext(CartContext);
+
+    useEffect(() => {
+        fetchCart()
+    }, [])
 
     return (
         <PageContainer>
             {isCartEmpty() ?
                 <EmptyCartPage/>
                 :
-                <CartList items={getCartItems()}/>
+                <Row>
+                    <Col>
+                        <CartList items={getCart().items}/>
+                    </Col>
+                    <Col>
+                        <CartDetails price={getCart().totalPrice}/>
+                    </Col>
+                </Row>
             }
         </PageContainer>
     );
@@ -44,17 +55,39 @@ const CartItem = ({item}) => {
 
     return (
         <>
-
+            <Row>
+                <Col>{item.product.caption}</Col>
+                <Col>{item.quantity}</Col>
+                <Col>{item.totalPrice}</Col>
+            </Row>
         </>
     );
 }
 
 const CartDetails = ({price}) => {
 
-    return (
-        <>
+    const handleProductOrderCreation = () => {
 
-        </>
+    }
+
+    return (
+        <Row>
+            <Col>
+                <Row>
+                    <Col>
+                        Total Price: {price} PLN
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Button onClick={handleProductOrderCreation} color={"success"}>
+                            Submit order
+                        </Button>
+                    </Col>
+                </Row>
+            </Col>
+        </Row>
+
     );
 }
 

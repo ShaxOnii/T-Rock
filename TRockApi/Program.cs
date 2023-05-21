@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing.Tree;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -91,7 +92,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
-builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllers(options => { options.RespectBrowserAcceptHeader = true; })
+    .AddNewtonsoftJson();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -106,7 +108,8 @@ using (var scope = app.Services.CreateScope()) {
     try {
         var context = services.GetRequiredService<ShopDbContext>();
         DbInitializer.Initialize(context);
-    } catch (Exception ex) {
+    }
+    catch (Exception ex) {
         app.Logger.LogError(ex, "An error occured during creating the Database.");
     }
 }

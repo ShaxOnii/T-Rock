@@ -11,6 +11,7 @@ using TRockApi.Response;
 namespace TRockApi.Controllers {
 
     [Authorize]
+    [Produces("application/json")]
     [ApiController]
     [Route("/api/[controller]")]
     public class CartController : AbstractController {
@@ -49,7 +50,7 @@ namespace TRockApi.Controllers {
                 QuantityChange = r.Count
             }));
 
-            return new OkResult();
+            return new OkObjectResult(new {message = "ok"});
         }
 
 
@@ -62,7 +63,7 @@ namespace TRockApi.Controllers {
                 QuantityChange = -r.Count
             }));
 
-            return Task.FromResult<ActionResult>(new OkResult());
+            return Task.FromResult<ActionResult>(new OkObjectResult(new {message = "ok"}));
         }
         
     }
