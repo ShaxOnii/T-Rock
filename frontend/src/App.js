@@ -14,6 +14,7 @@ import ProductPage from "./pages/ProductPage";
 import CategoryEditPage from './pages/CategoryEditPage';
 import CartPage from "./pages/CartPage";
 import {CartContextProvider} from "./providers/CartContextProvider";
+import ProductOrderDetailsPage from "./pages/ProductOrder";
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
                             <Route exact path="/products/:productCategory" element={<ProductCatalogPage/>}/>
                             <Route exact path="/product/:id" element={<ProductPage/>}/>
                             <Route exact path="/cart" element={<CartPage/>}/>
+                            <Route exact path="/productOrder/:productOrderId" element={<ProductOrderDetailsPage/>}/>
                             <Route path="*" element={<ErrorPage message={"404 not found"}/>}/>
                         </Routes>
                     </Container>

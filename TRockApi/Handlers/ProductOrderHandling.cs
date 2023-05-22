@@ -45,18 +45,12 @@ namespace TRockApi.Handlers {
         }
 
         private ProductOrderItem CreateItemForCartItem(CartItem cartItem) {
-            var calculatedPrice = CalculatePriceForCartItem(cartItem);
-
             return new ProductOrderItem {
-                Price = calculatedPrice,
+                Price = cartItem.TotalPrice(),
                 Quantity = cartItem.Quantity,
                 CreationDate = DateTime.Now,
                 Product = cartItem.Product
             };
-        }
-
-        private float CalculatePriceForCartItem(CartItem cartItem) {
-            return cartItem.Quantity * cartItem.Product.Price;
         }
 
         public void ChangeProductOrderState(int productOrderId, string stateName) {

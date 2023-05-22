@@ -13,13 +13,16 @@ namespace TRockApi.Response {
         public DateTime CreationDate { get; set; }
         
         public IEnumerable<ProductOrderItemResponse> Items { get; set; }
+        
+        public float TotalPrice { get; set; }
 
         public static ProductOrderResponse FromModel(ProductOrder model) {
             return new ProductOrderResponse {
                 Id = model.Id,
                 State = model.State,
                 CreationDate = model.CreationDate,
-                Items = model.Items.Select(ProductOrderItemResponse.FromModel)
+                Items = model.Items.Select(ProductOrderItemResponse.FromModel),
+                TotalPrice = model.TotalPrice()
             };
         }
     }

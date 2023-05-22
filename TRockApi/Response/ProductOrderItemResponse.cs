@@ -8,6 +8,8 @@ namespace TRockApi.Response {
         
         public float Price { get; set; }
         
+        public float TotalPrice { get; set; }
+        
         public int Quantity { get; set; }
         
         public DateTime CreationDate { get; set; }
@@ -20,7 +22,8 @@ namespace TRockApi.Response {
                 Price = model.Price,
                 Quantity = model.Quantity,
                 CreationDate = model.CreationDate,
-                Product = model.Product
+                Product = model.Product,
+                TotalPrice = model.TotalPrice()
             };
         }
     }

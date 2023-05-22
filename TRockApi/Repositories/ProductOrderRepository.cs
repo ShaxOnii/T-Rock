@@ -31,10 +31,10 @@ namespace TRockApi.Repositories {
         }
         
         public int Store(ProductOrder productOrder) {
-            var id = _dbContext.ProductOrders.Add(productOrder).Entity.Id;
+            _dbContext.ProductOrders.Add(productOrder);
             _dbContext.SaveChanges();
 
-            return id;
+            return productOrder.Id;
         }
 
         public void Update(ProductOrder productOrder) {

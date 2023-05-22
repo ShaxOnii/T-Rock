@@ -13,8 +13,11 @@ namespace TRockApi.Repositories.Models {
         public DateTime CreationDate { get; set; }
 
         public IEnumerable<ProductOrderItem> Items { get; set; }
-
-
+        
+        public float TotalPrice() {
+            return Items.Sum(it => it.TotalPrice());
+        } 
+        
         public ProductOrderItem? FindItemByProductId(int id) {
             return Items.FirstOrDefault(item => item.Product.Id == id);
         }
