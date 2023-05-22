@@ -18,6 +18,7 @@ import {
 } from "reactstrap";
 import {ProductChangesContext, ProductChangesContextProvider} from "../providers/ProductChangesContext";
 import {CartContext} from "../providers/CartContextProvider";
+import {useNavigate} from "react-router-dom"
 
 
 const ProductImages = ({items}) => {
@@ -101,6 +102,7 @@ const ChangeButtonActions = ({onDiscard, onSave}) => {
 const ProductDetails = ({product}) => {
     const {handleProductChange, getValueFor, discardChangesFor, applyChanges} = useContext(ProductChangesContext);
     const {addItemToCart} = useContext(CartContext)
+    const navigate = useNavigate()
 
     const [detailsEditMode, setDetailsEditMode] = useState(false)
     const [selectedItemsCount, setSelectedItemsCount] = useState(1);
@@ -145,6 +147,7 @@ const ProductDetails = ({product}) => {
 
     const handleAddToCart = () => {
         addItemToCart(product.id, selectedItemsCount)
+        navigate("/cart");
     }
 
     const handleSaveChanges = () => {

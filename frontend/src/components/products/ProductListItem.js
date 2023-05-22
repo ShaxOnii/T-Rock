@@ -5,7 +5,7 @@ import ExampleImage from "../../images/ExampleTShirt.jpg"
 import styled from "styled-components";
 import {useContext} from "react";
 import {CartContext} from "../../providers/CartContextProvider";
-
+import {useNavigate} from "react-router-dom"
 
 export const ProductLink = styled(SimpleLink)`
   font-weight: bold;
@@ -31,9 +31,11 @@ const ProductPrice = ({price}) => {
 
 const ProductListItem = ({product}) => {
     const {addItemToCart} = useContext(CartContext);
+    const navigate = useNavigate()
 
     const handleAddItemToCart = (productId) => {
         addItemToCart(productId, 1);
+        navigate("/cart");
     }
 
     return (
@@ -54,7 +56,7 @@ const ProductListItem = ({product}) => {
             <Col md={{
                 size: 2,
                 alignItems: "bottom"
-            }} >
+            }}>
                 <ProductPrice price={product.price}/>
                 <Row style={{
                     marginTop: "0.5em"
