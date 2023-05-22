@@ -10,18 +10,18 @@ const CartContextProvider = ({children}) => {
     const [cart, setCart] = useState({})
 
     const fetchCart = useCallback(() => {
-        Api("Cart").then(([result, isOk]) => {
-            if (isOk) {
-                setCart(result);
-            }
-        })
-    }, [Api])
+        if(isLogged()){
+            Api("Cart").then(([result, isOk]) => {
+                if (isOk) {
+                    setCart(result);
+                }
+            })
+        }
+    }, [Api, isLogged])
 
     useEffect(() => {
-        if (isLogged) {
             fetchCart();
-        }
-    }, [isLogged, fetchCart]);
+    }, [fetchCart]);
 
     const isCartEmpty = () => {
         return !cart.items || cart.items.length <= 0;
@@ -40,7 +40,6 @@ const CartContextProvider = ({children}) => {
                 method: 'POST',
                 body: [{productId, count}]
             }).then(([res, isOk]) => {
-                console.log(res)
                 if (isOk) {
                     fetchCart();
                 }

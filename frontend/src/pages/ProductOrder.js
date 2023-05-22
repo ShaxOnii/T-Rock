@@ -1,5 +1,5 @@
 import {useCallback, useContext, useEffect, useState} from "react";
-import {userContext} from "../providers/UserContextProvider";
+import {ADMIN_ROLE, CLIENT_ROLE, userContext} from "../providers/UserContextProvider";
 import {useParams} from "react-router-dom";
 import {PageContainer} from "../components/Utils";
 import ProductOrderItemList from "../components/ProductOrderListItem";
@@ -26,10 +26,11 @@ const ProductOrderDetailsPage = () => {
 
     return (
         <PageContainer>
+            <h3>Order #{productOrder.id}</h3>
             <Row>
                 <Col md={8}>
                     <DeliveryAddressDetails editable={true}/>
-                    <ProductOrderItemList title={"Your Order"} items={productOrder.items}/>
+                    <ProductOrderItemList title={"Ordered items"} items={productOrder.items}/>
                 </Col>
                 <Col>
                     <ProductOrderControlPanel onProductOrderChange={getProductOrder} productOrder={productOrder}/>
@@ -47,10 +48,19 @@ const ProductOrderStates = {
 }
 
 const ProductOrderStateControlButton = ({productOrderId, state, onOrderChange}) => {
-    const {Api} = useContext(userContext)
+    const {Api, hasRole} = useContext(userContext)
 
     const isVisibleToUser = () => {
-        return true;
+        switch (state) {
+            case ProductOrderStates.WaitingForPayment:
+                return hasRole(ADMIN_ROLE) || hasRole(CLIENT_ROLE)
+            case ProductOrderStates.DuringFulfillment:
+                return hasRole(ADMIN_ROLE)
+            case ProductOrderStates.Sent:
+                return hasRole(ADMIN_ROLE)
+            default:
+                return true
+        }
     }
 
     const isAvailableInState = (state) => {

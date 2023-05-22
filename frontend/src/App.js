@@ -19,9 +19,9 @@ import ProductOrderDetailsPage from "./pages/ProductOrder";
 
 function App() {
     return (
-        <UserProvider>
-            <CartContextProvider>
-                <Router>
+        <Router>
+            <UserProvider>
+                <CartContextProvider>
                     <AppTopBar/>
                     <Container>
                         <Routes>
@@ -36,9 +36,10 @@ function App() {
                         </Routes>
                     </Container>
                     <Footer/>
-                </Router>
-            </CartContextProvider>
-        </UserProvider>
+                </CartContextProvider>
+            </UserProvider>
+        </Router>
+
     );
 }
 

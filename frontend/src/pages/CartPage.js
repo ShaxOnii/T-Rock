@@ -11,7 +11,7 @@ const CartPage = () => {
 
     useEffect(() => {
         fetchCart()
-    }, [])
+    }, [fetchCart])
 
     return (
         <PageContainer>

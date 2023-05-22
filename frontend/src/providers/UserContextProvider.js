@@ -1,21 +1,29 @@
 import {createContext, useState} from "react";
 import {isDevelopment} from "../components/Utils";
+import {useNavigate} from "react-router-dom";
 
 export const userContext = createContext();
 
 const API_URL = "https://localhost:7294/api/";
 
 export const CLIENT_ROLE = "client";
-export const ADMIN_ROLE = "administrator";
+export const ADMIN_ROLE = "admin";
 
 const UserProvider = ({children}) => {
+
+    const navigate = useNavigate();
+
     const fromStorage = (key, defaultValue = "") => {
         return localStorage.getItem(key) ?? defaultValue;
     }
 
+    const objectFromStorage = (key, defaultValue = {}) => {
+        return JSON.parse(localStorage.getItem(key)) ?? defaultValue;
+    }
+
     const [username, setUsername] = useState(fromStorage('username'))
     const [token, setToken] = useState(fromStorage('token'));
-    const [roles, setRoles] = useState(fromStorage('roles', []));
+    const [roles, setRoles] = useState(objectFromStorage('roles', []));
 
     const isLogged = () => {
         return token.length > 0;
@@ -48,7 +56,7 @@ const UserProvider = ({children}) => {
         });
     }
 
-    const register = async ({login, password, email}) => {
+    const register = async (login, password, email) => {
         const [response, isSuccess] = await Api("Auth/register", {
             method: "POST",
             body: {login, password, email}
@@ -61,12 +69,16 @@ const UserProvider = ({children}) => {
         return true;
     }
 
+    const hasRole = (role) => {
+       return roles.map(r => r.toLocaleLowerCase()).includes(role)
+    }
+
     const setUserData = ({username, roles, token}) => {
         localStorage.setItem('username', username);
         setUsername(username);
 
         setRoles(roles);
-        localStorage.setItem('roles', roles);
+        localStorage.setItem('roles', JSON.stringify(roles));
 
         setToken(token);
         localStorage.setItem('token', token);
@@ -84,12 +96,21 @@ const UserProvider = ({children}) => {
             body: JSON.stringify(init?.body),
         });
 
+        if(!response.ok){
+            switch (response.status) {
+                case 401:
+                    navigate("/");
+                    break;
+                case 404:
+                    navigate("/notFound");
+                    break;
+                default: break;
+            }
 
-        const res = await response.text()
+            return [{}, false]
+        }
 
-        console.log(res)
-
-        return [JSON.parse(res), response.ok]
+        return [await response.json(), response.ok]
     }
 
     const getBearerToken = () => {
@@ -116,7 +137,7 @@ const UserProvider = ({children}) => {
 
     return (
         <userContext.Provider value={{
-            login, logout, register, isLogged, Api, username
+            login, logout, register, isLogged, Api, hasRole, username
         }}>
             {children}
         </userContext.Provider>

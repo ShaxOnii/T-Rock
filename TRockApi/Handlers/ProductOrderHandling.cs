@@ -46,7 +46,7 @@ namespace TRockApi.Handlers {
 
         private ProductOrderItem CreateItemForCartItem(CartItem cartItem) {
             return new ProductOrderItem {
-                Price = cartItem.TotalPrice(),
+                Price = cartItem.Product.Price,
                 Quantity = cartItem.Quantity,
                 CreationDate = DateTime.Now,
                 Product = cartItem.Product

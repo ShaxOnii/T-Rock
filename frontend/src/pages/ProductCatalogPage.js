@@ -17,7 +17,6 @@ import styled from "styled-components";
 import {userContext} from "../providers/UserContextProvider";
 import {useParams} from "react-router-dom";
 import {PageContainer} from "../components/Utils";
-import {CartContext} from "../providers/CartContextProvider";
 
 const CreateEntityModal = ({options, children}) => {
     const {toggle, visible, title, onEntityCreate, url, invalidatePage} = options;
@@ -72,15 +71,11 @@ const CreateEntityModal = ({options, children}) => {
             return;
         }
 
-        console.log(request)
-
         Api(url, {
             method: 'POST',
             body: request
         }).then(([result, ok]) => {
             if (!ok) {
-                console.log("Request failed", result);
-
                 if (result.StatusCode === 400) {
                     setError(result.message);
                     return
@@ -89,7 +84,6 @@ const CreateEntityModal = ({options, children}) => {
                 }
             }
 
-            console.log(result);
             if (onSuccess) {
                 onSuccess();
                 clearInputs();
@@ -173,7 +167,6 @@ const ProductCatalogTopBar = ({invalidatePage}) => {
         Api(`Category`).then(([result, ok]) => {
             if (ok) {
                 setCategories(result);
-                console.log(result)
                 invalidatePage();
             } else {
                 throw Error("An error occured", result);
