@@ -147,7 +147,7 @@ const ProductOrderControlPanel = ({productOrder, onProductOrderChange}) => {
             case ProductOrderStates.Done:
                 return <Badge color={"success"}>Done</Badge>
             default:
-                return ""
+                return <Badge color={"primary"}>{state}</Badge>
         }
     }
 

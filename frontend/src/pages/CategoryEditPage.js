@@ -10,8 +10,6 @@ const CategoryEditPage = () => {
     const { Api } = useContext(userContext);
     const [categories, setCategories] = useState([]);
 
-
-
     useEffect(() => {
         Api('Category').then(([result,ok]) => {
             if (ok) {
@@ -21,8 +19,6 @@ const CategoryEditPage = () => {
             }
         })
     },[]);
-
-
 
     return (
         <PageContainer>

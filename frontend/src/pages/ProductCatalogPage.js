@@ -14,7 +14,7 @@ import {
     Row
 } from "reactstrap";
 import styled from "styled-components";
-import {userContext} from "../providers/UserContextProvider";
+import {ADMIN_ROLE, userContext, VisibleToRoles} from "../providers/UserContextProvider";
 import {useParams} from "react-router-dom";
 import {PageContainer} from "../components/Utils";
 
@@ -259,7 +259,9 @@ const ProductCatalogPage = () => {
 
     return (
         <PageContainer>
-            <ProductCatalogTopBar invalidatePage={invalidate}/>
+            <VisibleToRoles roles={[ADMIN_ROLE]}>
+                <ProductCatalogTopBar invalidatePage={invalidate}/>
+            </VisibleToRoles>
             <ProductFilteringTopBar/>
             {
                 products.length > 0 ?

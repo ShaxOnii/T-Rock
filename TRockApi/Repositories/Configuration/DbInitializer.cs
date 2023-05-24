@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TRockApi.Repositories.Models;
+using TRockApi.Security;
 
 namespace TRockApi.Repositories.Configuration {
     public static class DbInitializer {
@@ -8,8 +9,8 @@ namespace TRockApi.Repositories.Configuration {
             dbContext.Database.EnsureCreated();
 
             var roles = new List<Role> {
-                new() {Name = "Admin"},
-                new() {Name = "Client"}
+                new() {Name = Roles.ADMIN_ROLE},
+                new() {Name = Roles.CLIENT_ROLE}
             };
 
             var admin = new User {

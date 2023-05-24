@@ -1,10 +1,10 @@
 import {useContext, useEffect, useState} from "react";
-import {userContext} from "../providers/UserContextProvider";
+import {ADMIN_ROLE, userContext, VisibleToRoles} from "../providers/UserContextProvider";
 import {useParams} from "react-router-dom";
 import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {PageContainer} from "../components/Utils";
-import ExampleImage from "../images/ExampleTShirt.jpg" 
+import ExampleImage from "../images/ExampleTShirt.jpg"
 import {
     faPenToSquare as EditIcon,
     faClose as CloseIcon,
@@ -186,13 +186,15 @@ const ProductDetails = ({product}) => {
                         title(detailsEditMode)
                     }
                 </Col>
-                <Col sm={"auto"}>
-                    {detailsEditMode ?
-                        <ChangeButtonActions onDiscard={handleDiscardChanges} onSave={handleSaveChanges}/>
-                        :
-                        <EditButton onClick={toggleDetailsEditMode}/>
-                    }
-                </Col>
+                <VisibleToRoles roles={[ADMIN_ROLE]}>
+                    <Col sm={"auto"}>
+                        {detailsEditMode ?
+                            <ChangeButtonActions onDiscard={handleDiscardChanges} onSave={handleSaveChanges}/>
+                            :
+                            <EditButton onClick={toggleDetailsEditMode}/>
+                        }
+                    </Col>
+                </VisibleToRoles>
             </ProductDetailsContainer>
             <ProductDetailsContainer>
                 <ColContentToRight>
@@ -269,13 +271,15 @@ const ProductDescriptionPane = ({options}) => {
                         <Col>
                             <h5>{caption}</h5>
                         </Col>
-                        <Col sm={"auto"}>
-                            {editMode ?
-                                <ChangeButtonActions onDiscard={handleDiscardChanges} onSave={handleSaveChanges}/>
-                                :
-                                <EditButton onClick={toggleEditMode}/>
-                            }
-                        </Col>
+                        <VisibleToRoles roles={[ADMIN_ROLE]}>
+                            <Col sm={"auto"}>
+                                {editMode ?
+                                    <ChangeButtonActions onDiscard={handleDiscardChanges} onSave={handleSaveChanges}/>
+                                    :
+                                    <EditButton onClick={toggleEditMode}/>
+                                }
+                            </Col>
+                        </VisibleToRoles>
                     </Row>
                 </CardTitle>
                 {!editMode ?

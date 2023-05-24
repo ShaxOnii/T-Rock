@@ -1,4 +1,4 @@
-import {createContext, useState} from "react";
+import {createContext, useContext, useState} from "react";
 import {isDevelopment} from "../components/Utils";
 import {useNavigate} from "react-router-dom";
 
@@ -141,6 +141,21 @@ const UserProvider = ({children}) => {
         }}>
             {children}
         </userContext.Provider>
+    )
+}
+
+export const VisibleToRoles = ({roles, children}) => {
+    const {hasRole} = useContext(userContext)
+
+
+    const isVisible = () => {
+        return roles.filter(hasRole).length > 0;
+    }
+
+    return (
+        <>
+            {isVisible() && children}
+        </>
     )
 }
 
