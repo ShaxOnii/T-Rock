@@ -1,4 +1,5 @@
 import {Table} from "reactstrap";
+import styled from "styled-components";
 
 /**
  *
@@ -22,37 +23,62 @@ const SimpleTable = ({fields = [], items = []}) => {
 
 
 const SimpleTableHeader = ({fields}) => {
+    const styles = (fieldType) => {
+        if (fieldType === "actions") {
+            return {
+                display: "flex",
+                justifyContent: "right",
+            }
+        }
+
+        return undefined;
+    }
+
     return (
         <thead>
         <tr>
-            {fields.map(field => <th>{field.caption}</th>)}
+            {fields.map(field => <th style={styles(field.type)}>{field.caption}</th>)}
         </tr>
         </thead>
     )
 }
 
 
+const TableRowWithAction = styled.td`
+  display: flex;
+  justify-content: right;
+  align-items: center;
+`
+
 const SimpleTableItem = ({fields, item}) => {
 
     const formatData = (field) => {
-        if(field.format){
+        if (field.format) {
             return field.format(item[field.name]);
-        }else {
+        } else {
             return item[field.name]
         }
     }
 
     return (
         <tr>
-            {fields.map(field =>
-                <td>{formatData(field)}</td>
+            {fields.map(field => {
+                    if (field.type === "actions") {
+                        return <TableRowWithAction>{formatData(field)}</TableRowWithAction>
+                    }
+                    return <td>{formatData(field)}</td>
+                }
             )}
         </tr>
     )
 }
 
-export const field = (name, caption, fieldFormatter) => {
-    return {name, caption, format: fieldFormatter};
+export const field = (name, caption, {fieldFormatter, type} = {}) => {
+    return {
+        name, caption,
+        format: fieldFormatter,
+        type
+    };
 }
 
 export default SimpleTable;

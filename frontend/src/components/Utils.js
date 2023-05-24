@@ -1,9 +1,17 @@
 import styled from "styled-components";
 import {NavLink} from "react-router-dom";
 import {Container} from "reactstrap";
+import {
+    faPenToSquare, faClose, faCheck
+} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 export const isDevelopment = true;
 
+export const ApplyIcon = () => <FontAwesomeIcon icon={faCheck}/>
+export const CloseIcon = () => <FontAwesomeIcon icon={faClose}/>
+export const DeleteIcon = () => <FontAwesomeIcon icon={faClose}/>
+export const EditIcon = () => <FontAwesomeIcon icon={faPenToSquare}/>
 
 const SimpleLink = styled(NavLink)`
   color: #000;
@@ -15,11 +23,11 @@ const SimpleLink = styled(NavLink)`
   &:first-child {
     padding-left: 0
   }
-  
+
   &:hover {
     color: #000;
     text-decoration: underline;
-    
+
   }
 `
 const ItemImage = styled.div`

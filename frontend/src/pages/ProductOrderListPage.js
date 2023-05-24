@@ -19,12 +19,15 @@ const ProductOrderListPage = () => {
     }, [Api])
 
     const fieldsToShow = [
-        field("id", "Product order",
-            (id) => <SimpleLink to={`/productOrder/${id}`}>Order#{id}</SimpleLink>),
-        field("state", "State",
-            (state) => <ProductOrderStateBadge state={state}/>),
-        field("creationDate", "Created",
-            (date) =>  format(new Date(date), "ii.MM.yyyy HH:mm")),
+        field("id", "Product order", {
+            fieldFormatter: (id) => <SimpleLink to={`/productOrder/${id}`}>Order#{id}</SimpleLink>
+        }),
+        field("state", "State", {
+            fieldFormatter: (state) => <ProductOrderStateBadge state={state}/>
+        }),
+        field("creationDate", "Created", {
+            fieldFormatter: (date) => format(new Date(date), "ii.MM.yyyy HH:mm"),
+        })
     ];
 
     return (

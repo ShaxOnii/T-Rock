@@ -2,14 +2,8 @@ import {useContext, useEffect, useState} from "react";
 import {ADMIN_ROLE, userContext, VisibleToRoles} from "../providers/UserContextProvider";
 import {useParams} from "react-router-dom";
 import styled from "styled-components";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {PageContainer} from "../components/Utils";
+import {PageContainer, ApplyIcon, CloseIcon, EditIcon} from "../components/Utils";
 import ExampleImage from "../images/ExampleTShirt.jpg"
-import {
-    faPenToSquare as EditIcon,
-    faClose as CloseIcon,
-    faCheck as ApplyIcon
-} from "@fortawesome/free-solid-svg-icons";
 import {
     Button, ButtonGroup, Card, CardBody, CardText, CardTitle,
     Carousel, CarouselControl, CarouselIndicators, CarouselItem,
@@ -81,7 +75,7 @@ export const EditButton = ({onClick}) => {
             e.preventDefault();
             onClick()
         }}>
-            <FontAwesomeIcon icon={EditIcon}/>
+            <EditIcon/>
         </Button>
     )
 }
@@ -90,10 +84,10 @@ const ChangeButtonActions = ({onDiscard, onSave}) => {
     return (
         <ButtonGroup>
             <Button color={"success"} onClick={onSave}>
-                <FontAwesomeIcon icon={ApplyIcon}/>
+                <ApplyIcon/>
             </Button>
             <Button color={"danger"} onClick={onDiscard}>
-                <FontAwesomeIcon icon={CloseIcon}/>
+                <CloseIcon/>
             </Button>
         </ButtonGroup>
     )
