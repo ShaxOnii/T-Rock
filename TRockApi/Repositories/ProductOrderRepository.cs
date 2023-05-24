@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using TRockApi.Repositories.Api;
 using TRockApi.Repositories.Configuration;
 using TRockApi.Repositories.Models;
@@ -13,22 +14,28 @@ namespace TRockApi.Repositories {
         public ProductOrderRepository(ShopDbContext dbContext) {
             _dbContext = dbContext;
         }
-
+        
         public IEnumerable<ProductOrder> All() {
-            return _dbContext.ProductOrders
-                .Include(order => order.User)
-                .Include(order => order.Items)
-                .ThenInclude(item => item.Product)
+            return ProductOrderGenericQuery().ToArray();
+        }
+
+        public IEnumerable<ProductOrder> AllByUserId(int userId) {
+            return ProductOrderGenericQuery()
+                .Where(order => order.User.Id == userId )
                 .ToArray();
         }
 
         public ProductOrder? FindById(int id) {
+            return ProductOrderGenericQuery()
+                .FirstOrDefault(order => order.Id == id);
+        }
+
+        private IIncludableQueryable<ProductOrder, Product> ProductOrderGenericQuery() {
             return _dbContext.ProductOrders
                 .Include(order => order.User)
                 .Include(order => order.Items)
-                .ThenInclude(item => item.Product)
-                .FirstOrDefault(order => order.Id == id);
-        }
+                .ThenInclude(item => item.Product);
+        } 
         
         public int Store(ProductOrder productOrder) {
             _dbContext.ProductOrders.Add(productOrder);

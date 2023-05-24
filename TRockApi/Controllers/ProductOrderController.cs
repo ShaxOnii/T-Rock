@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TRockApi.Handlers.Api;
 using TRockApi.Repositories.Api;
+using TRockApi.Repositories.Models;
 using TRockApi.Requests;
 using TRockApi.Response;
+using TRockApi.Security;
 
 namespace TRockApi.Controllers {
 
@@ -34,9 +36,17 @@ namespace TRockApi.Controllers {
 
         [HttpGet]
         public IEnumerable<ProductOrderResponse> Index() {
-            var productOrders = _productOrderRepository.All();
+            return FindOrdersForAuthorizedUser().Select(ProductOrderResponse.FromModel);
+        }
 
-            return productOrders.Select(ProductOrderResponse.FromModel);
+        private IEnumerable<ProductOrder> FindOrdersForAuthorizedUser() {
+            var user = GetAuthorizedUser();
+
+            if (user.hasRole(Roles.ADMIN_ROLE)) {
+                return _productOrderRepository.All();
+            }
+
+            return _productOrderRepository.AllByUserId(user.Id);
         }
 
         [HttpGet("{id}")]

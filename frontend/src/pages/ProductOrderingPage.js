@@ -3,8 +3,9 @@ import {ADMIN_ROLE, CLIENT_ROLE, userContext} from "../providers/UserContextProv
 import {useParams} from "react-router-dom";
 import {PageContainer} from "../components/Utils";
 import ProductOrderItemList from "../components/ProductOrderListItem";
-import {Badge, Button, Col, Row} from "reactstrap";
+import {Button, Col, Row} from "reactstrap";
 import DeliveryAddressDetails from "../components/DeliveryAddressDetails";
+import ProductOrderStateBadge, {ProductOrderStates} from "../components/ProductOrderStateBadge";
 
 const ProductOrderDetailsPage = () => {
     const {Api} = useContext(userContext)
@@ -38,13 +39,6 @@ const ProductOrderDetailsPage = () => {
             </Row>
         </PageContainer>
     )
-}
-
-const ProductOrderStates = {
-    WaitingForPayment: "WaitingForPayment",
-    DuringFulfillment: "DuringFulfillment",
-    Sent: "Sent",
-    Done: "Done"
 }
 
 const ProductOrderStateControlButton = ({productOrderId, state, onOrderChange}) => {
@@ -136,21 +130,6 @@ const ProductOrderStateControlButton = ({productOrderId, state, onOrderChange}) 
 
 const ProductOrderControlPanel = ({productOrder, onProductOrderChange}) => {
 
-    const createStateBadge = (state) => {
-        switch (state) {
-            case ProductOrderStates.WaitingForPayment:
-                return <Badge color={"primary"}>Waiting for payment</Badge>
-            case ProductOrderStates.DuringFulfillment:
-                return <Badge color={"primary"}>During fulfillment</Badge>
-            case ProductOrderStates.Sent:
-                return <Badge color={"primary"}>Sent</Badge>
-            case ProductOrderStates.Done:
-                return <Badge color={"success"}>Done</Badge>
-            default:
-                return <Badge color={"primary"}>{state}</Badge>
-        }
-    }
-
     return (
         <Row style={{
             backgroundColor: "#eee",
@@ -177,7 +156,7 @@ const ProductOrderControlPanel = ({productOrder, onProductOrderChange}) => {
                 </Row>
                 <Row>
                     <Col>
-                        {createStateBadge(productOrder.state)}
+                        <ProductOrderStateBadge state={productOrder.state}/>
                     </Col>
                 </Row>
                 <ProductOrderStateControlButton

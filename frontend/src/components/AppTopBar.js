@@ -86,6 +86,9 @@ const MainAppToolbar = () => {
                 <StyledNavLink to={"/category"}>
                     <MenuButton icon={faShoppingCart}>Category</MenuButton>
                 </StyledNavLink>
+                <StyledNavLink to={"/productOrder"}>
+                    <MenuButton icon={faShoppingCart}>Orders</MenuButton>
+                </StyledNavLink>
                 <StyledNavLink to={"/cart"}>
                     <MenuButton icon={faShoppingCart}>Cart</MenuButton>
                 </StyledNavLink>
