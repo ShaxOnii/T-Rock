@@ -1,11 +1,12 @@
-import { Col, Nav, Navbar, NavbarBrand, Row } from "reactstrap";
+import {Col, Nav, Navbar, NavbarBrand, Row} from "reactstrap";
 import styled from "styled-components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faShoppingCart, faUser, faShirt } from "@fortawesome/free-solid-svg-icons";
-import { SimpleLink } from "./Utils";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faShoppingCart, faUser, faShirt} from "@fortawesome/free-solid-svg-icons";
+import {SimpleLink} from "./Utils";
 import LoginUserModal from "./LoginUserModal";
-import { useContext, useEffect, useState } from "react";
-import { userContext } from "../providers/UserContextProvider";
+import {useContext, useEffect, useState} from "react";
+import {userContext} from "../providers/UserContextProvider";
+import LogoImage from "../images/TRockIcon.svg"
 
 
 const GenericNav = styled(Navbar)`
@@ -14,7 +15,7 @@ const GenericNav = styled(Navbar)`
 
   display: flex;
 
-  padding: 1.5em 1em 1.5em 1em;
+  padding: 0.5em 1.5em 0.5em 1.5em;
   margin: 0;
 `
 
@@ -32,29 +33,33 @@ const StyledNavLink = styled(SimpleLink)`
   }
 `
 
-const MenuButton = ({ icon, onClick, children }) => {
+const MenuButton = ({icon, onClick, children}) => {
     return (
         <Row onClick={onClick}>
             <Col>
-                <FontAwesomeIcon icon={icon} />
+                <FontAwesomeIcon icon={icon}/>
             </Col>
             <Col>{children}</Col>
         </Row>
     )
 }
 
-const StyledLogoButton = styled(SimpleLink)`
-color: #00f;
+const StyledLogoButton = styled.div`
+  background-image: url(${(p) => p.imageSrc});
+  background-size: cover;
+  
+  margin-right: 0.5em;
+  
+  height: 130%;
+  aspect-ratio: 1/1;
+`
 
-font-size: 1.2em;
-letter-spacing: 0.5px;
-text-decoration: none;
-
-padding-left: 2em;
-
-&:first-child {
-  padding-left: 0
-}
+const BrandName = styled.h2`
+  color: #fa4a4f;
+  font-weight: bold;
+  font-size: 1.8em;
+  
+  user-select: none;
 `
 
 const UsernameContainer = styled.div`
@@ -62,7 +67,7 @@ const UsernameContainer = styled.div`
 `
 
 const MainAppToolbar = () => {
-    const { username, isLogged, logout } = useContext(userContext);
+    const {username, isLogged, logout} = useContext(userContext);
 
     const [loginModalVisible, setLoginModalVisible] = useState(false);
 
@@ -75,20 +80,13 @@ const MainAppToolbar = () => {
     return (
         <GenericNav>
             <Nav>
-                <NavbarBrand>
-                    <StyledLogoButton to={"/"}>
-                        <MenuButton icon={faShirt} style={{ color: "#000000", }}>T-Rock</MenuButton>
-                    </StyledLogoButton>
+                <NavbarBrand style={{display: "flex", alignItems: "center"}}>
+                    <StyledLogoButton imageSrc={LogoImage}/>
+                    <BrandName>T-Rock</BrandName>
                 </NavbarBrand>
             </Nav>
             <Nav>
-                <UsernameContainer>{username}</UsernameContainer>
-                <StyledNavLink to={"/category"}>
-                    <MenuButton icon={faShoppingCart}>Category</MenuButton>
-                </StyledNavLink>
-                <StyledNavLink to={"/productOrder"}>
-                    <MenuButton icon={faShoppingCart}>Orders</MenuButton>
-                </StyledNavLink>
+                <StyledNavLink to={"/dashboard"}>{username}</StyledNavLink>
                 <StyledNavLink to={"/cart"}>
                     <MenuButton icon={faShoppingCart}>Cart</MenuButton>
                 </StyledNavLink>
@@ -102,7 +100,7 @@ const MainAppToolbar = () => {
                         <LoginUserModal options={{
                             visible: loginModalVisible,
                             toggle: toggleLoginModal
-                        }} />
+                        }}/>
                     </StyledNavLink>
                 }
             </Nav>
@@ -123,7 +121,7 @@ const CategoryNav = styled(Nav)`
 `
 
 const CategoryToolbar = () => {
-    const { Api } = useContext(userContext);
+    const {Api} = useContext(userContext);
 
     const [categories, setCategories] = useState([]);
 
@@ -167,8 +165,8 @@ const AppTopBar = () => {
 
     return (
         <MainNav position="sticky">
-            <MainAppToolbar />
-            <CategoryToolbar />
+            <MainAppToolbar/>
+            <CategoryToolbar/>
         </MainNav>
     );
 }

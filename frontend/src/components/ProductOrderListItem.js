@@ -9,7 +9,7 @@ import styled from "styled-components";
 
 
 const ProductOrderItemList = ({title = "", items, editable = false}) => {
-    if (items === undefined) return ;
+    if (items === undefined) return;
 
     return (
         <Row style={{

@@ -16,28 +16,40 @@ import CartPage from "./pages/CartPage";
 import {CartContextProvider} from "./providers/CartContextProvider";
 import ProductOrderDetailsPage from "./pages/ProductOrderingPage";
 import ProductOrderListPage from "./pages/ProductOrderListPage";
+import UserDashboard from "./pages/UserDashboard";
+import styled from "styled-components";
 
+const AppContainer = styled.div`
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+`
 
 function App() {
     return (
         <Router>
             <UserProvider>
                 <CartContextProvider>
-                    <AppTopBar/>
-                    <Container>
-                        <Routes>
-                            <Route exact path="/category" element={<CategoryEditPage/>}/>
-                            <Route exact path="/" element={<ProductCatalogPage/>}/>
-                            <Route exact path="/products" element={<ProductCatalogPage/>}/>
-                            <Route exact path="/products/:productCategory" element={<ProductCatalogPage/>}/>
-                            <Route exact path="/product/:id" element={<ProductPage/>}/>
-                            <Route exact path="/cart" element={<CartPage/>}/>
-                            <Route exact path="/productOrder" element={<ProductOrderListPage/>}/>
-                            <Route exact path="/productOrder/:productOrderId" element={<ProductOrderDetailsPage/>}/>
-                            <Route path="*" element={<ErrorPage message={"404 not found"}/>}/>
-                        </Routes>
-                    </Container>
-                    <Footer/>
+                    <AppContainer>
+                        <AppTopBar/>
+                        <Container style={{
+                            flex: "1 1 auto"
+                        }}>
+                            <Routes>
+                                <Route exact path="/" element={<ProductCatalogPage/>}/>
+                                <Route exact path="/dashboard" element={<UserDashboard/>}/>
+                                <Route exact path="/category" element={<CategoryEditPage/>}/>
+                                <Route exact path="/products" element={<ProductCatalogPage/>}/>
+                                <Route exact path="/products/:productCategory" element={<ProductCatalogPage/>}/>
+                                <Route exact path="/product/:id" element={<ProductPage/>}/>
+                                <Route exact path="/cart" element={<CartPage/>}/>
+                                <Route exact path="/productOrder" element={<ProductOrderListPage/>}/>
+                                <Route exact path="/productOrder/:productOrderId" element={<ProductOrderDetailsPage/>}/>
+                                <Route path="*" element={<ErrorPage message={"404 not found"}/>}/>
+                            </Routes>
+                        </Container>
+                        <Footer/>
+                    </AppContainer>
                 </CartContextProvider>
             </UserProvider>
         </Router>
