@@ -1,21 +1,21 @@
 import {Col, Nav, Navbar, NavbarBrand, Row} from "reactstrap";
 import styled from "styled-components";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faShoppingCart, faUser, faShirt} from "@fortawesome/free-solid-svg-icons";
+import {faShoppingCart, faUser} from "@fortawesome/free-solid-svg-icons";
 import {SimpleLink} from "./Utils";
 import LoginUserModal from "./LoginUserModal";
 import {useContext, useEffect, useState} from "react";
 import {userContext} from "../providers/UserContextProvider";
 import LogoImage from "../images/TRockIcon.svg"
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 
 const GenericNav = styled(Navbar)`
   border-bottom: 1px solid #383838;
   box-shadow: none;
-  
+
   background-color: #272727;
-  
+
   display: flex;
 
   padding: 0;
@@ -26,10 +26,10 @@ const GenericNav = styled(Navbar)`
 const StyledNavLink = styled(SimpleLink)`
   color: #ddd;
   text-align: center;
-  padding:  1em 2em 1em 2em;
+  padding: 1em 2em 1em 2em;
   font-size: 1em;
-  
-  &:hover{
+
+  &:hover {
     text-decoration: none;
     background-color: #fa4a4f;
     color: #272727;
@@ -55,9 +55,9 @@ const MenuButton = ({icon, onClick, children}) => {
 const StyledLogoButton = styled.div`
   background-image: url(${(p) => p.imageSrc});
   background-size: cover;
-  
+
   margin: 0.5em;
-  
+
   height: 100%;
   aspect-ratio: 1/1;
 `
@@ -66,7 +66,7 @@ const BrandName = styled.h2`
   color: #fa4a4f;
   font-weight: bold;
   font-size: 1.5em;
-  
+
   user-select: none;
   padding: 0.2em 0 0.2em 0;
 `
@@ -79,8 +79,8 @@ const StyledNav = styled(Nav)`
 const StyledNavbarBrand = styled(NavbarBrand)`
   display: flex;
   align-items: center;
-  
-  &:hover{
+
+  &:hover {
     cursor: pointer;
   }
 `
@@ -107,7 +107,9 @@ const MainAppToolbar = () => {
                 </StyledNavbarBrand>
             </StyledNav>
             <StyledNav>
-                <MainNavLink to={"/dashboard"}>{username}</MainNavLink>
+                {
+                    isLogged() && <MainNavLink to={"/dashboard"}>{username}</MainNavLink>
+                }
                 <MainNavLink to={"/cart"}>
                     <MenuButton icon={faShoppingCart}>Cart</MenuButton>
                 </MainNavLink>
@@ -133,7 +135,7 @@ const CategoryNav = styled(Nav)`
   display: flex;
   align-items: center;
   background-color: #272727;
-  
+
   margin: 0;
 `
 
@@ -151,7 +153,7 @@ const CategoryToolbar = () => {
                 throw Error("An error occured", result);
             }
         })
-    }, []);
+    }, [Api]);
 
 
     if (categories.length <= 0) {
