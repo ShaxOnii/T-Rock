@@ -11,10 +11,10 @@ import {useNavigate} from "react-router-dom";
 
 
 const GenericNav = styled(Navbar)`
-  border-bottom: 1px solid #383838;
+  border-bottom: 1px solid ${props => props.theme.secondary};
   box-shadow: none;
 
-  background-color: #272727;
+  background-color: ${props => props.theme.secondaryDark};
 
   display: flex;
 
@@ -31,8 +31,8 @@ const StyledNavLink = styled(SimpleLink)`
 
   &:hover {
     text-decoration: none;
-    background-color: #fa4a4f;
-    color: #272727;
+    background-color: ${props => props.theme.primary};
+    color: ${props => props.theme.secondaryDark};
   }
 `
 
@@ -63,7 +63,7 @@ const StyledLogoButton = styled.div`
 `
 
 const BrandName = styled.h2`
-  color: #fa4a4f;
+  color: ${props => props.theme.primary};
   font-weight: bold;
   font-size: 1.5em;
 
@@ -134,7 +134,7 @@ const MainAppToolbar = () => {
 const CategoryNav = styled(Nav)`
   display: flex;
   align-items: center;
-  background-color: #272727;
+  background-color: ${props => props.theme.secondaryDark};
 
   margin: 0;
 `

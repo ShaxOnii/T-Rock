@@ -3,8 +3,8 @@ import {Col, Container, Row} from "reactstrap";
 import {useNavigate} from "react-router-dom";
 
 const IconContainer = styled(Col)`
-  background-color: #fa4a4f;
-  color: #272727;
+  background-color: ${props => props.theme.primary};
+  color: ${props => props.theme.secondaryDark};
 
   display: flex;
   justify-content: center;
@@ -14,7 +14,7 @@ const IconContainer = styled(Col)`
 `
 
 const CaptionContainer = styled(Col)`
-  background-color: #272727;
+  background-color: ${props => props.theme.secondaryDark};
   color: #fff;
 
   text-align: center;
@@ -37,12 +37,12 @@ const LinkContainer = styled(Container)`
   }
 
   &:hover ${IconContainer}{
-    background-color: #e9393e;
-    color: #383838;
+    background-color: ${props => props.theme.primaryDark};
+    color: ${props => props.theme.secondary};
   }
 
   &:hover ${CaptionContainer}{
-    background-color: #383838;
+    background-color: ${props => props.theme.secondary};
   }
 `
 

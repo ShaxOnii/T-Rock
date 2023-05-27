@@ -20,9 +20,9 @@ const Row = styled.div`
 const Box = styled.div`
   padding: 20px 60px;
   bottom: 0;
-  background-color: #fa4a4f;
+  background-color: ${props => props.theme.primary};
 
-  color: #272727;
+  color: ${props => props.theme.secondaryDark};
   font-weight: bold;
 
   @media (max-width: 1000px) {

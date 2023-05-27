@@ -18,10 +18,11 @@ import ProductOrderDetailsPage from "./pages/ProductOrderingPage";
 import ProductOrderListPage from "./pages/ProductOrderListPage";
 import UserDashboard from "./pages/UserDashboard";
 import styled from "styled-components";
+import AppTheme from "./providers/ThemeProvider";
 
 const AppContainer = styled.div`
-  background-color: #F2ECFF;
-  
+  background-color: ${props => props.theme.light};
+
   display: flex;
   flex-flow: column;
   height: 100%;
@@ -29,32 +30,35 @@ const AppContainer = styled.div`
 
 function App() {
     return (
-        <Router>
-            <UserProvider>
-                <CartContextProvider>
-                    <AppContainer>
-                        <AppTopBar/>
-                        <Container style={{
-                            flex: "1 1 auto"
-                        }}>
-                            <Routes>
-                                <Route exact path="/" element={<ProductCatalogPage/>}/>
-                                <Route exact path="/dashboard" element={<UserDashboard/>}/>
-                                <Route exact path="/category" element={<CategoryEditPage/>}/>
-                                <Route exact path="/products" element={<ProductCatalogPage/>}/>
-                                <Route exact path="/products/:productCategory" element={<ProductCatalogPage/>}/>
-                                <Route exact path="/product/:id" element={<ProductPage/>}/>
-                                <Route exact path="/cart" element={<CartPage/>}/>
-                                <Route exact path="/productOrder" element={<ProductOrderListPage/>}/>
-                                <Route exact path="/productOrder/:productOrderId" element={<ProductOrderDetailsPage/>}/>
-                                <Route path="*" element={<ErrorPage message={"404 not found"}/>}/>
-                            </Routes>
-                        </Container>
-                        <Footer/>
-                    </AppContainer>
-                </CartContextProvider>
-            </UserProvider>
-        </Router>
+        <AppTheme>
+            <Router>
+                <UserProvider>
+                    <CartContextProvider>
+                        <AppContainer>
+                            <AppTopBar/>
+                            <Container style={{
+                                flex: "1 1 auto"
+                            }}>
+                                <Routes>
+                                    <Route exact path="/" element={<ProductCatalogPage/>}/>
+                                    <Route exact path="/dashboard" element={<UserDashboard/>}/>
+                                    <Route exact path="/category" element={<CategoryEditPage/>}/>
+                                    <Route exact path="/products" element={<ProductCatalogPage/>}/>
+                                    <Route exact path="/products/:productCategory" element={<ProductCatalogPage/>}/>
+                                    <Route exact path="/product/:id" element={<ProductPage/>}/>
+                                    <Route exact path="/cart" element={<CartPage/>}/>
+                                    <Route exact path="/productOrder" element={<ProductOrderListPage/>}/>
+                                    <Route exact path="/productOrder/:productOrderId"
+                                           element={<ProductOrderDetailsPage/>}/>
+                                    <Route path="*" element={<ErrorPage message={"404 not found"}/>}/>
+                                </Routes>
+                            </Container>
+                            <Footer/>
+                        </AppContainer>
+                    </CartContextProvider>
+                </UserProvider>
+            </Router>
+        </AppTheme>
 
     );
 }
