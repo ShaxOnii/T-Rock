@@ -7,31 +7,39 @@ import LoginUserModal from "./LoginUserModal";
 import {useContext, useEffect, useState} from "react";
 import {userContext} from "../providers/UserContextProvider";
 import LogoImage from "../images/TRockIcon.svg"
+import {Link, useNavigate} from "react-router-dom";
 
 
 const GenericNav = styled(Navbar)`
-  border-bottom: 1px solid #eee;
-  box-shadow: 0 0.1em 0.2em 0 #ccc;
-
+  border-bottom: 1px solid #383838;
+  box-shadow: none;
+  
+  background-color: #272727;
+  
   display: flex;
 
-  padding: 0.5em 1.5em 0.5em 1.5em;
+  padding: 0;
   margin: 0;
 `
 
+
 const StyledNavLink = styled(SimpleLink)`
-  color: #000;
-
-  font-size: 1.2em;
-  letter-spacing: 0.5px;
-  text-decoration: none;
-
-  padding-left: 2em;
-
-  &:first-child {
-    padding-left: 0
+  color: #ddd;
+  text-align: center;
+  padding:  1em 2em 1em 2em;
+  font-size: 1em;
+  
+  &:hover{
+    text-decoration: none;
+    background-color: #fa4a4f;
+    color: #272727;
   }
 `
+
+const MainNavLink = styled(StyledNavLink)`
+  font-size: 1.2em;
+`
+
 
 const MenuButton = ({icon, onClick, children}) => {
     return (
@@ -48,26 +56,39 @@ const StyledLogoButton = styled.div`
   background-image: url(${(p) => p.imageSrc});
   background-size: cover;
   
-  margin-right: 0.5em;
+  margin: 0.5em;
   
-  height: 130%;
+  height: 100%;
   aspect-ratio: 1/1;
 `
 
 const BrandName = styled.h2`
   color: #fa4a4f;
   font-weight: bold;
-  font-size: 1.8em;
+  font-size: 1.5em;
   
   user-select: none;
+  padding: 0.2em 0 0.2em 0;
 `
 
-const UsernameContainer = styled.div`
+const StyledNav = styled(Nav)`
+  display: flex;
+  padding: 0;
+`
 
+const StyledNavbarBrand = styled(NavbarBrand)`
+  display: flex;
+  align-items: center;
+  
+  &:hover{
+    cursor: pointer;
+  }
 `
 
 const MainAppToolbar = () => {
     const {username, isLogged, logout} = useContext(userContext);
+    const navigate = useNavigate()
+
 
     const [loginModalVisible, setLoginModalVisible] = useState(false);
 
@@ -79,46 +100,43 @@ const MainAppToolbar = () => {
 
     return (
         <GenericNav>
-            <Nav>
-                <NavbarBrand style={{display: "flex", alignItems: "center"}}>
+            <StyledNav>
+                <StyledNavbarBrand onClick={() => navigate("/")}>
                     <StyledLogoButton imageSrc={LogoImage}/>
                     <BrandName>T-Rock</BrandName>
-                </NavbarBrand>
-            </Nav>
-            <Nav>
-                <StyledNavLink to={"/dashboard"}>{username}</StyledNavLink>
-                <StyledNavLink to={"/cart"}>
+                </StyledNavbarBrand>
+            </StyledNav>
+            <StyledNav>
+                <MainNavLink to={"/dashboard"}>{username}</MainNavLink>
+                <MainNavLink to={"/cart"}>
                     <MenuButton icon={faShoppingCart}>Cart</MenuButton>
-                </StyledNavLink>
+                </MainNavLink>
                 {isLogged() ?
-                    <StyledNavLink to={"/"}>
+                    <MainNavLink to={"/"}>
                         <MenuButton onClick={handleUserLogout} icon={faUser}>Logout</MenuButton>
-                    </StyledNavLink>
+                    </MainNavLink>
                     :
-                    <StyledNavLink to={"/"}>
+                    <MainNavLink to={"/"}>
                         <MenuButton onClick={toggleLoginModal} icon={faUser}>Login</MenuButton>
                         <LoginUserModal options={{
                             visible: loginModalVisible,
                             toggle: toggleLoginModal
                         }}/>
-                    </StyledNavLink>
+                    </MainNavLink>
                 }
-            </Nav>
+            </StyledNav>
         </GenericNav>
     );
 }
 
 const CategoryNav = styled(Nav)`
   display: flex;
-  justify-content: center;
   align-items: center;
-
-  border-bottom: 1px solid #eee;
-  box-shadow: 0 0.1em 0.2em 0 #ccc;
-
-  padding: 1em;
+  background-color: #272727;
+  
   margin: 0;
 `
+
 
 const CategoryToolbar = () => {
     const {Api} = useContext(userContext);

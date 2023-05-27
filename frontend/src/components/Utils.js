@@ -25,15 +25,12 @@ const SimpleLink = styled(NavLink)`
   font-size: 1.2em;
   letter-spacing: 0.5px;
   text-decoration: none;
-
-  &:first-child {
-    padding-left: 0
-  }
-
+  user-select: none;
+  
   &:hover {
     color: #000;
     text-decoration: underline;
-
+    cursor: pointer;
   }
 `
 const ItemImage = styled.div`
@@ -45,7 +42,8 @@ const ItemImage = styled.div`
 `
 
 const PageContainer = styled(Container)`
-  padding-top: 5em;
+  padding-top: 10em;
+  padding-bottom: 10em;
 `
 
 export {SimpleLink, PageContainer, ItemImage}

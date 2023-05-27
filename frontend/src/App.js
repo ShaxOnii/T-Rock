@@ -20,6 +20,8 @@ import UserDashboard from "./pages/UserDashboard";
 import styled from "styled-components";
 
 const AppContainer = styled.div`
+  background-color: #F2ECFF;
+  
   display: flex;
   flex-flow: column;
   height: 100%;

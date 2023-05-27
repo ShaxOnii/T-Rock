@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 
 const IconContainer = styled(Col)`
   background-color: #fa4a4f;
-  color: #383838;
+  color: #272727;
 
   display: flex;
   justify-content: center;
@@ -14,7 +14,7 @@ const IconContainer = styled(Col)`
 `
 
 const CaptionContainer = styled(Col)`
-  background-color: #383838;
+  background-color: #272727;
   color: #fff;
 
   text-align: center;
@@ -38,11 +38,11 @@ const LinkContainer = styled(Container)`
 
   &:hover ${IconContainer}{
     background-color: #e9393e;
-    color: #272727;
+    color: #383838;
   }
 
   &:hover ${CaptionContainer}{
-    background-color: #272727;
+    background-color: #383838;
   }
 `
 
