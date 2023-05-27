@@ -7,26 +7,40 @@ import {faMinus as MinusIcon, faPlus as PlusIcon, faXmark as DeleteIcon} from "@
 import styled from "styled-components";
 
 
+const ProductListContainer = styled(Row)`
+  color:${props => props.theme.textLight};
+  background-color: ${props => props.theme.secondary};
+
+
+`
+
+const ListTitle = styled.h3`
+  padding: 0.5em;
+  font-weight: bold;
+  letter-spacing: 1px;
+`
+
 
 const ProductOrderItemList = ({title = "", items, editable = false}) => {
     if (items === undefined) return;
 
     return (
-        <Row style={{
-            backgroundColor: "#eee",
-            padding: "1em",
-            borderRadius: "0.5em"
-        }}>
-            <h3>{title}</h3>
+        <ProductListContainer>
+            <ListTitle>{title}</ListTitle>
             <Col>
                 {items.map((item, idx) => <ProductOrderListItem key={idx} editable={editable} item={item}/>)}
             </Col>
-        </Row>
+        </ProductListContainer>
     );
 }
 
 const ListItemContainer = styled(Row)`
   padding: 1em;
+  background-color: ${props => props.theme.secondaryDark};
+
+  &:nth-child(2n) {
+    background-color: ${props => props.theme.secondary};
+  }
 `
 
 const ItemCounter = styled.div`

@@ -24,7 +24,7 @@ const GenericNav = styled(Navbar)`
 
 
 const StyledNavLink = styled(SimpleLink)`
-  color: #ddd;
+  color: ${props => props.theme.textLight};
   text-align: center;
   padding: 1em 2em 1em 2em;
   font-size: 1em;
@@ -32,7 +32,7 @@ const StyledNavLink = styled(SimpleLink)`
   &:hover {
     text-decoration: none;
     background-color: ${props => props.theme.primary};
-    color: ${props => props.theme.secondaryDark};
+    color: ${props => props.theme.textDark};
   }
 `
 

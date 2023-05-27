@@ -5,6 +5,7 @@ import {CartContext} from "../providers/CartContextProvider";
 import {Button, Col, Row} from "reactstrap";
 import {useNavigate} from "react-router-dom"
 import ProductOrderItemList from "../components/ProductOrderListItem";
+import styled from "styled-components";
 
 const CartPage = () => {
     const {isCartEmpty, getCart, fetchCart} = useContext(CartContext);
@@ -40,6 +41,14 @@ const EmptyCartPage = () => {
     );
 }
 
+const CartDetailsContainer = styled(Row)`
+  background-color: ${props => props.theme.secondary};
+  padding: 1em;
+  margin-left: 1em;
+
+  color: ${props => props.theme.textLight};;
+`
+
 const CartDetails = ({price}) => {
     const {Api} = useContext(userContext);
     const navigate = useNavigate();
@@ -55,12 +64,7 @@ const CartDetails = ({price}) => {
     }
 
     return (
-        <Row style={{
-            backgroundColor: "#eee",
-            padding: "1em",
-            marginLeft: "1em",
-            borderRadius: "0.5em"
-        }}>
+        <CartDetailsContainer>
             <Col>
                 <Row style={{
                     display: "flex",
@@ -88,7 +92,7 @@ const CartDetails = ({price}) => {
                     </Col>
                 </Row>
             </Col>
-        </Row>
+        </CartDetailsContainer>
 
     );
 }

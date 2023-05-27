@@ -9,7 +9,11 @@ const AppTheme = ({children}) => {
         secondary: "#383838",
         secondaryDark: "#272727",
 
-        light: "#f2ecff"
+        light: "#f5f5f5",
+        lightDarker: "#e4e4e4",
+
+        textLight: "#f6f6f6",
+        textDark: "#f6f6f6",
     }
 
 

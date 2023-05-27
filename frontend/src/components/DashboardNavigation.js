@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 
 const IconContainer = styled(Col)`
   background-color: ${props => props.theme.primary};
-  color: ${props => props.theme.secondaryDark};
+  color: ${props => props.theme.textDark};
 
   display: flex;
   justify-content: center;
@@ -38,7 +38,7 @@ const LinkContainer = styled(Container)`
 
   &:hover ${IconContainer}{
     background-color: ${props => props.theme.primaryDark};
-    color: ${props => props.theme.secondary};
+    color: ${props => props.theme.textDark};
   }
 
   &:hover ${CaptionContainer}{

@@ -18,11 +18,11 @@ const Row = styled.div`
 `;
 
 const Box = styled.div`
-  padding: 20px 60px;
+  padding: 4em 2em 2em 2em;
   bottom: 0;
   background-color: ${props => props.theme.primary};
 
-  color: ${props => props.theme.secondaryDark};
+  color: ${props => props.theme.textDark};
   font-weight: bold;
 
   @media (max-width: 1000px) {

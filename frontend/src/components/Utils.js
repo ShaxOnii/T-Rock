@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {NavLink} from "react-router-dom";
-import {Container} from "reactstrap";
+import {Button, Container} from "reactstrap";
 import {
     faPenToSquare, faClose, faCheck, faShoppingCart, faShirt, faBagShopping, faCartFlatbedSuitcase, faFolder
 } from "@fortawesome/free-solid-svg-icons";
@@ -20,7 +20,7 @@ export const CasesIcon = () => <FontAwesomeIcon icon={faCartFlatbedSuitcase}/>
 
 
 const SimpleLink = styled(NavLink)`
-  color: #000;
+  color: ${props => props.theme.textLight};
 
   font-size: 1.2em;
   letter-spacing: 0.5px;
@@ -28,7 +28,7 @@ const SimpleLink = styled(NavLink)`
   user-select: none;
   
   &:hover {
-    color: #000;
+    color: ${props => props.theme.textLight};
     text-decoration: underline;
     cursor: pointer;
   }
@@ -44,6 +44,12 @@ const ItemImage = styled.div`
 const PageContainer = styled(Container)`
   padding-top: 10em;
   padding-bottom: 10em;
+`
+
+const StyledButton = styled(Button)`
+
+  
+
 `
 
 export {SimpleLink, PageContainer, ItemImage}

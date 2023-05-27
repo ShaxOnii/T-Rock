@@ -6,6 +6,25 @@ import ProductOrderItemList from "../components/ProductOrderListItem";
 import {Button, Col, Row} from "reactstrap";
 import DeliveryAddressDetails from "../components/DeliveryAddressDetails";
 import ProductOrderStateBadge, {ProductOrderStates} from "../components/ProductOrderStateBadge";
+import styled from "styled-components";
+
+const ProductOrderTitleContainer = styled(Col)`
+  display: flex;
+  align-items: center;
+  text-align: center;
+  
+  background-color: ${props => props.theme.secondary};
+  color: ${props => props.theme.textLight};
+  
+  padding: 1em;
+  margin-bottom: 1.5em;
+`
+
+const Title = styled.h3`
+  font-weight: bold;
+  letter-spacing: 1px;
+`
+
 
 const ProductOrderDetailsPage = () => {
     const {Api} = useContext(userContext)
@@ -27,7 +46,11 @@ const ProductOrderDetailsPage = () => {
 
     return (
         <PageContainer>
-            <h3>Order #{productOrder.id}</h3>
+            <Row>
+                <ProductOrderTitleContainer>
+                    <Title> Order #{productOrder.id}</Title>
+                </ProductOrderTitleContainer>
+            </Row>
             <Row>
                 <Col md={8}>
                     <DeliveryAddressDetails editable={true}/>
@@ -106,7 +129,7 @@ const ProductOrderStateControlButton = ({productOrderId, state, onOrderChange}) 
                 state: getNextStateFor(state)
             }
         }).then(() => {
-            if(onOrderChange) onOrderChange()
+            if (onOrderChange) onOrderChange()
         })
     }
 
@@ -127,16 +150,18 @@ const ProductOrderStateControlButton = ({productOrderId, state, onOrderChange}) 
     )
 }
 
+const ProductOrderControlPanelContainer = styled(Row)`
+  background-color: ${props => props.theme.secondary};
+  color: ${props => props.theme.textLight};
+
+  padding: 1em;
+  margin-left: 1em;
+`
 
 const ProductOrderControlPanel = ({productOrder, onProductOrderChange}) => {
 
     return (
-        <Row style={{
-            backgroundColor: "#eee",
-            padding: "1em",
-            marginLeft: "1em",
-            borderRadius: "0.5em"
-        }}>
+        <ProductOrderControlPanelContainer>
             <Col>
                 <Row style={{
                     display: "flex",
@@ -165,7 +190,7 @@ const ProductOrderControlPanel = ({productOrder, onProductOrderChange}) => {
                     onOrderChange={onProductOrderChange}
                 />
             </Col>
-        </Row>
+        </ProductOrderControlPanelContainer>
 
     );
 }

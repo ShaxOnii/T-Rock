@@ -12,22 +12,35 @@ export const ProductLink = styled(SimpleLink)`
   letter-spacing: 1px;
 `
 
+const PriceContainer = styled(Col)`
+  width: 100%;
+  display: flex;
+  justify-content: right;
+
+  color: ${props => props.theme.light};
+`
+
 const ProductPrice = ({price}) => {
 
     return (
         <Row>
-            <Col style={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "right",
-            }}>
+            <PriceContainer>
                 <h4 style={{
                     fontWeight: "bold"
                 }}>{price} PLN</h4>
-            </Col>
+            </PriceContainer>
         </Row>
     );
 }
+
+const ProductRow = styled(Row)`
+  background-color: ${props => props.theme.secondaryDark};
+  padding: 1em;
+
+  &:nth-child(2n) {
+    background-color: ${props => props.theme.secondary};
+  }
+`
 
 const ProductListItem = ({product}) => {
     const {addItemToCart} = useContext(CartContext);
@@ -39,12 +52,7 @@ const ProductListItem = ({product}) => {
     }
 
     return (
-        <Row style={{
-            backgroundColor: "#eee",
-            marginTop: "2em",
-            padding: "1em",
-            borderRadius: "0.5em"
-        }}>
+        <ProductRow>
             <Col md={"auto"}>
                 <ItemImage imageSrc={ExampleImage}/>
             </Col>
@@ -64,7 +72,7 @@ const ProductListItem = ({product}) => {
                     <Button onClick={() => handleAddItemToCart(product.id)} color={"success"}>Add to cart</Button>
                 </Row>
             </Col>
-        </Row>
+        </ProductRow>
     );
 }
 
