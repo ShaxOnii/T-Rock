@@ -24,7 +24,12 @@ const CategoryEditPage = () => {
     }, [Api]);
 
     const fieldsToShow = [
-        field("caption", "Category"),
+        field("caption", "Category",
+            {
+                fieldFormatter: (caption) => <span style={{padding: "1em"}}>
+                {caption}
+            </span>
+            }),
         field("id", "", {
             type: "actions",
             fieldFormatter: (id) => {

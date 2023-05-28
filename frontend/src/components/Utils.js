@@ -2,7 +2,16 @@ import styled from "styled-components";
 import {NavLink} from "react-router-dom";
 import {Button, Container} from "reactstrap";
 import {
-    faPenToSquare, faClose, faCheck, faShoppingCart, faShirt, faBagShopping, faCartFlatbedSuitcase, faFolder
+    faPenToSquare,
+    faClose,
+    faCheck,
+    faShoppingCart,
+    faShirt,
+    faBagShopping,
+    faCartFlatbedSuitcase,
+    faFolder,
+    faPlus,
+    faMinus, faXmark
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
@@ -17,6 +26,8 @@ export const CategoryIcon = () => <FontAwesomeIcon icon={faFolder}/>
 export const ProductIcon = () => <FontAwesomeIcon icon={faShirt}/>
 export const ProductOrderIcon = () => <FontAwesomeIcon icon={faBagShopping}/>
 export const CasesIcon = () => <FontAwesomeIcon icon={faCartFlatbedSuitcase}/>
+export const PlusIcon = () => <FontAwesomeIcon icon={faPlus}/>
+export const MinusIcon = () => <FontAwesomeIcon icon={faMinus}/>
 
 
 const SimpleLink = styled(NavLink)`

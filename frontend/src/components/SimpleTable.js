@@ -10,7 +10,7 @@ import styled from "styled-components";
  */
 const SimpleTable = ({fields = [], items = []}) => {
     return (
-        <Table striped borderless>
+        <Table borderless>
             <SimpleTableHeader fields={fields}/>
             <tbody>
             {items.map((item, key) =>
@@ -21,6 +21,16 @@ const SimpleTable = ({fields = [], items = []}) => {
     )
 }
 
+const Tr = styled.tr`
+  background-color: ${props => props.theme.secondary};
+  color: ${props => props.theme.textLight};
+  
+  &:nth-child(2n){
+    background-color: ${props => props.theme.secondaryDark};
+
+    color: ${props => props.theme.textLight};
+  }
+`
 
 const SimpleTableHeader = ({fields}) => {
     const styles = (fieldType) => {
@@ -36,9 +46,9 @@ const SimpleTableHeader = ({fields}) => {
 
     return (
         <thead>
-        <tr>
+        <Tr>
             {fields.map(field => <th style={styles(field.type)}>{field.caption}</th>)}
-        </tr>
+        </Tr>
         </thead>
     )
 }
@@ -61,7 +71,7 @@ const SimpleTableItem = ({fields, item}) => {
     }
 
     return (
-        <tr>
+        <Tr>
             {fields.map(field => {
                     if (field.type === "actions") {
                         return <TableRowWithAction>{formatData(field)}</TableRowWithAction>
@@ -69,7 +79,7 @@ const SimpleTableItem = ({fields, item}) => {
                     return <td>{formatData(field)}</td>
                 }
             )}
-        </tr>
+        </Tr>
     )
 }
 

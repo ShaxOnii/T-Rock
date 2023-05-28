@@ -2,16 +2,13 @@ import {useContext} from "react";
 import {CartContext} from "../providers/CartContextProvider";
 import {Button, Col, Row} from "reactstrap";
 import {ProductLink} from "./products/ProductListItem";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faMinus as MinusIcon, faPlus as PlusIcon, faXmark as DeleteIcon} from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
+import {DeleteIcon, MinusIcon, PlusIcon} from "./Utils";
 
 
 const ProductListContainer = styled(Row)`
   color:${props => props.theme.textLight};
   background-color: ${props => props.theme.secondary};
-
-
 `
 
 const ListTitle = styled.h3`
@@ -82,11 +79,11 @@ const ProductOrderListItem = ({editable = false, item}) => {
                 padding: "0 0.2em 0 0.2em"
             }}>
                 {editable && <Button onClick={handleRemoveItem} color={"primary"}>
-                    <FontAwesomeIcon icon={MinusIcon}/>
+                    <MinusIcon/>
                 </Button>}
                 <ItemCounter>{item.quantity} {!editable && "szt."}</ItemCounter>
                 {editable && <Button onClick={handleAddItem} color={"primary"}>
-                    <FontAwesomeIcon icon={PlusIcon}/>
+                    <PlusIcon/>
                 </Button>}
             </Col>
             <Col md={"2"} style={{
@@ -112,7 +109,7 @@ const ProductOrderListItem = ({editable = false, item}) => {
                 alignItems: "center"
             }}>
                 <Button color={"danger"} onClick={handleDeleteAll}>
-                    <FontAwesomeIcon icon={DeleteIcon}/>
+                    <DeleteIcon/>
                 </Button>
             </Col>}
         </ListItemContainer>

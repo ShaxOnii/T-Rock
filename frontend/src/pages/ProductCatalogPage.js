@@ -137,7 +137,7 @@ const CreateEntityModal = ({options, children}) => {
             </ModalBody>
             <ModalFooter>
                 <Button color={"primary"} onClick={handleCreateEntity}>Create</Button>
-                <Button color={"secondary"} onClick={toggleModal}>Cancel</Button>
+                <Button color={"danger"} onClick={toggleModal}>Cancel</Button>
             </ModalFooter>
         </Modal>
     );
@@ -147,6 +147,12 @@ const StyledButton = styled(Button)`
   margin: 1em;
 `
 
+const ProductCatalogTopBarContainer = styled(Row)`
+  background-color: ${props => props.theme.secondary};
+  color: ${props => props.theme.textLight};
+  
+  margin-bottom: 1em;
+`
 
 const ProductCatalogTopBar = ({invalidatePage}) => {
     const {Api} = useContext(userContext);
@@ -175,7 +181,7 @@ const ProductCatalogTopBar = ({invalidatePage}) => {
     }, []);
 
     return (
-        <Row>
+        <ProductCatalogTopBarContainer>
             <Col>
                 <StyledButton onClick={toggleCreateProductModal} color={"success"}>Create product</StyledButton>
                 <CreateEntityModal options={{
@@ -206,7 +212,9 @@ const ProductCatalogTopBar = ({invalidatePage}) => {
                     </FormGroup>
                 </CreateEntityModal>
 
-                <StyledButton onClick={toggleCreateCategoryModal} color={"success"}>Create category</StyledButton>
+                <StyledButton onClick={toggleCreateCategoryModal} color={"success"}>
+                    Create category
+                </StyledButton>
                 <CreateEntityModal options={{
                     toggle: toggleCreateCategoryModal,
                     visible: createCategory,
@@ -214,18 +222,19 @@ const ProductCatalogTopBar = ({invalidatePage}) => {
                     url: "Category/create"
                 }}/>
             </Col>
-        </Row>
+        </ProductCatalogTopBarContainer>
     )
 }
 
 const ProductFilteringTopBar = () => {
 
     return (
-        <Row>
+        <ProductCatalogTopBarContainer>
             <Col>Top bar for filters</Col>
-        </Row>
+        </ProductCatalogTopBarContainer>
     )
 }
+
 
 const ProductCatalogPage = () => {
     const {Api} = useContext(userContext)
@@ -262,7 +271,7 @@ const ProductCatalogPage = () => {
             <VisibleToRoles roles={[ADMIN_ROLE]}>
                 <ProductCatalogTopBar invalidatePage={invalidate}/>
             </VisibleToRoles>
-            <ProductFilteringTopBar/>
+            {/*<ProductFilteringTopBar/>*/}
             {
                 products.length > 0 ?
                     products.map((product, key) => <ProductListItem key={key} product={product}/>)

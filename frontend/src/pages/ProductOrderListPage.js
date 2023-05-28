@@ -20,7 +20,9 @@ const ProductOrderListPage = () => {
 
     const fieldsToShow = [
         field("id", "Product order", {
-            fieldFormatter: (id) => <SimpleLink to={`/productOrder/${id}`}>Order#{id}</SimpleLink>
+            fieldFormatter: (id) => <span style={{padding: "1em"}}>
+                <SimpleLink to={`/productOrder/${id}`}>Order#{id}</SimpleLink>
+            </span>
         }),
         field("state", "State", {
             fieldFormatter: (state) => <ProductOrderStateBadge state={state}/>

@@ -62,6 +62,10 @@ const ProductImages = ({items}) => {
 
 const ProductDetailsContainer = styled(Row)`
   padding: 1em;
+
+  &:first-child {
+    border-bottom: 1px solid ${props => props.theme.secondaryDark};
+  }
 `
 
 const ColContentToRight = styled(Col)`
@@ -92,6 +96,14 @@ const ChangeButtonActions = ({onDiscard, onSave}) => {
         </ButtonGroup>
     )
 }
+
+const ProductDetailsBox = styled(Col)`
+  margin: 1em 1em 1em 5em;
+  padding: 2em;
+
+  background-color: ${props => props.theme.secondary};
+  color: ${props => props.theme.textLight};
+`
 
 const ProductDetails = ({product}) => {
     const {handleProductChange, getValueFor, discardChangesFor, applyChanges} = useContext(ProductChangesContext);
@@ -164,17 +176,8 @@ const ProductDetails = ({product}) => {
     }
 
     return (
-        <Col style={{
-            margin: "1em 1em 1em 5em",
-            padding: "2em",
-            borderRadius: "0.5em",
-            border: "1px solid #ccc"
-        }}>
-            <ProductDetailsContainer style={{
-                display: "flex",
-                flexDirection: "row",
-                borderBottom: "1px solid #000"
-            }}>
+        <ProductDetailsBox>
+            <ProductDetailsContainer>
                 <Col>
                     {
                         title(detailsEditMode)
@@ -224,9 +227,35 @@ const ProductDetails = ({product}) => {
                     </Form>
                 </Col>
             </ProductDetailsContainer>
-        </Col>
+        </ProductDetailsBox>
     )
 }
+
+
+const StyledDescriptionBody = styled(CardBody)`
+  background-color: ${props => props.theme.secondary};
+  color: ${props => props.theme.textLight};
+`
+
+const DescriptionCaption = styled.h3`
+  font-weight: bold;
+  letter-spacing: 0.5px;
+
+`
+
+const TextArea = styled(Input)`
+  background-color: ${props => props.theme.secondaryDark};
+  color: ${props => props.theme.textLight};
+  border-color: ${props => props.theme.primaryDark};
+
+  &:focus {
+    background-color: ${props => props.theme.secondaryDark};
+    color: ${props => props.theme.textLight};
+    border-color: ${props => props.theme.primaryDark};
+
+    box-shadow: none;
+  }
+`
 
 const ProductDescriptionPane = ({options}) => {
     const {field, caption, content} = options
@@ -259,11 +288,11 @@ const ProductDescriptionPane = ({options}) => {
 
     return (
         <Card>
-            <CardBody>
+            <StyledDescriptionBody>
                 <CardTitle>
                     <Row>
                         <Col>
-                            <h5>{caption}</h5>
+                            <DescriptionCaption>{caption}</DescriptionCaption>
                         </Col>
                         <VisibleToRoles roles={[ADMIN_ROLE]}>
                             <Col sm={"auto"}>
@@ -277,18 +306,18 @@ const ProductDescriptionPane = ({options}) => {
                     </Row>
                 </CardTitle>
                 {!editMode ?
-                    <CardText>
+                    <CardText style={{whiteSpace: "pre-line"}}>
                         {getValueFor(field) ?? content}
                     </CardText>
                     :
-                    <Input
+                    <TextArea
                         type={"textarea"}
                         value={getValueFor(field) ?? content}
                         onChange={handleProductChange(field)}
                         rows={16}
                     />
                 }
-            </CardBody>
+            </StyledDescriptionBody>
         </Card>
     );
 }
