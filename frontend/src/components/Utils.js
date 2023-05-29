@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {NavLink} from "react-router-dom";
-import {Button, Container} from "reactstrap";
+import {Container, Input} from "reactstrap";
 import {
     faPenToSquare,
     faClose,
@@ -11,7 +11,7 @@ import {
     faCartFlatbedSuitcase,
     faFolder,
     faPlus,
-    faMinus, faXmark
+    faMinus
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
@@ -57,10 +57,19 @@ const PageContainer = styled(Container)`
   padding-bottom: 10em;
 `
 
-const StyledButton = styled(Button)`
+export const StyledInput = styled(Input)`
+  background-color: ${props => props.theme.secondaryDark};
+  color: ${props => props.theme.textLight};
+  border-color: ${props => props.theme.primaryDark};
 
-  
+  &:focus {
+    background-color: ${props => props.theme.secondaryDark};
+    color: ${props => props.theme.textLight};
+    border-color: ${props => props.theme.primaryDark};
 
+    box-shadow: none;
+  }
 `
+
 
 export {SimpleLink, PageContainer, ItemImage}

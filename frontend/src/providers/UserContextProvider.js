@@ -18,7 +18,12 @@ const UserProvider = ({children}) => {
     }
 
     const objectFromStorage = (key, defaultValue = {}) => {
-        return JSON.parse(localStorage.getItem(key)) ?? defaultValue;
+        const obj = localStorage.getItem(key);
+        if(obj.length === 0){
+            return defaultValue;
+        }
+        
+        return JSON.parse(obj) ?? defaultValue;
     }
 
     const [username, setUsername] = useState(fromStorage('username'))

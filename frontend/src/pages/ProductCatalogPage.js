@@ -16,7 +16,7 @@ import {
 import styled from "styled-components";
 import {ADMIN_ROLE, userContext, VisibleToRoles} from "../providers/UserContextProvider";
 import {useParams} from "react-router-dom";
-import {PageContainer} from "../components/Utils";
+import {PageContainer,StyledInput} from "../components/Utils";
 
 const CreateEntityModal = ({options, children}) => {
     const {toggle, visible, title, onEntityCreate, url, invalidatePage} = options;
@@ -111,7 +111,7 @@ const CreateEntityModal = ({options, children}) => {
                 <Form>
                     <FormGroup>
                         <Label for={"name"}>Name</Label>
-                        <Input
+                        <StyledInput
                             id={"name"}
                             name={"name"}
                             placeholder={"Name"}
@@ -121,7 +121,7 @@ const CreateEntityModal = ({options, children}) => {
                     </FormGroup>
                     <FormGroup>
                         <Label for={"caption"}>Caption</Label>
-                        <Input
+                        <StyledInput
                             id={"caption"}
                             name={"caption"}
                             placeholder={"Caption"}
@@ -196,7 +196,7 @@ const ProductCatalogTopBar = ({invalidatePage}) => {
                 }}>
                     <FormGroup>
                         <Label for={"selectCategory"}>Select Category</Label>
-                        <Input
+                        <StyledInput
                             className="mb-3"
                             type="select"
                             name={"selectCategory"}
@@ -208,7 +208,7 @@ const ProductCatalogTopBar = ({invalidatePage}) => {
                             {categories.map((category, key) =>
                                 <option key={key} value={category.name}>{category.caption}</option>
                             )}
-                        </Input>
+                        </StyledInput>
                     </FormGroup>
                 </CreateEntityModal>
 

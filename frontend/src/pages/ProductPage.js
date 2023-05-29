@@ -13,7 +13,7 @@ import {
 import {ProductChangesContext, ProductChangesContextProvider} from "../providers/ProductChangesContext";
 import {CartContext} from "../providers/CartContextProvider";
 import {useNavigate} from "react-router-dom"
-
+import { StyledInput } from "../components/Utils";
 
 const ProductImages = ({items}) => {
     const [active, setActive] = useState(0);
@@ -127,7 +127,7 @@ const ProductDetails = ({product}) => {
 
     const title = editableItem({
         notEditable: <h3>{product.caption}</h3>,
-        editable: <Input
+        editable: <StyledInput
             onChange={handleProductChange("caption")}
             value={getValueFor("caption") ?? product.caption}
         />
@@ -139,7 +139,7 @@ const ProductDetails = ({product}) => {
         editable:
             <Row>
                 <Col>
-                    <Input
+                    <StyledInput
                         type={"number"}
                         value={getValueFor("price") ?? product.price}
                         onChange={handleProductChange("price")}
@@ -204,7 +204,7 @@ const ProductDetails = ({product}) => {
                         <Row>
                             <ColContentToRight>
                                 <FormGroup>
-                                    <Input
+                                    <StyledInput
                                         type="select"
                                         name={"selectItemsCount"}
                                         id={"selectItemsCount"}
@@ -214,7 +214,7 @@ const ProductDetails = ({product}) => {
                                         {[1, 2, 3, 4, 5].map((count, key) =>
                                             <option key={key} value={count}>{count}</option>
                                         )}
-                                    </Input>
+                                    </StyledInput>
                                     <FormText>
                                         Available: {5}
                                     </FormText>
@@ -350,11 +350,11 @@ const ProductPage = () => {
                         <ProductImages items={[
                             {
                                 src: ExampleImage
-                            }, /*{
+                            }, {
                                 src: ExampleImage
                             }, {
                                 src: ExampleImage
-                            }*/
+                            }
                         ]}/>
                     </Col>
                     <ProductDetails product={product}/>

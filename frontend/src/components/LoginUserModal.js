@@ -5,7 +5,6 @@ import {
     Button,
     Form,
     FormGroup,
-    Input,
     Label,
     Modal,
     ModalBody,
@@ -18,6 +17,25 @@ import {
     TabPane
 } from "reactstrap";
 import {isDevelopment} from "./Utils";
+import { StyledInput } from "../components/Utils";
+import styled from "styled-components";
+
+const StyledTabContainer = styled(TabContent)`
+    background-color: ${props=>props.theme.secondary};
+    color: ${props=>props.theme.textLight};
+
+`
+
+const StyledNavLink = styled(NavLink)`
+    background-color: ${props=>props.active? props.theme.primary : props.theme.secondary};
+    color: ${props=>props.theme.textLight};
+    border-color: ${props=>props.theme.primary};
+    
+    &:hover{
+        border: none;
+    }
+`
+
 
 const LoginUserModal = ({options}) => {
     const {toggle, visible} = options;
@@ -89,15 +107,15 @@ const LoginUserModal = ({options}) => {
 
     return (
         <Modal isOpen={visible} toggle={toggleModal}>
-            <TabContent activeTab={activeTab}>
+            <StyledTabContainer activeTab={activeTab}>
                 <TabPane tabId="login">
                     <ModalHeader>Login</ModalHeader>
-                    <AuthModalNav setActiveTab={setActiveTab}/>
+                    <AuthModalNav active={activeTab} setActiveTab={setActiveTab}/>
                     <ModalBody>
                         <Form>
                             <FormGroup>
                                 <Label for={"username"}>Username</Label>
-                                <Input
+                                <StyledInput
                                     id={"username"}
                                     name={"username"}
                                     placeholder={"Username"}
@@ -107,7 +125,7 @@ const LoginUserModal = ({options}) => {
                             </FormGroup>
                             <FormGroup>
                                 <Label for={"password"}>Password</Label>
-                                <Input
+                                <StyledInput
                                     id={"password"}
                                     name={"password"}
                                     type={"password"}
@@ -128,24 +146,24 @@ const LoginUserModal = ({options}) => {
                     </ModalFooter>
                 </TabPane>
                 <RegisterPane toggleModal={toggleModal} setActiveTab={setActiveTab}/>
-            </TabContent>
+            </StyledTabContainer>
         </Modal>
 
     );
 }
 
-const AuthModalNav = ({setActiveTab}) => {
+const AuthModalNav = ({setActiveTab,activeTab}) => {
     return (
         <Nav justified tabs>
             <NavItem>
-                <NavLink className="active" onClick={() => setActiveTab("login")}>
+                <StyledNavLink active={activeTab === "login"} onClick={() => setActiveTab("login")}>
                     Login
-                </NavLink>
+                </StyledNavLink >
             </NavItem>
             <NavItem>
-                <NavLink onClick={() => setActiveTab("register")}>
+                <StyledNavLink active={activeTab === "register"}  onClick={() => setActiveTab("register")}>
                     Register
-                </NavLink>
+                </StyledNavLink >
             </NavItem>
         </Nav>
     )
@@ -223,7 +241,7 @@ const RegisterPane = ({toggleModal, setActiveTab}) => {
                 <Form>
                     <FormGroup>
                         <Label for={"username"}>Username</Label>
-                        <Input
+                        <StyledInput
                             id={"username"}
                             name={"username"}
                             placeholder={"Username"}
@@ -234,7 +252,7 @@ const RegisterPane = ({toggleModal, setActiveTab}) => {
 
                     <FormGroup>
                         <Label for={"password"}>Password</Label>
-                        <Input
+                        <StyledInput
                             id={"password"}
                             name={"password"}
                             type={"password"}
@@ -246,7 +264,7 @@ const RegisterPane = ({toggleModal, setActiveTab}) => {
 
                     <FormGroup>
                         <Label for={"email"}>Email</Label>
-                        <Input
+                        <StyledInput
                             id={"email"}
                             name={"email"}
                             placeholder={"Email"}
