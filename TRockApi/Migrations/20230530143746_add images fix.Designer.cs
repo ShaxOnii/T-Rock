@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TRockApi.Repositories.Configuration;
 
@@ -11,9 +12,11 @@ using TRockApi.Repositories.Configuration;
 namespace TRockApi.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    partial class ShopContextModelSnapshot : ModelSnapshot
+    [Migration("20230530143746_add images fix")]
+    partial class addimagesfix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -155,9 +158,9 @@ namespace TRockApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<byte[]>("Content")
+                    b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("varbinary(max)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Extension")
                         .IsRequired()
@@ -167,7 +170,12 @@ namespace TRockApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Images");
                 });
@@ -345,6 +353,17 @@ namespace TRockApi.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("TRockApi.Repositories.Models.Image", b =>
+                {
+                    b.HasOne("TRockApi.Repositories.Models.Product", "Product")
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("TRockApi.Repositories.Models.Product", b =>
                 {
                     b.HasOne("TRockApi.Repositories.Models.Category", "Category")
@@ -389,6 +408,11 @@ namespace TRockApi.Migrations
             modelBuilder.Entity("TRockApi.Repositories.Models.Cart", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("TRockApi.Repositories.Models.Product", b =>
+                {
+                    b.Navigation("Images");
                 });
 
             modelBuilder.Entity("TRockApi.Repositories.Models.ProductOrder", b =>

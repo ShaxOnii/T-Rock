@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace TRockApi.Repositories.Models {
     public class Product {
         
@@ -12,6 +14,6 @@ namespace TRockApi.Repositories.Models {
         public float Price { get; set; }
         
         public string Description { set; get; }
-
+        
     }
 }

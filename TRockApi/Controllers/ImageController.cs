@@ -25,13 +25,18 @@ namespace TRockApi.Controllers {
             _imageRepository = imageRepository;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpGet]
         public async Task<IEnumerable<ImageLinkResponse>> Index() {
             var images = await _imageRepository.GetALl();
-            var baseUri = Request.PathBase;
 
-            return images.Select(i => ImageLinkResponse.FromModel(baseUri, i));
+            return images.Select(i => ImageLinkResponse.FromModel(BaseUrl(), i));
+        }
+
+        private string BaseUrl() {
+            var prefix = Request.IsHttps ? "https" : "http";
+            
+            return prefix + "://" + Request.Host;
         }
 
         [HttpGet("{id:int}")]
@@ -42,13 +47,11 @@ namespace TRockApi.Controllers {
                 return new NotFoundResult();
             }
 
-            var decodedImage = Convert.FromBase64String(image.Content);
-
-            return new FileContentResult(decodedImage, $"image/{image.Extension}");
+            return new FileContentResult(image.Content, $"image/{image.Extension}");
         }
 
 
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<CreateEntityResponse>> AddImage(AddImageRequest request) {
 
@@ -63,7 +66,7 @@ namespace TRockApi.Controllers {
             }
 
             var availableExtensions = new HashSet<string> {"png", "jpg"};
-            var fileType = Path.GetExtension(request.Filename);
+            var fileType = Path.GetExtension(request.Filename).TrimStart('.');
 
             if (!availableExtensions.Contains(fileType)) {
                 return BadRequest();
@@ -72,7 +75,7 @@ namespace TRockApi.Controllers {
             var image = new Image {
                 Filename = request.Filename,
                 Extension = fileType,
-                Content = Convert.ToBase64String(decodedImage.CloneByteArray())
+                Content = decodedImage.CloneByteArray(),
             };
 
             var id = await _imageRepository.StoreImage(image);
@@ -80,7 +83,7 @@ namespace TRockApi.Controllers {
             return new CreateEntityResponse(id);
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpDelete("{id:int}")]
         public async Task<ActionResult> DeleteImage(int id) {
             var foundImage = await _imageRepository.GetById(id);

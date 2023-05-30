@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TRockApi.Repositories.Api;
 using TRockApi.Repositories.Configuration;
 using TRockApi.Repositories.Models;
