@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using TRockApi.Repositories.Models;
 
 namespace TRockApi.Response {
@@ -9,6 +11,8 @@ namespace TRockApi.Response {
         public float Price { get; set; }
         
         public string Description { get; set; }
+        
+        public IEnumerable<ImageLinkResponse> Images { get; set; }
 
         public static ProductResponse FromModel(Product product) {
             return new ProductResponse {
@@ -16,7 +20,8 @@ namespace TRockApi.Response {
                 Name = product.Name,
                 Caption = product.Caption,
                 Price = product.Price,
-                Description = product.Description
+                Description = product.Description,
+                Images = product.Images.Select(ImageLinkResponse.FromModel)
             };
         }
     }

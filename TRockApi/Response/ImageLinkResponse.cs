@@ -9,16 +9,16 @@ namespace TRockApi.Response {
         
         public string Href { get; set; }
 
-        public static ImageLinkResponse FromModel(string baseUri, Image model) {
+        public static ImageLinkResponse FromModel(Image model) {
             return new ImageLinkResponse {
                 Id = model.Id,
                 Name = model.Filename,
-                Href = FormatLink(baseUri, model.Id)
+                Href = FormatLink(model.Id)
             };
         }
 
-        private static string FormatLink(string baseUri, int id) {
-            return $"{baseUri}/api/Image/{id}";
+        private static string FormatLink(int id) {
+            return $"api/Image/{id}";
         }
     }
 }

@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace TRockApi.Handlers.Api {
     public class ProductChanges {
         public string? Caption { get; set; }
@@ -6,5 +8,6 @@ namespace TRockApi.Handlers.Api {
         
         public string? Description { get; set; }
 
+        public List<int> Images { get; set; } = new();
     }
 }

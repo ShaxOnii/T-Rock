@@ -63,7 +63,8 @@ namespace TRockApi.Controllers {
             var changedProduct = await _productHandling.ChangeProductAsync(id, new ProductChanges {
                 Caption = request.Caption,
                 Price = request.Price,
-                Description = request.Description
+                Description = request.Description,
+                Images = request.ProductImages.ToList()
             });
 
             return ProductResponse.FromModel(changedProduct);

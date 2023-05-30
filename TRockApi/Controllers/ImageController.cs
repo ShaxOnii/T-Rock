@@ -30,13 +30,7 @@ namespace TRockApi.Controllers {
         public async Task<IEnumerable<ImageLinkResponse>> Index() {
             var images = await _imageRepository.GetALl();
 
-            return images.Select(i => ImageLinkResponse.FromModel(BaseUrl(), i));
-        }
-
-        private string BaseUrl() {
-            var prefix = Request.IsHttps ? "https" : "http";
-            
-            return prefix + "://" + Request.Host;
+            return images.Select(ImageLinkResponse.FromModel);
         }
 
         [HttpGet("{id:int}")]

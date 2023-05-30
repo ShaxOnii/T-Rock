@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace TRockApi.Repositories.Models {
@@ -14,6 +15,7 @@ namespace TRockApi.Repositories.Models {
         public float Price { get; set; }
         
         public string Description { set; get; }
-        
+
+        public List<Image> Images { get; set; } = new();
     }
 }

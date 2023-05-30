@@ -1,8 +1,8 @@
+using System.Collections.Generic;
+
 namespace TRockApi.Requests {
     public class ChangeProductRequest {
         
-        public string? Name { get; set; }
-                
         public string? Caption { get; set; }
         
         public string? Category { get; set; }
@@ -10,6 +10,7 @@ namespace TRockApi.Requests {
         public float? Price { get; set; }
         
         public string? Description { set; get; }
-
+        
+        public IEnumerable<int> ProductImages { get; set; }
     }
 }

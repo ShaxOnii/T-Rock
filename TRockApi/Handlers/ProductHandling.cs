@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
 using TRockApi.Handlers.Api;
@@ -12,9 +13,16 @@ namespace TRockApi.Handlers {
 
         private readonly ICategoryRepository _categoryRepository;
 
-        public ProductHandling(IProductRepository productRepository, ICategoryRepository categoryRepository) {
+        private readonly IImageRepository _imageRepository;
+
+        public ProductHandling(
+            IProductRepository productRepository,
+            ICategoryRepository categoryRepository,
+            IImageRepository imageRepository
+        ) {
             _productRepository = productRepository;
             _categoryRepository = categoryRepository;
+            _imageRepository = imageRepository;
         }
 
         public Task CreateProductAsync(string name, string caption, string categoryName) {
@@ -31,20 +39,36 @@ namespace TRockApi.Handlers {
             if (changes.Caption != null) {
                 product.Caption = changes.Caption;
             }
-            
+
             if (changes.Price.HasValue) {
                 product.Price = changes.Price.Value;
             }
-            
+
             if (changes.Description != null) {
                 product.Description = changes.Description;
             }
+
+            LinkImages(product, changes.Images);
 
             ValidateProduct(product);
 
             _productRepository.SaveProduct(product);
 
             return product;
+        }
+
+        private void LinkImages(Product product, List<int> imageIds) {
+            var notLinkedImages = imageIds.FindAll(
+                id => !product.Images.Exists(image => image.Id == id)
+            );
+
+            foreach (var imageId in notLinkedImages) {
+                var image = _imageRepository.GetById(imageId).Result;
+
+                if (image != null) {
+                    product.Images.Add(image);
+                }
+            }
         }
 
         private void ValidateProduct(Product product) {
