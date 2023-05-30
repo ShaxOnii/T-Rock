@@ -25,5 +25,7 @@ namespace TRockApi.Repositories.Configuration {
         public DbSet<ProductOrderItem> ProductOrderItems { get; set; }
 
         public DbSet<Address> Addresses { get; set; }
+
+        public DbSet<Image> Images { get; set; }
     }
 }
