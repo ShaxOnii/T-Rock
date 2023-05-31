@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from "react";
-import {ADMIN_ROLE, userContext, VisibleToRoles} from "../providers/UserContextProvider";
+import {ADMIN_ROLE, createUrl, userContext, VisibleToRoles} from "../providers/UserContextProvider";
 import {useParams} from "react-router-dom";
 import styled from "styled-components";
 import {PageContainer, ApplyIcon, CloseIcon, EditIcon} from "../components/Utils";
@@ -14,6 +14,18 @@ import {ProductChangesContext, ProductChangesContextProvider} from "../providers
 import {CartContext} from "../providers/CartContextProvider";
 import {useNavigate} from "react-router-dom"
 import { StyledInput } from "../components/Utils";
+
+const Img = styled.img`
+  max-width: 100%;
+  max-height: 100%;
+  
+  aspect-ratio: 1/1; // nie podoba mi sie to ale narazie musi wystarczyc
+`
+
+const ImageContainer = styled(CarouselItem)`
+  position: relative;
+  overflow: hidden;
+`
 
 const ProductImages = ({items}) => {
     const [active, setActive] = useState(0);
@@ -38,15 +50,14 @@ const ProductImages = ({items}) => {
         }
     }
 
-    const slides = items.map((photo) => {
+    const slides = items.map((photo, idx) => {
         return (
-            <CarouselItem>
-                <img
-                    src={photo.src}
-                    alt={photo.altText}
-                    width={"100%"}
-                />
-            </CarouselItem>
+            <ImageContainer key={idx}>
+                    <Img
+                        src={photo.src}
+                        alt={photo.altText}
+                    />
+            </ImageContainer>
         )
     })
 
@@ -340,6 +351,21 @@ const ProductPage = () => {
         })
     }, [Api, id]);
 
+    const getImagesLinks = () => {
+        if (product.images && product.images.length > 0) {
+            return product.images.map(image => {
+                return {
+                    src: createUrl(image.href)
+                }
+            })
+        } else {
+            return [{
+                src: ExampleImage
+            }];
+        }
+    }
+
+
     return (
         <PageContainer>
             <ProductChangesContextProvider productId={product.id} updateProduct={(p) => setProduct(p)}>
@@ -347,15 +373,7 @@ const ProductPage = () => {
                     <Col style={{
                         margin: "2em"
                     }}>
-                        <ProductImages items={[
-                            {
-                                src: ExampleImage
-                            }, {
-                                src: ExampleImage
-                            }, {
-                                src: ExampleImage
-                            }
-                        ]}/>
+                        <ProductImages items={getImagesLinks()}/>
                     </Col>
                     <ProductDetails product={product}/>
                 </Row>

@@ -18,7 +18,7 @@ namespace TRockApi.Response {
         }
 
         private static string FormatLink(int id) {
-            return $"api/Image/{id}";
+            return $"Image/{id}";
         }
     }
 }

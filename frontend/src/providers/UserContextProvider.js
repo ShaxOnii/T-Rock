@@ -6,6 +6,10 @@ export const userContext = createContext();
 
 const API_URL = "https://localhost:7294/api/";
 
+export const createUrl = (path) => {
+    return API_URL + path;
+}
+
 export const CLIENT_ROLE = "client";
 export const ADMIN_ROLE = "admin";
 

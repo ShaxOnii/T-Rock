@@ -2,13 +2,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using TRockApi.Repositories.Api;
 using TRockApi.Repositories.Configuration;
 using TRockApi.Repositories.Models;
 
 namespace TRockApi.Repositories {
-    public class ProductRepository : IProductRepository{
-        
+    public class ProductRepository : IProductRepository {
+
         private readonly ShopDbContext _dbContext;
 
         public ProductRepository(ShopDbContext dbContext) {
@@ -16,26 +17,30 @@ namespace TRockApi.Repositories {
         }
 
         public async Task<IEnumerable<Product>> All() {
-            return await _dbContext.Products.ToArrayAsync();
+            return await ProductGenericQuery().ToArrayAsync();
         }
-        
+
         public IEnumerable<Product> AllByCategory(string category) {
-            return _dbContext.Products.Where(product => product.Category.Name == category);
+            return ProductGenericQuery().Where(product => product.Category.Name == category);
         }
 
         public async Task<Product?> FindById(int id) {
-            return await _dbContext.Products.FirstOrDefaultAsync(product => product.Id == id);
+            return await ProductGenericQuery().FirstOrDefaultAsync(product => product.Id == id);
         }
-        
+
         public async Task<Product?> FindByName(string name) {
-            return await _dbContext.Products.FirstOrDefaultAsync(product => product.Name == name);
+            return await ProductGenericQuery().FirstOrDefaultAsync(product => product.Name == name);
+        }
+
+        private IIncludableQueryable<Product, List<Image>> ProductGenericQuery() {
+            return _dbContext.Products.Include(p => p.Images);
         }
 
         public void AddProduct(Product product) {
             _dbContext.Products.Add(product);
             _dbContext.SaveChanges();
         }
-        
+
         public void SaveProduct(Product product) {
             _dbContext.Products.Update(product);
             _dbContext.SaveChanges();
