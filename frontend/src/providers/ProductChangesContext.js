@@ -88,9 +88,23 @@ export const ProductChangesContextProvider = ({productId, children, updateProduc
         })
     }
 
+    const deleteImage = (imageId) => {
+        Api(`Image/${imageId}`, {
+            method: "DELETE"
+        }).then(([, ok]) => {
+            if (ok) {
+                Api(`Product/${productId}`).then(([result,isOk]) => {
+                    if((isOk)){
+                        updateProduct(result)
+                    }
+                })
+            }
+        })
+    }
+
     return (
         <ProductChangesContext.Provider value={{
-            handleProductChange, discardChangesFor, applyChanges, getValueFor, linkImageWithProduct
+            handleProductChange, discardChangesFor, applyChanges, getValueFor, linkImageWithProduct, deleteImage
         }}>
             {children}
         </ProductChangesContext.Provider>

@@ -86,7 +86,7 @@ namespace TRockApi.Controllers {
                 await _imageRepository.DeleteImage(foundImage);
             }
 
-            return new OkResult();
+            return new JsonResult(new {Message = "ok"});
         }
     }
 }

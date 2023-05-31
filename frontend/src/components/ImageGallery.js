@@ -46,11 +46,15 @@ const ImageContainer = styled.div`
 
 `
 
-export const ImageGalleryItem = ({src}) => {
+export const ImageGalleryItem = ({src, onDelete}) => {
+
+    const handleImageDelete = () => {
+        if(onDelete) onDelete();
+    }
 
     return (
         <ImageContainer>
-            <ImageControlButton color={"danger"}>
+            <ImageControlButton onClick={handleImageDelete} color={"danger"}>
                 <TrashIcon/>
             </ImageControlButton>
             <Image src={src}/>

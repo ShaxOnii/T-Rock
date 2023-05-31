@@ -61,7 +61,7 @@ namespace TRockApi.Controllers {
         }
 
         [HttpPost("CreateFromCart")]
-        public async Task<ActionResult> CreateOrderFromCart() {
+        public async Task<ActionResult<CreateEntityResponse>> CreateOrderFromCart() {
             var user = GetAuthorizedUser();
             var cart = _cartRepository.FindCartByUser(user.Id);
 
@@ -71,7 +71,7 @@ namespace TRockApi.Controllers {
             
             var productOrderId = await _productOrderHandling.CreateProductOrderFromCart(cart);
             
-            return new JsonResult(new CreateEntityResponse(productOrderId));
+            return new CreateEntityResponse(productOrderId);
         }
         
         

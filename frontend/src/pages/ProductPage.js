@@ -123,7 +123,8 @@ const ProductDetails = ({product}) => {
         getValueFor,
         discardChangesFor,
         applyChanges,
-        linkImageWithProduct
+        linkImageWithProduct,
+        deleteImage
     } = useContext(ProductChangesContext);
 
     const {addItemToCart} = useContext(CartContext)
@@ -201,6 +202,10 @@ const ProductDetails = ({product}) => {
         linkImageWithProduct(imageId)
     }
 
+    const handleProductImageDelete = (imageId) => () => {
+        deleteImage(imageId);
+    }
+
     return (
         <ProductDetailsBox>
             <ProductDetailsContainer>
@@ -261,7 +266,11 @@ const ProductDetails = ({product}) => {
                     <ImageGallery onImageAdded={handleImageAddedToProduct} toggle={toggleProductGallery}
                                   isOpen={productGalleryVisible}>
                         {product.images && product.images.map(
-                            (img, key) => <ImageGalleryItem key={key} src={createUrl(img.href)}/>
+                            (img, key) => <ImageGalleryItem
+                                key={key}
+                                src={createUrl(img.href)}
+                                onDelete={handleProductImageDelete(img.id)}
+                            />
                         )}
                     </ImageGallery>
                 </VisibleToRoles>
