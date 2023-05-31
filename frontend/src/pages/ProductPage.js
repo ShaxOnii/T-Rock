@@ -2,7 +2,7 @@ import {useContext, useEffect, useState} from "react";
 import {ADMIN_ROLE, createUrl, userContext, VisibleToRoles} from "../providers/UserContextProvider";
 import {useParams} from "react-router-dom";
 import styled from "styled-components";
-import {PageContainer, ApplyIcon, CloseIcon, EditIcon} from "../components/Utils";
+import {PageContainer, ApplyIcon, CloseIcon, EditIcon, ImageEditIcon} from "../components/Utils";
 import ExampleImage from "../images/ExampleTShirt.jpg"
 import {
     Button, ButtonGroup, Card, CardBody, CardText, CardTitle,
@@ -13,12 +13,13 @@ import {
 import {ProductChangesContext, ProductChangesContextProvider} from "../providers/ProductChangesContext";
 import {CartContext} from "../providers/CartContextProvider";
 import {useNavigate} from "react-router-dom"
-import { StyledInput } from "../components/Utils";
+import {StyledInput} from "../components/Utils";
+import {ImageGallery, ImageGalleryItem} from "../components/ImageGallery";
 
 const Img = styled.img`
   max-width: 100%;
   max-height: 100%;
-  
+
   aspect-ratio: 1/1; // nie podoba mi sie to ale narazie musi wystarczyc
 `
 
@@ -53,10 +54,10 @@ const ProductImages = ({items}) => {
     const slides = items.map((photo, idx) => {
         return (
             <ImageContainer key={idx}>
-                    <Img
-                        src={photo.src}
-                        alt={photo.altText}
-                    />
+                <Img
+                    src={photo.src}
+                    alt={photo.altText}
+                />
             </ImageContainer>
         )
     })
@@ -117,14 +118,24 @@ const ProductDetailsBox = styled(Col)`
 `
 
 const ProductDetails = ({product}) => {
-    const {handleProductChange, getValueFor, discardChangesFor, applyChanges} = useContext(ProductChangesContext);
+    const {
+        handleProductChange,
+        getValueFor,
+        discardChangesFor,
+        applyChanges,
+        linkImageWithProduct
+    } = useContext(ProductChangesContext);
+
     const {addItemToCart} = useContext(CartContext)
     const navigate = useNavigate()
 
     const [detailsEditMode, setDetailsEditMode] = useState(false)
     const [selectedItemsCount, setSelectedItemsCount] = useState(1);
+    const [productGalleryVisible, setProductGalleryVisible] = useState(false);
 
     const discardChanges = () => discardChangesFor("price", "caption")
+
+    const toggleProductGallery = () => setProductGalleryVisible(!productGalleryVisible)
 
     const toggleDetailsEditMode = () => setDetailsEditMode(!detailsEditMode);
 
@@ -186,6 +197,10 @@ const ProductDetails = ({product}) => {
         toggleDetailsEditMode()
     }
 
+    const handleImageAddedToProduct = (imageId) => {
+        linkImageWithProduct(imageId)
+    }
+
     return (
         <ProductDetailsBox>
             <ProductDetailsContainer>
@@ -199,7 +214,12 @@ const ProductDetails = ({product}) => {
                         {detailsEditMode ?
                             <ChangeButtonActions onDiscard={handleDiscardChanges} onSave={handleSaveChanges}/>
                             :
-                            <EditButton onClick={toggleDetailsEditMode}/>
+                            <ButtonGroup>
+                                <EditButton onClick={toggleDetailsEditMode}/>
+                                <Button color={"primary"} onClick={toggleProductGallery}>
+                                    <ImageEditIcon/>
+                                </Button>
+                            </ButtonGroup>
                         }
                     </Col>
                 </VisibleToRoles>
@@ -237,6 +257,14 @@ const ProductDetails = ({product}) => {
                         </Row>
                     </Form>
                 </Col>
+                <VisibleToRoles roles={[ADMIN_ROLE]}>
+                    <ImageGallery onImageAdded={handleImageAddedToProduct} toggle={toggleProductGallery}
+                                  isOpen={productGalleryVisible}>
+                        {product.images && product.images.map(
+                            (img, key) => <ImageGalleryItem key={key} src={createUrl(img.href)}/>
+                        )}
+                    </ImageGallery>
+                </VisibleToRoles>
             </ProductDetailsContainer>
         </ProductDetailsBox>
     )

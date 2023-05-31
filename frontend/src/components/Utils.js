@@ -11,7 +11,7 @@ import {
     faCartFlatbedSuitcase,
     faFolder,
     faPlus,
-    faMinus
+    faMinus, faTrash, faImage
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
@@ -28,6 +28,8 @@ export const ProductOrderIcon = () => <FontAwesomeIcon icon={faBagShopping}/>
 export const CasesIcon = () => <FontAwesomeIcon icon={faCartFlatbedSuitcase}/>
 export const PlusIcon = () => <FontAwesomeIcon icon={faPlus}/>
 export const MinusIcon = () => <FontAwesomeIcon icon={faMinus}/>
+export const ImageEditIcon = () => <FontAwesomeIcon icon={faImage}/>
+export const TrashIcon = () => <FontAwesomeIcon icon={faTrash}/>
 
 
 const SimpleLink = styled(NavLink)`

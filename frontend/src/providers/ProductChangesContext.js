@@ -35,7 +35,7 @@ export const ProductChangesContextProvider = ({productId, children, updateProduc
     }
 
     const applyChanges = (fields, {onSuccess, onFailure}) => {
-        if(!isAnythingToChange(fields)){
+        if (!isAnythingToChange(fields)) {
             return
         }
 
@@ -73,9 +73,24 @@ export const ProductChangesContextProvider = ({productId, children, updateProduc
         return productChanges[field]
     }
 
+    const linkImageWithProduct = (imageId) => {
+        Api(`Product/${productId}`, {
+            method: "POST",
+            body: {
+                productImages: [imageId]
+            }
+        }).then(([response, ok]) => {
+            if (ok) {
+                if (updateProduct) {
+                    updateProduct(response)
+                }
+            }
+        })
+    }
+
     return (
         <ProductChangesContext.Provider value={{
-            handleProductChange, discardChangesFor, applyChanges, getValueFor
+            handleProductChange, discardChangesFor, applyChanges, getValueFor, linkImageWithProduct
         }}>
             {children}
         </ProductChangesContext.Provider>
