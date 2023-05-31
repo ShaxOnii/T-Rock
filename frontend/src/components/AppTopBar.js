@@ -4,10 +4,11 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faShoppingCart, faUser} from "@fortawesome/free-solid-svg-icons";
 import {SimpleLink} from "./Utils";
 import LoginUserModal from "./LoginUserModal";
-import {useContext, useEffect, useState} from "react";
+import {useContext, useState} from "react";
 import {userContext} from "../providers/UserContextProvider";
 import LogoImage from "../images/TRockIcon.svg"
 import {useNavigate} from "react-router-dom";
+import {CategoryContext} from "../providers/CategoryProvider";
 
 
 const GenericNav = styled(Navbar)`
@@ -141,22 +142,9 @@ const CategoryNav = styled(Nav)`
 
 
 const CategoryToolbar = () => {
-    const {Api} = useContext(userContext);
+    const {allCategories} = useContext(CategoryContext);
 
-    const [categories, setCategories] = useState([]);
-
-    useEffect(() => {
-        Api(`Category`).then(([result, ok]) => {
-            if (ok) {
-                setCategories(result);
-            } else {
-                throw Error("An error occured", result);
-            }
-        })
-    }, [Api]);
-
-
-    if (categories.length <= 0) {
+    if (allCategories().length <= 0) {
         return (<></>)
     }
 
@@ -166,7 +154,7 @@ const CategoryToolbar = () => {
                 All
             </StyledNavLink>
             {
-                categories.map((category, idx) =>
+                allCategories().map((category, idx) =>
                     <StyledNavLink key={idx} to={`products/${category.name}`}>
                         {category.caption}
                     </StyledNavLink>

@@ -32,8 +32,10 @@ namespace TRockApi.Repositories {
             return await ProductGenericQuery().FirstOrDefaultAsync(product => product.Name == name);
         }
 
-        private IIncludableQueryable<Product, List<Image>> ProductGenericQuery() {
-            return _dbContext.Products.Include(p => p.Images);
+        private IIncludableQueryable<Product, Category> ProductGenericQuery() {
+            return _dbContext.Products
+                .Include(p => p.Images)
+                .Include(p => p.Category);
         }
 
         public void AddProduct(Product product) {

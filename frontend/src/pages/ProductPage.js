@@ -5,6 +5,7 @@ import styled from "styled-components";
 import {PageContainer, ApplyIcon, CloseIcon, EditIcon, ImageEditIcon} from "../components/Utils";
 import ExampleImage from "../images/ExampleTShirt.jpg"
 import {
+    Badge,
     Button, ButtonGroup, Card, CardBody, CardText, CardTitle,
     Carousel, CarouselControl, CarouselIndicators, CarouselItem,
     Col, Form, FormGroup, FormText, Input,
@@ -15,6 +16,7 @@ import {CartContext} from "../providers/CartContextProvider";
 import {useNavigate} from "react-router-dom"
 import {StyledInput} from "../components/Utils";
 import {ImageGallery, ImageGalleryItem} from "../components/ImageGallery";
+import {CategoryContext} from "../providers/CategoryProvider";
 
 const Img = styled.img`
   max-width: 100%;
@@ -117,6 +119,27 @@ const ProductDetailsBox = styled(Col)`
   color: ${props => props.theme.textLight};
 `
 
+const ChangeCategoryInput = ({category}) => {
+    const {allCategories} = useContext(CategoryContext)
+    const {handleProductChange, getValueFor} = useContext(ProductChangesContext)
+
+    return (
+        <FormGroup>
+            <StyledInput
+                type="select"
+                name={"selectCategory"}
+                id={"selectCategory"}
+                onChange={handleProductChange('category')}
+                value={getValueFor('category') ?? category.name}
+            >
+                {allCategories().map((category, key) =>
+                    <option key={key} value={category.name}>{category.caption}</option>
+                )}
+            </StyledInput>
+        </FormGroup>
+    )
+}
+
 const ProductDetails = ({product}) => {
     const {
         handleProductChange,
@@ -145,7 +168,7 @@ const ProductDetails = ({product}) => {
     }
 
     const editableItem = ({editable, notEditable}) => (isEditable) => {
-        return isEditable ? editable : notEditable
+        return isEditable ? editable : notEditable;
     }
 
     const title = editableItem({
@@ -174,13 +197,26 @@ const ProductDetails = ({product}) => {
             </Row>
     })
 
+    const category = editableItem((() => {
+        if (product.id === undefined) {
+            return {};
+        }
+
+        return {
+            notEditable:
+                <Badge color={"primary"}>{product.category.caption}</Badge>,
+            editable:
+                <ChangeCategoryInput category={product.category}/>
+        }
+    })())
+
     const handleAddToCart = () => {
         addItemToCart(product.id, selectedItemsCount)
         navigate("/cart");
     }
 
     const handleSaveChanges = () => {
-        applyChanges(["caption", "price"], {
+        applyChanges(["caption", "price", "category"], {
                 onSuccess: (response) => {
                     console.log(response)
                 },
@@ -235,6 +271,11 @@ const ProductDetails = ({product}) => {
                 </ColContentToRight>
             </ProductDetailsContainer>
             <ProductDetailsContainer>
+                <ColContentToRight>
+                    {category(detailsEditMode)}
+                </ColContentToRight>
+            </ProductDetailsContainer>
+            <ProductDetailsContainer>
                 <Col>
                     <Form>
                         <Row>
@@ -263,8 +304,12 @@ const ProductDetails = ({product}) => {
                     </Form>
                 </Col>
                 <VisibleToRoles roles={[ADMIN_ROLE]}>
-                    <ImageGallery onImageAdded={handleImageAddedToProduct} toggle={toggleProductGallery}
-                                  isOpen={productGalleryVisible}>
+                    <ImageGallery
+                        title={"Edit Product Images"}
+                        onImageAdded={handleImageAddedToProduct}
+                        toggle={toggleProductGallery}
+                        isOpen={productGalleryVisible}
+                    >
                         {product.images && product.images.map(
                             (img, key) => <ImageGalleryItem
                                 key={key}

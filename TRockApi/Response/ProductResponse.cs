@@ -12,6 +12,8 @@ namespace TRockApi.Response {
         
         public string Description { get; set; }
         
+        public CategoryResponse Category { get; set; }
+        
         public IEnumerable<ImageLinkResponse> Images { get; set; }
 
         public static ProductResponse FromModel(Product product) {
@@ -21,6 +23,7 @@ namespace TRockApi.Response {
                 Caption = product.Caption,
                 Price = product.Price,
                 Description = product.Description,
+                Category = CategoryResponse.FromModel(product.Category),
                 Images = product.Images.Select(ImageLinkResponse.FromModel)
             };
         }

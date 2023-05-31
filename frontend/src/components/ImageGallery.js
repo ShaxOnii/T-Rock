@@ -49,7 +49,7 @@ const ImageContainer = styled.div`
 export const ImageGalleryItem = ({src, onDelete}) => {
 
     const handleImageDelete = () => {
-        if(onDelete) onDelete();
+        if (onDelete) onDelete();
     }
 
     return (
@@ -142,7 +142,7 @@ const GalleryContainer = styled(Container)`
   flex-wrap: wrap;
 `
 
-export const ImageGallery = ({toggle, isOpen, children, onImageAdded}) => {
+export const ImageGallery = ({toggle, isOpen, children, onImageAdded, title = ""}) => {
 
     const handleSaveImage = (imageId) => {
         if (onImageAdded) onImageAdded(imageId);
@@ -151,7 +151,7 @@ export const ImageGallery = ({toggle, isOpen, children, onImageAdded}) => {
     return (
         <Modal isOpen={isOpen} size={"xl"}>
             <ModalHeader toggle={toggle}>
-                <h3>Edit Product Images</h3>
+                {title}
             </ModalHeader>
             <ModalBody>
                 <GalleryContainer>
