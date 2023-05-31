@@ -63,6 +63,8 @@ const UserProvider = ({children}) => {
             roles: [],
             token: ""
         });
+
+        navigate("/");
     }
 
     const register = async (login, password, email) => {
@@ -108,7 +110,7 @@ const UserProvider = ({children}) => {
         if(!response.ok){
             switch (response.status) {
                 case 401:
-                    navigate("/");
+                    logout();
                     break;
                 case 404:
                     navigate("/notFound");

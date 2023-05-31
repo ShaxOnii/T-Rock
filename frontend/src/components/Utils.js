@@ -46,12 +46,20 @@ const SimpleLink = styled(NavLink)`
     cursor: pointer;
   }
 `
-const ItemImage = styled.div`
-  background-image: url(${(p) => p.imageSrc});
-  background-size: cover;
 
-  width: 200px;
-  height: 200px;
+export const ImageContainer = styled.div`
+  padding: 16px;
+  height: 300px;
+  
+  cursor: pointer;
+  position: relative;
+  
+  
+  img {
+    object-fit: cover;
+    height: 100%;
+    vertical-align: middle;
+  }
 `
 
 const PageContainer = styled(Container)`
@@ -74,4 +82,4 @@ export const StyledInput = styled(Input)`
 `
 
 
-export {SimpleLink, PageContainer, ItemImage}
+export {SimpleLink, PageContainer}

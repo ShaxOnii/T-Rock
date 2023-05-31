@@ -1,5 +1,5 @@
 import {Button, Col, Row} from "reactstrap";
-import {SimpleLink, ItemImage} from "../Utils";
+import {SimpleLink, ImageContainer} from "../Utils";
 
 import ExampleImage from "../../images/ExampleTShirt.jpg"
 import styled from "styled-components";
@@ -63,7 +63,9 @@ const ProductListItem = ({product}) => {
     return (
         <ProductRow>
             <Col md={"auto"}>
-                <ItemImage imageSrc={getMainImage()}/>
+                <ImageContainer>
+                    <img src={getMainImage()}/>
+                </ImageContainer>
             </Col>
             <Col>
                 <ProductLink to={`/product/${product.id}`}>

@@ -1,6 +1,6 @@
 import {Button, Container, Modal, ModalBody, ModalHeader} from "reactstrap";
 import styled from "styled-components";
-import {DeleteIcon, PlusIcon} from "./Utils";
+import {PlusIcon, TrashIcon} from "./Utils";
 import {useContext} from "react";
 import {userContext} from "../providers/UserContextProvider";
 
@@ -51,7 +51,7 @@ export const ImageGalleryItem = ({src}) => {
     return (
         <ImageContainer>
             <ImageControlButton color={"danger"}>
-                <DeleteIcon/>
+                <TrashIcon/>
             </ImageControlButton>
             <Image src={src}/>
         </ImageContainer>
