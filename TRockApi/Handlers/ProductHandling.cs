@@ -48,6 +48,13 @@ namespace TRockApi.Handlers {
                 product.Description = changes.Description;
             }
 
+            if (changes.CategoryName != null) {
+                var newCategory = _categoryRepository.FindByName(changes.CategoryName);
+                if (newCategory != null) {
+                    product.Category = newCategory;
+                }
+            }
+
             LinkImages(product, changes.Images);
 
             ValidateProduct(product);

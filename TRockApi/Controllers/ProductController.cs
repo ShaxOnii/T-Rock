@@ -27,7 +27,7 @@ namespace TRockApi.Controllers {
         [HttpGet]
         public async Task<IEnumerable<ProductResponse>> Index([FromQuery(Name = "category")] string? category) {
             IEnumerable<Product> result;
-    
+
             if (category != null) {
                 result = _productRepository.AllByCategory(category);
             } else {
@@ -60,12 +60,18 @@ namespace TRockApi.Controllers {
 
         [HttpPost("{id:int}")]
         public async Task<ProductResponse> Change(int id, ChangeProductRequest request) {
-            var changedProduct = await _productHandling.ChangeProductAsync(id, new ProductChanges {
+            var productChanges = new ProductChanges {
                 Caption = request.Caption,
                 Price = request.Price,
                 Description = request.Description,
-                Images = request.ProductImages.ToList()
-            });
+                CategoryName = request.Category
+            };
+
+            if (request.ProductImages != null) {
+                productChanges.Images = request.ProductImages.ToList();
+            }
+
+            var changedProduct = await _productHandling.ChangeProductAsync(id, productChanges);
 
             return ProductResponse.FromModel(changedProduct);
         }

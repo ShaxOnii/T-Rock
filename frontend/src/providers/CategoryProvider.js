@@ -22,20 +22,21 @@ export const CategoryProvider = ({children}) => {
         fetchCategories();
     }, [fetchCategories]);
 
+    const categoryOrderingByCaption = (c1, c2) => {
+        return c1.caption.localeCompare(c2.caption);
+    }
+
     const allCategories = () => {
-        return categories ?? [];
+        if (categories) {
+            return categories.toSorted(categoryOrderingByCaption);
+        }
+
+        return [];
     }
-
-    const addCategory = (category) => {
-
-
-        fetchCategories()
-    }
-
 
     return (
         <CategoryContext.Provider value={{
-            fetchCategories, allCategories, addCategory
+            fetchCategories, allCategories
         }}>
             {children}
         </CategoryContext.Provider>

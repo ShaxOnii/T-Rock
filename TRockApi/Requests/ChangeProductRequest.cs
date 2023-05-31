@@ -11,6 +11,6 @@ namespace TRockApi.Requests {
         
         public string? Description { set; get; }
         
-        public IEnumerable<int> ProductImages { get; set; }
+        public IEnumerable<int>? ProductImages { get; set; }
     }
 }

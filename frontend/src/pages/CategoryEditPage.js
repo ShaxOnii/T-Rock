@@ -1,27 +1,20 @@
-import {useEffect} from "react"
-import {DeleteIcon, EditIcon, PageContainer} from "../components/Utils";
+import {EditIcon, PageContainer} from "../components/Utils";
 import {useState, useContext} from "react";
-import {userContext} from "../providers/UserContextProvider";
 import SimpleTable, {field} from "../components/SimpleTable";
 import {Button} from "reactstrap";
 import styled from "styled-components";
+import AdminToolbar from "../components/AdminToolbar";
+import CreateEntityModal from "../components/CreateEntityModal";
+import {CategoryContext} from "../providers/CategoryProvider";
 
 const ControlButton = styled(Button)`margin-right: 0.5em`
 
 const CategoryEditPage = () => {
+    const {allCategories, fetchCategories} = useContext(CategoryContext);
 
-    const {Api} = useContext(userContext);
-    const [categories, setCategories] = useState([]);
+    const [createCategory, setCreateCategory] = useState(false);
 
-    useEffect(() => {
-        Api('Category').then(([result, ok]) => {
-            if (ok) {
-                setCategories(result);
-            } else {
-                throw Error("An error occured", result);
-            }
-        })
-    }, [Api]);
+    const toggleCreateCategoryModal = () => setCreateCategory(!createCategory)
 
     const fieldsToShow = [
         field("caption", "Category",
@@ -33,17 +26,26 @@ const CategoryEditPage = () => {
         field("id", "", {
             type: "actions",
             fieldFormatter: (id) => {
-                return <>
-                    <ControlButton color={"primary"}><EditIcon/></ControlButton>
-                    <ControlButton color={"danger"}><DeleteIcon/></ControlButton>
-                </>
+                return <ControlButton color={"primary"}><EditIcon/></ControlButton>
             }
         })
     ]
 
     return (
         <PageContainer>
-            <SimpleTable fields={fieldsToShow} items={categories}/>
+            <AdminToolbar>
+                <Button onClick={toggleCreateCategoryModal} color={"success"}>
+                    Create category
+                </Button>
+                <CreateEntityModal options={{
+                    toggle: toggleCreateCategoryModal,
+                    visible: createCategory,
+                    title: "Create new category",
+                    url: "Category/create",
+                    invalidatePage: fetchCategories
+                }}/>
+            </AdminToolbar>
+            <SimpleTable fields={fieldsToShow} items={allCategories()}/>
         </PageContainer>
     );
 }

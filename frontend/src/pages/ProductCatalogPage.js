@@ -1,240 +1,62 @@
 import {useContext, useEffect, useState} from "react";
 import ProductListItem from "../components/products/ProductListItem";
 import {
-    Alert,
     Button,
-    Col,
-    Form,
-    FormGroup, Input,
+    FormGroup,
     Label,
-    Modal,
-    ModalBody,
-    ModalFooter,
-    ModalHeader,
-    Row
 } from "reactstrap";
-import styled from "styled-components";
-import {ADMIN_ROLE, userContext, VisibleToRoles} from "../providers/UserContextProvider";
+import {userContext} from "../providers/UserContextProvider";
 import {useParams} from "react-router-dom";
-import {PageContainer,StyledInput} from "../components/Utils";
+import {PageContainer, StyledInput} from "../components/Utils";
+import {CategoryContext} from "../providers/CategoryProvider";
+import CreateEntityModal from "../components/CreateEntityModal";
+import AdminToolbar from "../components/AdminToolbar";
 
-const CreateEntityModal = ({options, children}) => {
-    const {toggle, visible, title, onEntityCreate, url, invalidatePage} = options;
-
-    const {Api} = useContext(userContext);
-
-    const [name, setName] = useState("");
-    const [caption, setCaption] = useState("");
-    const [error, setError] = useState(undefined);
-
-    const onDismissError = () => setError(undefined)
-
-    const toggleModal = () => {
-        if (toggle) {
-            toggle();
-        }
-    }
-
-    const handleCreateEntity = () => {
-        let additionalData = {};
-
-        if (onEntityCreate) {
-            additionalData = onEntityCreate();
-        }
-
-        createEntity({
-                Name: name,
-                Caption: caption,
-                ...additionalData
-            },
-            () => {
-                toggleModal()
-                if (invalidatePage) {
-                    invalidatePage()
-                }
-            }
-        );
-    }
-
-    const createEntity = (request, onSuccess) => {
-        if (url === null || url === undefined) {
-            throw Error("Cannot create entity url is not set.")
-        }
-
-        if (name === "") {
-            setError("Name cannot be empty.")
-            return;
-        }
-
-        if (caption === "") {
-            setError("Caption cannot be empty.")
-            return;
-        }
-
-        Api(url, {
-            method: 'POST',
-            body: request
-        }).then(([result, ok]) => {
-            if (!ok) {
-                if (result.StatusCode === 400) {
-                    setError(result.message);
-                    return
-                } else {
-                    throw Error("Cannot create entity");
-                }
-            }
-
-            if (onSuccess) {
-                onSuccess();
-                clearInputs();
-            }
-        });
-    }
-
-    const clearInputs = () => {
-        setName("");
-        setCaption("");
-    }
-
-    const handleNameChange = (e) => {
-        setName(e.target.value)
-    }
-
-    const handleCaptionChange = (e) => {
-        setCaption(e.target.value)
-    }
-
-    return (
-        <Modal isOpen={visible} toggle={toggleModal}>
-            <ModalHeader>{title}</ModalHeader>
-            <ModalBody>
-                <Form>
-                    <FormGroup>
-                        <Label for={"name"}>Name</Label>
-                        <StyledInput
-                            id={"name"}
-                            name={"name"}
-                            placeholder={"Name"}
-                            value={name}
-                            onChange={handleNameChange}
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label for={"caption"}>Caption</Label>
-                        <StyledInput
-                            id={"caption"}
-                            name={"caption"}
-                            placeholder={"Caption"}
-                            value={caption}
-                            onChange={handleCaptionChange}
-                        />
-                    </FormGroup>
-                    {children}
-                </Form>
-                <Alert isOpen={error !== undefined} toggle={onDismissError} color={"danger"}>
-                    {error}
-                </Alert>
-            </ModalBody>
-            <ModalFooter>
-                <Button color={"primary"} onClick={handleCreateEntity}>Create</Button>
-                <Button color={"danger"} onClick={toggleModal}>Cancel</Button>
-            </ModalFooter>
-        </Modal>
-    );
-}
-
-const StyledButton = styled(Button)`
-  margin: 1em;
-`
-
-const ProductCatalogTopBarContainer = styled(Row)`
-  background-color: ${props => props.theme.secondary};
-  color: ${props => props.theme.textLight};
-  
-  margin-bottom: 1em;
-`
 
 const ProductCatalogTopBar = ({invalidatePage}) => {
-    const {Api} = useContext(userContext);
+    const {allCategories} = useContext(CategoryContext);
 
     const [createProduct, setCreateProduct] = useState(false);
-    const [createCategory, setCreateCategory] = useState(false);
 
-    const [categories, setCategories] = useState([]);
     const [category, setCategory] = useState("");
 
     const handleCategoryChange = (e) => setCategory(e.target.value)
 
     const toggleCreateProductModal = () => setCreateProduct(!createProduct)
 
-    const toggleCreateCategoryModal = () => setCreateCategory(!createCategory)
-
-    useEffect(() => {
-        Api(`Category`).then(([result, ok]) => {
-            if (ok) {
-                setCategories(result);
-                invalidatePage();
-            } else {
-                throw Error("An error occured", result);
-            }
-        })
-    }, []);
-
     return (
-        <ProductCatalogTopBarContainer>
-            <Col>
-                <StyledButton onClick={toggleCreateProductModal} color={"success"}>Create product</StyledButton>
-                <CreateEntityModal options={{
-                    toggle: toggleCreateProductModal,
-                    visible: createProduct,
-                    title: "Create new product offer",
-                    url: "Product/create",
-                    invalidatePage: invalidatePage,
-                    onEntityCreate: () => {
-                        return {category}
-                    }
-                }}>
-                    <FormGroup>
-                        <Label for={"selectCategory"}>Select Category</Label>
-                        <StyledInput
-                            className="mb-3"
-                            type="select"
-                            name={"selectCategory"}
-                            id={"selectCategory"}
-                            onChange={handleCategoryChange}
-                            value={category}
-                        >
-                            <option disabled={true} value="">Select category</option>
-                            {categories.map((category, key) =>
-                                <option key={key} value={category.name}>{category.caption}</option>
-                            )}
-                        </StyledInput>
-                    </FormGroup>
-                </CreateEntityModal>
-
-                <StyledButton onClick={toggleCreateCategoryModal} color={"success"}>
-                    Create category
-                </StyledButton>
-                <CreateEntityModal options={{
-                    toggle: toggleCreateCategoryModal,
-                    visible: createCategory,
-                    title: "Create new category",
-                    url: "Category/create"
-                }}/>
-            </Col>
-        </ProductCatalogTopBarContainer>
+        <AdminToolbar>
+            <Button onClick={toggleCreateProductModal} color={"success"}>Create product</Button>
+            <CreateEntityModal options={{
+                toggle: toggleCreateProductModal,
+                visible: createProduct,
+                title: "Create new product offer",
+                url: "Product/create",
+                invalidatePage: invalidatePage,
+                onEntityCreate: () => {
+                    return {category}
+                }
+            }}>
+                <FormGroup>
+                    <Label for={"selectCategory"}>Select Category</Label>
+                    <StyledInput
+                        className="mb-3"
+                        type="select"
+                        name={"selectCategory"}
+                        id={"selectCategory"}
+                        onChange={handleCategoryChange}
+                        value={category}
+                    >
+                        <option disabled={true} value="">Select category</option>
+                        {allCategories().map((category, key) =>
+                            <option key={key} value={category.name}>{category.caption}</option>
+                        )}
+                    </StyledInput>
+                </FormGroup>
+            </CreateEntityModal>
+        </AdminToolbar>
     )
 }
-
-const ProductFilteringTopBar = () => {
-
-    return (
-        <ProductCatalogTopBarContainer>
-            <Col>Top bar for filters</Col>
-        </ProductCatalogTopBarContainer>
-    )
-}
-
 
 const ProductCatalogPage = () => {
     const {Api} = useContext(userContext)
@@ -268,9 +90,7 @@ const ProductCatalogPage = () => {
 
     return (
         <PageContainer>
-            <VisibleToRoles roles={[ADMIN_ROLE]}>
-                <ProductCatalogTopBar invalidatePage={invalidate}/>
-            </VisibleToRoles>
+            <ProductCatalogTopBar invalidatePage={invalidate}/>
             {/*<ProductFilteringTopBar/>*/}
             {
                 products.length > 0 ?
