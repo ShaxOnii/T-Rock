@@ -6,6 +6,7 @@ import styled from "styled-components";
 import {useContext} from "react";
 import {CartContext} from "../../providers/CartContextProvider";
 import {useNavigate} from "react-router-dom"
+import {createUrl} from "../../providers/UserContextProvider";
 
 export const ProductLink = styled(SimpleLink)`
   font-weight: bold;
@@ -51,10 +52,18 @@ const ProductListItem = ({product}) => {
         navigate("/cart");
     }
 
+    const getMainImage = () => {
+        if(product.images && product.images.length > 0){
+            return createUrl(product.images[0].href);
+        }
+
+        return ExampleImage;
+    }
+
     return (
         <ProductRow>
             <Col md={"auto"}>
-                <ItemImage imageSrc={ExampleImage}/>
+                <ItemImage imageSrc={getMainImage()}/>
             </Col>
             <Col>
                 <ProductLink to={`/product/${product.id}`}>
