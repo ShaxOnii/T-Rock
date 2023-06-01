@@ -16,25 +16,9 @@ import {
     TabContent,
     TabPane
 } from "reactstrap";
-import {isDevelopment} from "./Utils";
+import {isDevelopment, StyledTabContainer, StyledNavLink} from "./Utils";
 import { StyledInput } from "../components/Utils";
 import styled from "styled-components";
-
-const StyledTabContainer = styled(TabContent)`
-    background-color: ${props=>props.theme.secondary};
-    color: ${props=>props.theme.textLight};
-
-`
-
-const StyledNavLink = styled(NavLink)`
-    background-color: ${props=>props.active? props.theme.primary : props.theme.secondary};
-    color: ${props=>props.theme.textLight};
-    border-color: ${props=>props.theme.primary};
-    
-    &:hover{
-        border: none;
-    }
-`
 
 
 const LoginUserModal = ({options}) => {

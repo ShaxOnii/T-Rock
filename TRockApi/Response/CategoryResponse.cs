@@ -8,7 +8,11 @@ namespace TRockApi.Response {
         public string Caption { get; set; }
 
 
-        public static CategoryResponse FromModel(Category model) {
+        public static CategoryResponse? FromModel(Category? model) {
+            if (model == null) {
+                return null; 
+            }
+
             return new CategoryResponse {
                 Id = model.Id,
                 Name = model.Name,

@@ -12,7 +12,7 @@ namespace TRockApi.Response {
         
         public string Description { get; set; }
         
-        public CategoryResponse Category { get; set; }
+        public CategoryResponse? Category { get; set; }
         
         public IEnumerable<ImageLinkResponse> Images { get; set; }
 

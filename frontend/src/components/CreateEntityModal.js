@@ -2,7 +2,7 @@ import {useContext, useState} from "react";
 import {userContext} from "../providers/UserContextProvider";
 import {Alert, Button, Form, FormGroup, Label, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import {StyledInput} from "./Utils";
-
+import {StyledModalBody, StyledModalFooter, StyledModalHeader} from "./Utils";
 
 const CreateEntityModal = ({options, children}) => {
     const {toggle, visible, title, onEntityCreate, url, invalidatePage} = options;
@@ -92,8 +92,8 @@ const CreateEntityModal = ({options, children}) => {
 
     return (
         <Modal isOpen={visible} toggle={toggleModal}>
-            <ModalHeader>{title}</ModalHeader>
-            <ModalBody>
+            <StyledModalHeader>{title}</StyledModalHeader>
+            <StyledModalBody>
                 <Form>
                     <FormGroup>
                         <Label for={"name"}>Name</Label>
@@ -120,11 +120,11 @@ const CreateEntityModal = ({options, children}) => {
                 <Alert isOpen={error !== undefined} toggle={onDismissError} color={"danger"}>
                     {error}
                 </Alert>
-            </ModalBody>
-            <ModalFooter>
+            </StyledModalBody>
+            <StyledModalFooter>
                 <Button color={"primary"} onClick={handleCreateEntity}>Create</Button>
                 <Button color={"danger"} onClick={toggleModal}>Cancel</Button>
-            </ModalFooter>
+            </StyledModalFooter>
         </Modal>
     );
 }

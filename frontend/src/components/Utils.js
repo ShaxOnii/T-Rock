@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {NavLink} from "react-router-dom";
-import {Container, Input} from "reactstrap";
+import {Container, Input, ModalBody, TabContent, ModalFooter, ModalHeader} from "reactstrap";
 import {
     faPenToSquare,
     faClose,
@@ -80,6 +80,36 @@ export const StyledInput = styled(Input)`
     box-shadow: none;
   }
 `
+export const StyledTabContainer = styled(TabContent)`
+    background-color: ${props=>props.theme.secondary};
+    color: ${props=>props.theme.textLight};
 
+`
+
+export const StyledNavLink = styled(NavLink)`
+    background-color: ${props=>props.active? props.theme.primary : props.theme.secondary};
+    color: ${props=>props.theme.textLight};
+    border-color: ${props=>props.theme.primary};
+    
+    &:hover{
+        border: none;
+    }
+`
+
+export const StyledModalBody= styled(ModalBody)`
+    background-color: ${props=>props.theme.secondary};
+    color: ${props=>props.theme.textLight};
+
+`
+export const StyledModalHeader= styled(ModalHeader)`
+    background-color: ${props=>props.theme.secondary};
+    color: ${props=>props.theme.textLight};
+
+`
+export const StyledModalFooter= styled(ModalFooter)`
+    background-color: ${props=>props.theme.secondary};
+    color: ${props=>props.theme.textLight};
+
+`
 
 export {SimpleLink, PageContainer}
