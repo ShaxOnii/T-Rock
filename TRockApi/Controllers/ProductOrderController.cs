@@ -35,14 +35,14 @@ namespace TRockApi.Controllers {
         }
 
         [HttpGet]
-        public IEnumerable<ProductOrderResponse> Index() {
-            return FindOrdersForAuthorizedUser().Select(ProductOrderResponse.FromModel);
+        public IEnumerable<ProductOrderResponse> Index([FromQuery(Name = "all")] bool all = false) {
+            return FindOrdersForAuthorizedUser(all).Select(ProductOrderResponse.FromModel);
         }
 
-        private IEnumerable<ProductOrder> FindOrdersForAuthorizedUser() {
+        private IEnumerable<ProductOrder> FindOrdersForAuthorizedUser(bool returnAll) {
             var user = GetAuthorizedUser();
 
-            if (user.hasRole(Roles.ADMIN_ROLE)) {
+            if (returnAll && user.hasRole(Roles.ADMIN_ROLE)) {
                 return _productOrderRepository.All();
             }
 

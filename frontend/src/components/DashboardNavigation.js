@@ -29,19 +29,19 @@ const LinkContainer = styled(Container)`
   position: relative;
   width: 40%;
   margin: 1.5em;
-  
+
   transition: background-color 0.2s ease-in-out;
-  
-  &:hover{
+
+  &:hover {
     cursor: pointer;
   }
 
-  &:hover ${IconContainer}{
+  &:hover ${IconContainer} {
     background-color: ${props => props.theme.primaryDark};
     color: ${props => props.theme.textDark};
   }
 
-  &:hover ${CaptionContainer}{
+  &:hover ${CaptionContainer} {
     background-color: ${props => props.theme.secondary};
   }
 `
@@ -55,7 +55,7 @@ export const DashboardLink = ({to, caption = "", icon}) => {
         <LinkContainer onClick={() => navigate(to)}>
             <Row>
                 <IconContainer md={"4"}>{icon}</IconContainer>
-                <CaptionContainer >{caption}</CaptionContainer>
+                <CaptionContainer>{caption}</CaptionContainer>
             </Row>
         </LinkContainer>
     )

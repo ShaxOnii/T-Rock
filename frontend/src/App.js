@@ -49,7 +49,8 @@ function App() {
                                         <Route exact path="/products/:productCategory" element={<ProductCatalogPage/>}/>
                                         <Route exact path="/product/:id" element={<ProductPage/>}/>
                                         <Route exact path="/cart" element={<CartPage/>}/>
-                                        <Route exact path="/productOrder" element={<ProductOrderListPage/>}/>
+                                        <Route exact path="/productOrders/all" element={<ProductOrderListPage all={true}/>}/>
+                                        <Route exact path="/productOrders" element={<ProductOrderListPage/>}/>
                                         <Route exact path="/productOrder/:productOrderId"
                                                element={<ProductOrderDetailsPage/>}/>
                                         <Route path="*" element={<ErrorPage message={"404 not found"}/>}/>
