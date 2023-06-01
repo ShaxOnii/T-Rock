@@ -6,17 +6,17 @@ import ProductOrderStateBadge from "../components/ProductOrderStateBadge";
 import {format} from "date-fns";
 
 
-const ProductOrderListPage = () => {
+const ProductOrderListPage = ({all}) => {
     const {Api} = useContext(userContext);
     const [allProductsOrders, setAllProductsOrders] = useState([])
 
     useEffect(() => {
-        Api("ProductOrder").then(([response, isOk]) => {
+        Api("ProductOrder", {queryParams: {all: all}}).then(([response, isOk]) => {
             if (isOk) {
                 setAllProductsOrders(response)
             }
         })
-    }, [Api])
+    }, [all,Api])
 
     const fieldsToShow = [
         field("id", "Product order", {

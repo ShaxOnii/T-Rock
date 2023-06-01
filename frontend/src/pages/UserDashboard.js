@@ -10,14 +10,14 @@ const UserDashboard = () => {
     return (
         <PageContainer>
             <DashboardNavigation>
-                <DashboardLink to={"/productOrder"} caption={"Your Product orders"} icon={<ProductOrderIcon/>}/>
+                <DashboardLink to={"/productOrders"} caption={"Your Product orders"} icon={<ProductOrderIcon/>}/>
                 {
                     !hasRole(ADMIN_ROLE) &&
                     <DashboardLink to={"/cart"} caption={"Cart"} icon={<CartIcon/>}/>
                 }
                 <VisibleToRoles roles={[ADMIN_ROLE]}>
                     <DashboardLink to={"/category"} caption={"Categories"} icon={<CategoryIcon/>}/>
-                    <DashboardLink to={"/productOrder"} caption={"All Product Orders"} icon={<CasesIcon/>}/>
+                    <DashboardLink to={"/productOrders/all"} caption={"All Product Orders"} icon={<CasesIcon/>}/>
                     <DashboardLink to={"/products"} caption={"Product Catalog"} icon={<ProductIcon/>}/>
                 </VisibleToRoles>
             </DashboardNavigation>
