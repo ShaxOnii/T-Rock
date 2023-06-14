@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Routing.Tree;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,7 +26,8 @@ builder.Logging.AddDebug();
 builder.Services.AddDbContext<ShopDbContext>(options => {
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-    options.UseSqlServer(connectionString);
+    options.UseMySQL(connectionString!);
+    
 });
 
 RepositoryConfiguration.Register(builder.Services);
@@ -36,7 +36,7 @@ HandlersConfiguration.Register(builder.Services);
 // cors policy
 builder.Services.AddCors(corsOptions => {
     corsOptions.AddDefaultPolicy(policyBuilder => {
-            policyBuilder.WithOrigins("http://localhost:3000")
+            policyBuilder.AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader();
         }
