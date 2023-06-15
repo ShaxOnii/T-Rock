@@ -4,7 +4,7 @@ import {useNavigate} from "react-router-dom";
 
 export const userContext = createContext();
 
-const API_URL = "https://localhost:7294/api/";
+const API_URL = "https://trock.azurewebsites.net/api/";
 
 export const createUrl = (path) => {
     return API_URL + path;
@@ -23,7 +23,7 @@ const UserProvider = ({children}) => {
 
     const objectFromStorage = (key, defaultValue = {}) => {
         const obj = localStorage.getItem(key);
-        if(obj.length === 0){
+        if(!obj){
             return defaultValue;
         }
         
@@ -111,14 +111,12 @@ const UserProvider = ({children}) => {
             switch (response.status) {
                 case 401:
                     logout();
-                    break;
+                    return [{}, false]
                 case 404:
                     navigate("/notFound");
-                    break;
+                    return [{}, false]
                 default: break;
             }
-
-            return [{}, false]
         }
 
         return [await response.json(), response.ok]

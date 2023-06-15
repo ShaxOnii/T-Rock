@@ -15,7 +15,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-export const isDevelopment = true;
+export const isDevelopment = false;
 
 export const ApplyIcon = () => <FontAwesomeIcon icon={faCheck}/>
 export const CloseIcon = () => <FontAwesomeIcon icon={faClose}/>
