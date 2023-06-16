@@ -7,7 +7,7 @@ namespace TRockApi.Repositories.Configuration {
         public ShopDbContext(DbContextOptions<ShopDbContext> options) : base(options) {
 
         }
-
+        
         public DbSet<User> Users { get; set; }
 
         public DbSet<Role> Roles { get; set; }

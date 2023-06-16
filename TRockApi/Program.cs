@@ -24,7 +24,7 @@ builder.Logging.AddDebug();
 
 // configure Db connection
 builder.Services.AddDbContext<ShopDbContext>(options => {
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    var connectionString = builder.Configuration.GetConnectionString("mySQLDBConnectionString");
 
     options.UseMySQL(connectionString!);
     
